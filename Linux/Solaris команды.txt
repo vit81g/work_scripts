@@ -1,0 +1,71 @@
+Solaris
+
+auditreduce | praudit –l /var/audit/*.not_terminated 
+
+pfexec /usr/sbin/auditreduce /var/audit/20120514185900.not_terminated.u3proddb | /usr/sbin/praudit -l | grep root
+
+pfexec passwd -f koloandp - принудительная смена пароля
+
+cat /etc/passwd - просмотр уз
+
+cat /etc/user_attr - просмотр УЗ по ролям
+
+lsnrctl status - проверка порта СУБД
+
+netstat -a | grep EST | wc -l - число активных подключений
+
+ps -ef | grep audit - запущен ли аудит 
+
+svcs system-log -  включен ли системный журнал
+
+svcs cron - крон
+
+grep "\-root" /var/adm/sulog | grep -v \+ | tail -25
+
+pfexec passwd koloandp - смена пароля
+
+pfexec /usr/sbin/usermod -R  oradbaib,usersec,auditctr,auditvw,useracc koloandp
+
+pfexec passwd -s koloandp - просмотр блокировки
+
+pfexec /usr/sbin/praudit -l /var/audit/20211014150000.not_terminated.kip | grep "logout"
+
+cat /etc/security/audit_control - настройки демона аудита
+
+cat /etc/default/passwd
+
+more /var/log/authlog - просмотр переход в роли
+
+pfexec passwd -x 90 -n 1 -w 7 <имя_УЗ> - восстановление парольной политики
+
+more /var/log/authlog - контроль журнала аутентификации
+
+ls -lah /var/audit | tail - проверка ротации
+
+grep -v "\#" /etc/default/passwd - проверка парольной политики
+
+grep -v "\#" /etc/default/login - параметры регистрации
+
+cat /etc/security/audit_user - настройки аудита
+
+svcs -l svc:/network/ssh:default - состояние службы
+
+ps –ef | grep auditd
+
+pfexec /usr/sbin/praudit /home/auditctr/20150703070000.20150703080000.pbs-ar9k5 > /home/auditvw/log
+
+cp /var/audit/20150714110000.20150714120000.gpp-di-r9k4.bz2 .
+
+gzipbzip2 -d 20150714110000.20150714120000.gpp-di-r9k4.bz2
+
+ls -lV - просмотр прав на файл
+
+pfexec /usr/sbin/praudit /var/audit/20210927080000.not_terminated.kip | less - просмотр в редакторе
+
+cat /etc/inet/hosts - таблица соответствия имен компьютеров и их адресов
+
+prstat -Z - сколько памяти занимают процессы
+
+svcs -a telnet - запуск сервиса
+
+/usr/sbin/auditreduce /var/audit/20210927080000.not_terminated.kip | /usr/sbin/praudit -l  - просмотр файла аудита

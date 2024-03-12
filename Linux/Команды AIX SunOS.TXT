@@ -1,0 +1,191 @@
+AIX:
+clear && lsuser -a rlogin root,daemon,bin,sys,adm,uucp,guest,nobody,invscout,lpd,lp,snapp,ipsec,nuucp,pconsole,esaadmin,sshd
+clear && lsuser -a su root,daemon,bin,sys,adm,uucp,guest,nobody,lpd,lp,snapp,ipsec,nuucp,pconsole,esaadmin,sshd
+clear && lsuser -a minage maxage loginretries root,mpunix,mpunixr,idmuser,sisips
+
+egrep 'alekiula|andralen|balaevga|baytanda|bilaanti|boronikn|cherevga|gladanda|gurealep|kondsera|kulealev|kultalev|kutcpava|makairis|nikiilia|ryjaalem|perestal|perlnata|ratnvlam|shasalee|skurvikn|stargriv|tetialea|zuykevgi|karpalev|pugavito|usatkona|onisnats|arkhdmig|ilusalev|tcheigov|gladandy|lushegon|slingriv' /etc/passwd /etc/security/audit_user
+
+clear && egrep -v "^#|^$" /etc/ssh/sshd_config | egrep 'PermitRootLogin|LoginGraceTime|Protocol|PermitEmptyPasswords|LogLevel|ClientAliveInterval|ClientAliveCountMax|MaxAuthTries|UsePAM|PrintLastLog|AllowGroups|PasswordAuthentication|ChallengeResponseAuthentication'
+
+# PHG 11.10.2022
+clear && egrep -v "^#|^$" /etc/ssh/sshd_config | egrep 'LoginGraceTime|PermitEmptyPasswords'
+
+clear && lsuser -a login root,daemon,bin,sys,adm,uucp,guest,nobody,lpd,lp,snapp,ipsec,nuucp,pconsole,esaadmin,sshd
+clear && lsuser -a su sugroups root,mpunixr,sisips
+
+
+####Check roles####
+clear && egrep 'authorizations = aix.security.auth,aix.security.cmd,aix.security.config,aix.security.device,aix.security.file,aix.security.group,aix.security.kst,aix.security.proc,aix.security.role.audit,aix.security.role.create,aix.security.role.change,aix.security.role.list,aix.security.role.remove,aix.security.user' /etc/security/roles
+
+
+aclget /etc/...
+
+
+ORACLE LINUX:
+
+getfacl 
+
+
+SOLARIS:
+Права доступа на файл:
+ls -Va /etc/user_attr
+
+Права доступа на папку:
+ls -Val /var > dir.txt
+less dir.txt
+
+Создать журнал УЗ:
+cat /etc/passwd > users.csv && cat /etc/user_attr > roles.csv
+C:\PUTTY>pscp -P 22 gayudenv@IP:/export/home/gayudenv/users.csv|/export/home/gayudenv/roles.csv C:\PUTTY\pwe1-users.csv
+
+
+ORACLE:
+
+
+id
+su - oradbaib
+id
+sqlplus /nolog
+conn aib
+
+
+Создать журнал УЗ:
+
+set line 400
+col USERNAME format a30
+col PROFILE format a30
+col ACCOUNT_STATUS format a30
+select USERNAME, PROFILE, ACCOUNT_STATUS from dba_users order by 1;
+
+Привилегии:
+select * from dba_role_privs;
+
+
+ВСЗИ Solaris:
+
+1. UID SHELL
+clear && egrep 'usermngt|usersec|useracc|userctr|auditctr|auditvw|o_mngt|u_mngt|root|efros|mpunixr|arcsigh|' /etc/passwd
+clear && egrep 'p7hadm|orap7h' /etc/passwd
+
+2. RBAC 
+SOL10: 
+clear && egrep 'User Management:' /etc/security/prof_attr && egrep 'User Management' /etc/security/exec_attr
+clear && egrep 'User Security:' /etc/security/prof_attr && egrep 'User Security' /etc/security/exec_attr
+clear && egrep 'Object Access Management:' /etc/security/prof_attr && egrep 'Object Access Management' /etc/security/exec_attr
+clear && egrep 'User Control:' /etc/security/prof_attr && egrep 'User Control' /etc/security/exec_attr
+clear && egrep 'Audit Control:' /etc/security/prof_attr && egrep 'Audit Control' /etc/security/exec_attr
+clear && egrep 'Systemlog Control:' /etc/security/prof_attr && egrep 'Systemlog Control' /etc/security/exec_attr
+clear && egrep 'Audit Review:' /etc/security/prof_attr && egrep 'Audit Review' /etc/security/exec_attr
+clear && egrep 'Primary Administrator:' /etc/security/prof_attr && egrep 'Primary Administrator' /etc/security/exec_attr
+clear && egrep 'Scspadmin:' /etc/security/prof_attr && egrep 'Scspadmin' /etc/security/exec_attr
+clear && egrep 'idmprof:' /etc/security/prof_attr && egrep 'idmprof' /etc/security/exec_attr
+clear && egrep 'Zone Enter:' /etc/security/prof_attr && egrep 'Zone Enter' /etc/security/exec_attr
+
+
+SOL11: 
+clear && egrep 'User Mngt' /etc/security/prof_attr && egrep 'User Mngt' /etc/security/exec_attr
+clear && egrep 'User Sec' /etc/security/prof_attr && egrep 'User Sec' /etc/security/exec_attr
+clear && egrep 'Object Access Mngt' /etc/security/prof_attr && egrep 'Object Access Mngt' /etc/security/exec_attr
+clear && egrep 'User Ctr' /etc/security/prof_attr && egrep 'User Ctr' /etc/security/exec_attr
+clear && egrep 'Audit Ctr' /etc/security/prof_attr && egrep 'Audit Ctr' /etc/security/exec_attr
+clear && egrep 'Systemlog Ctr' /etc/security/prof_attr && egrep 'Systemlog' /etc/security/exec_attr
+clear && egrep 'Auditvw' /etc/security/prof_attr && egrep 'Auditvw' /etc/security/exec_attr
+clear && egrep 'Efrosprof' /etc/security/prof_attr && egrep 'Efrosprof' /etc/security/exec_attr
+clear && egrep 'idmprof' /etc/security/prof_attr && egrep 'idmprof' /etc/security/exec_attr
+clear && egrep 'arcsight' /etc/security/prof_attr && egrep 'arcsight' /etc/security/exec_attr
+clear && egrep 'Rights Delegation' /etc/security/prof_attr && egrep 'Rights Delegation' /etc/security/exec_attr
+
+3. PASSWD DEFAULT POLICY
+
+clear && egrep -v "^#|^$" /etc/default/passwd | egrep "MAXWEEKS|MINWEEKS|PASSLENGTH|NAMECHECK|HISTORY|MINDIFF|MINALPHA|MINNONALPHA|MINUPPER|MINLOWER|MAXREPEATS|MINSPECIAL|MINDIGIT|WHITESPACE|DICTIONLIST|DICTIONDBDIR" 
+clear && egrep -v "^#|^$"  /etc/default/login | egrep 'TIMEZONE|ULIMI|CONSOLE|PASSREQ|ALTSHELL|PATH|SUPATH|TIMEOUT|UMASK|SYSLOG|SLEEPTIME|DISABLETIME|RETRIES|SYSLOG_FAILED_LOGINS'
+clear && egrep -v "^#|^$" /etc/security/policy.conf | egrep 'LOCK_AFTER_RETRIES|CRYPT_DEFAULT' 
+clear && egrep -v "^#|^$" /etc/ssh/sshd_config | egrep 'PrintLastLog|PermitRootLogin|Protocol|LoginGraceTime|LogLevel|MaxAuthTries'  
+clear && egrep -v "^#|^$" /etc/pam.conf | egrep 'login account required pam_unix_account.so.1|zlogin'
+
+
+4. Проверка lock_after_retries=no, roles=root
+clear && egrep 'lock_after_retries=no' /etc/user_attr
+clear && egrep 'roles=root' /etc/user_attr
+
+5. AUDIT POLICY
+clear && cat /etc/security/audit_control
+clear && cat /etc/security/audit_user
+clear && egrep '6152:AUE_login:login|6153:AUE_logout|6159:AUE_su|6163:AUE_passwd|6172:AUE_ssh:login|6173:AUE_role_login|6212:AUE_newgrp_login|6213:AUE_admin_authenticate|6227:AUE_zlogin|6228:AUE_su_logout|6229:AUE_role_logout' /etc/security/audit_event
+clear && cat /etc/security/audit_startup
+clear && egrep 'err|alert|emerg|audit|auth|local1' /etc/syslog.conf
+clear && egrep '/var/log/authlog|var/audit' /etc/logadm.conf
+
+
+
+6. Проверка системных УЗ (nologin, uid)
+clear && egrep 'daemon|sys|adm|lp|uucp|nuucp|dladm|netadm|netcfg|smmsp|gdm|zfssnap|upnp|xvm|mysql|openldap|webservd|postgres|unknown|svctag|nobody|noaccess|nobody4|ikeuser|aiuser|pkg5srv' /etc/passwd
+
+passwd -s daemon
+
+7. Проверка запуска syslogd, auditd, cron
+clear && ps aux | grep auditd && ps aux | grep syslogd && ps aux | grep cron
+
+8. Проверка что не переполнен /var/audit (Capacity должно быть < 80%)
+clear && df -h /var/share/audit
+
+
+
+RHEL7:
+clear && egrep -v "^#|^$" /etc/login.defs | egrep 'PASS_MAX_DAYS|PASS_MIN_DAYS|PASS_MIN_LEN|PASS_WARN_AGE|LOGIN_RETRIES'
+clear && egrep -v "^#|^$" /etc/ssh/sshd_config | egrep 'PermitRootLogin|LoginGraceTime|Protocol|PermitEmptyPasswords|LogLevel|ClientAliveInterval|ClientAliveCountMax|MaxAuthTries|UsePAM|PrintLastLog|AllowGroups|PasswordAuthentication|ChallengeResponseAuthentication'
+clear && egrep -v "^#|^$" /etc/security/pwquality.conf
+clear && egrep -v "^#|^$" /etc/pam.d/password-auth
+clear && egrep -v "^#|^$" /etc/pam.d/system-auth
+clear && egrep -v "^#|^$" /etc/pam.d/sshd
+clear && egrep -v "^#|^$" /etc/pam.d/login
+clear && egrep -v "^#|^$" /etc/pam.d/postlogin
+clear && egrep -v "^#|^$" /etc/pam.d/passwd
+clear && egrep -v "^#|^$" /etc/pam.d/sudo
+clear && egrep -v "^#|^$" /etc/pam.d/crond
+clear && egrep -v "^#|^$" /etc/pam.d/su
+
+# Проверка настроек системных УЗ
+(alias passwdS, chagel)
+clear && chagel root && chagel usermngt && chagel usersec && chagel auditctr && chagel auditvw && chagel useracc && chagel userctr && chagel mpunixr && chagel oradbaib && chagel oracle && chagel sapadm && chagel efros && chagel idmuser && chagel itmadm
+
+# Проверка настроек аудита
+clear && egrep -v "^#|^$" /etc/audit/auditd.conf | egrep 'log_file|num_logs|name_format|max_log_file|max_log_file_action|space_left|space_left_action|admin_space_left|admin_space_left_action|disk_full_action|disk_error_action|dispatcher|log_group'
+clear && egrep -v "^#|^$" /usr/lib/systemd/system/auditd.service | grep RefuseManualStop
+clear && egrep -v "^#|^$" /etc/audit/rules.d/audit.rules | grep "/etc"
+clear && egrep -v "^#|^$" /etc/audit/rules.d/audit.rules | grep "/var"
+clear && egrep -v "^#|^$" /etc/audit/rules.d/audit.rules | grep 'ptrace -k tracing'
+clear && egrep -v "^#|^$" /etc/audit/rules.d/audit.rules | grep 'personality -k bypass'
+clear && egrep -v "^#|^$" /etc/audit/rules.d/audit.rules | grep 'mknod -k'
+clear && egrep -v "^#|^$" /etc/audit/rules.d/audit.rules | grep 'CFG_privileges_roles'
+clear && egrep -v "^#|^$" /etc/audisp/plugins.d/syslog.conf | egrep 'active|args'
+clear && egrep -v "^#|^$" /etc/rsyslog.conf | grep '/var/log/'
+#ArcSight Efros
+clear && egrep -v "^#|^$" /etc/rsyslog.conf | grep 'ap|efros'
+clear && rpm -qa | grep telnet-server && rpm -qa | grep ftp-server
+clear && egrep -v "^#|^$" /etc/selinux/config | grep "SELINUX="
+clear && grep 'net.ipv6.conf' /etc/sysctl.conf && ip addr|grep inet6
+
+RHEL6:
+chkconfig --list | grep ip
+
+SLES12:
+clear && egrep -v "^#|^$" /etc/ssh/sshd_config | egrep 'PermitRootLogin|LoginGraceTime|Protocol|PermitEmptyPasswords|LogLevel|ClientAliveInterval|ClientAliveCountMax|MaxAuthTries|UsePAM|PrintLastLog|AllowGroups|PasswordAuthentication|ChallengeResponseAuthentication'
+clear && egrep -v "^#|^$" /etc/login.defs | egrep 'PASS_MAX_DAYS|PASS_MIN_DAYS|PASS_MIN_LEN|PASS_WARN_AGE|LOGIN_RETRIES'
+clear && egrep -v "^#|^$" /etc/pam.d/su
+clear && egrep -v "^#|^$" /etc/pam.d/sshd
+clear && egrep -v "^#|^$" /etc/pam.d/login
+clear && egrep -v "^#|^$" /etc/pam.d/common-auth
+clear && egrep -v "^#|^$" /etc/pam.d/common-account
+clear && egrep -v "^#|^$" /etc/pam.d/common-password
+clear && egrep -v "^#|^$" /etc/pam.d/passwd
+
+# Проверка настроек аудита
+clear && egrep -v "^#|^$" /etc/audit/auditd.conf | egrep 'log_file|num_logs|name_format|max_log_file|max_log_file_action|space_left|space_left_action|admin_space_left|admin_space_left_action|disk_full_action|disk_error_action|dispatcher|log_group'
+clear && egrep -v "^#|^$" /etc/sysconfig/auditd | egrep 'AUDITD_DISABLE_CONTEXTS'
+clear && egrep -v "^#|^$" /etc/audit/audit.rules | grep "/etc"
+clear && egrep -v "^#|^$" /etc/audit/audit.rules | grep "/var"
+clear && egrep -v "^#|^$" /etc/audit/audit.rules | grep "/bin"
+clear && egrep -v "^#|^$" /etc/audisp/plugins.d/syslog.conf | egrep 'active|args'
+clear && egrep -v "^#|^$" /etc/sysconfig/syslog | egrep 'SYSLOG_DAEMON'
+clear && egrep -v "^#|^$" /etc/rsyslog.conf | grep '/var/log/mes'

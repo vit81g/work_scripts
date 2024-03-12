@@ -1,0 +1,54 @@
+Проверки СУБД SAP ASE.
+
+1. Выполнение попытки входа с неверным паролем:
+   isql64 –U <УЗ администратора> -S <SID> -X
+   <неверный пароль>
+
+2. Выполнение успешного входа:
+   isql64 –U <УЗ администратора> -S <SID> -X
+   <верный пароль>
+
+3. Проверка параметров парольной политики:
+   sp_passwordpolicy list
+   go
+
+4. Проверка идентификации защищаемых ИР:
+   create table tab (id int)
+   go
+   select * from tab
+   go
+   create table tab (id int)
+   go
+
+5. Проверка разграничения доступа к защищаемым ИР:
+   use <SID>
+   go
+   select top 1 * from SAPSR3.USR02
+   go
+   use sybsecurity
+   go
+   select top 1 * from sysaudits_01
+   go
+
+6. Контроль доступа (перечень УЗ и присвоенных им ролей):
+   select name, status, dbname from master.dbo.syslogins
+   go
+
+7. Регистрация попыток входа:
+   select event, eventmod, eventtime, loginname, extrainfo from sysaudits_01 where event=45 and loginname in ('<УЗ АИБ>')
+   go
+
+8. Регистрация выхода:
+   select event, eventmod, eventtime, loginname, extrainfo from sysaudits_01 where event= 46 and loginname='<УЗ АИБ>'
+
+9. Регистрация попыток доступа ПС к защищаемым ИР:
+   create table tab (id int)
+   go
+   select * from tab
+   go
+   alter table tab add id2 int null
+   go
+   drop table tab
+   go
+   select event, eventmod, eventtime, loginname, extrainfo from sysaudits_01 where event in (3, 10, 27, 62) and loginname='<УЗ АИБ>'
+   go

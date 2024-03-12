@@ -1,0 +1,35 @@
+Для просмотра события несанкционированного доступа с использованием команды «useradd» выполнить команду «ausearch -i -sv no -ts today  -c useradd»
+Для просмотра события несанкционированного доступа к /etc/sudoers выполнить команду «ausearch -i -k access»
+Просмотреть событие успешного изменения /etc/sudoers с помощью команды «ausearch -i -k CFG_privileges_roles -ts today»
+Просмотреть событие создания пользователя с помощью команды:
+«ausearch -m ADD_USER -sv yes -i»
+Просмотреть событие создания группы с помощью команды:
+«ausearch -m ADD_GROUP -sv yes -i»
+Просмотреть событие изменения группы с помощью команды:
+«ausearch -m USER_MGMT -sv yes -i | grep add-user»
+Просмотреть событие удаления пользователя с помощью команды:
+«ausearch -m DEL_USER -i && ausearch -m EXECVE -i | grep sudo.*userdel»
+Просмотреть событие удаления группы с помощью команды:
+«ausearch -m DEL_GROUP -i && ausearch -m EXECVE -i | grep sudo.*groupdel»
+
+Просмотреть успешные попытки входа в ОС с помощью команды:
+«aureport -au --success»
+Просмотреть события выхода из ОС с помощью команды:
+« aureport -e -i | grep USER_END»
+Просмотреть неуспешные попытки входа в ОС с помощью команды:
+«aureport -au --failed»
+
+Просмотреть событие неуспешной попытки чтения конфигурационного файла с помощью команды: «sudo ausearch -i -ts today -k access -sv no -f /etc/ssh/sshd_config»
+Просмотреть событие неуспешной попытки изменения конфигурационного файла с помощью команды: «ausearch -i -ts today -k access -sv no -f /etc/pam.d/sshd»
+Просмотреть событие успешной попытки чтения конфигурационного файла с помощью команды: «for event in $(ausearch -ts today -c cat -sv yes | grep  type=EXECVE | grep /etc/ssh/sshd_config | cut -f2 -d: | tr -d \));do ausearch -i -ts today -a $event; done»
+Просмотреть событие успешной попытки изменения конфигурационного файла с помощью команды: «sudo ausearch -i -ts today -k CFG_pam -sv yes»
+
+
+проверка службы (отбор по слову telnet)
+systemctl list-unit-files - покажет вообще все
+systemctl list-unit-files | grep telnet
+
+
+
+
+

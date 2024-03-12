@@ -1,0 +1,60 @@
+Проверки СУБД Oracle.
+
+1. Выполнить вход, выход, неуспешную попытку входа.
+    su - oradbaid
+    sqlplus /nolog
+    conn <УЗ АИБа>
+
+2. Проверка параметров парольной политики:
+    select text from dba_source where name = 'VERIFY_FUNCTION';
+
+3. Проверка идентификации ПС:
+    set lin 200
+    set linesize 200 pagesize 40
+    select username, machine, program from v$session where type!='BACKGROUND' and program is not null;
+
+4. Проверка идентификации ИР:
+    select table_name from all_tables;
+
+5. Проверка перечня УЗ:
+    select username from sys.dba_users;
+
+6. Проверка Переченя УЗ, профилей и их статуса:
+    set line 400
+    SET WRAP OFF
+    SET TAB OFF
+    SET LINESIZE 800
+    SET PAGESIZE 1000
+    col USERNAME format a30
+    col PROFILE format a30
+    col ACCOUNT_STATUS format a30
+    select USERNAME, PROFILE, ACCOUNT_STATUS from dba_users order by 1;
+
+6.1 Просмотр настроек конкретного профиля
+    select distinct resource_name, limit from dba_profiles where profile = 'SYSPROF';
+
+
+7. Проверка опций аудита:
+    select audit_option from dba_stmt_audit_opts;
+
+8. Проверка разграничения доступа к защищаемым ресурсам:
+    select username from sys.dba_datafiles;
+
+9. Переход в роль auditvw и определение файла аудита:
+    su -auditvw
+    ls -la /var/audit/oracle/
+
+10. Проверка регистрации выхода:
+      more /var/audit/oracle/<файл аудита> | grep 'LOGOFF' | grep '<УЗ АИБ>'
+
+11. Проверка регистрации входа:
+     more /var/audit/oracle/<файл аудита> | grep 'Authenticated' | grep '<УЗ АИБ>'
+
+12. Проверка регистрации неуспешной попытки входа:
+      more /var/audit/oracle/<файл аудита> | grep '1017' | grep '<УЗ АИБ>'
+
+13. Выполнение попытки создания нового пользователя (недостаточно привилегий):
+      create user testuser identified by password;
+
+14. Проверка регистрации попытки доступа ПС к защищаемым ИР:
+      more /var/audit/oracle/ora_audit.log | grep '1031' | grep 'УЗ АИБа'

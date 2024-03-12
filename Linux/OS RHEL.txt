@@ -1,0 +1,86 @@
+Проверки ОС RHEL.
+
+1. Проверка ID и версии ОС:
+    id
+    cat /etc/os-release
+
+2. Выполнение попытки входа с неправильным паролем:
+     su - auditvw
+     <неправильный пароль>
+
+3. Выполнение успешного входа в роль auditvw:
+    su - auditvw
+    <правильный пароль>
+
+4. Проверка перечня УЗ:
+    more /etc/passwd
+
+5. Проверка перечня групп:
+    more /etc/group
+
+6. Проверка параметров парольной политики:
+    more /etc/pam.d/sshd
+    more /etc/pam.d/password-auth
+    more /etc/login.defs
+    more /etc/ssh/sshd_config
+    more /etc/security/pwquality.conf
+
+7. Проверка идентификации терминалов:
+    tty
+
+8. Проверка идентификации ЭВМ, узлов сети ЭВМ по логическим именам:
+    hostname
+    netstat –tu
+
+9. Проверка идентификации каналов связи (список узлов сети) по логическим именам:
+    netstat –i
+
+10. Проверка идентификации внешних устройств ЭВМ по логическим именам:
+      dmesg
+
+11. Проверка идентификации ПС:
+     ps axu
+     ps axu | grep vi
+     vi &
+     ps axu | grep vi
+
+12. Проверка идентификации томов, каталогов, файлов:
+      ls -l /etc/audit
+
+13. Проверка настроек аудита:
+      more /etc/audit/auditd.conf
+
+14. Проверка настроек правил аудита:
+      more /etc/audit/rules.d/audit.rules
+
+15. Проверка настроек правил аудита:
+      more /etc/audisp/plugins.d/syslog.conf
+
+16. Проверка настроек правил аудита:
+      more /etc/rsyslog.conf
+
+17. Проверка статуса активности аудита:
+      systemctl status auditd.service
+
+18. Проверка регистрации входа:
+      ausearch --interpret --start 10/31/2023 00:00:00 --end 10/31/2023 16:00:00 --message USER_LOGIN
+
+19. Проверка регистрации неуспешной попытки входа:
+      ausearch --interpret --start 10/25/2023 10:00:00 --end 10/25/2023 16:00:00 |grep failed
+
+20. Проверка регистрации выхода:
+       ausearch --interpret --start 10/25/2023 00:00:00 --end 10/25/2023 16:00:00 |grep USER_LOGOUT |grep <УЗ АИБ>
+
+21. Проверка регистрации запуска ПС:
+      date
+      ausearch --interpret -ts 10/25/2023 11:00:00 --end 10/25/2023 12:30:00 -k prog |grep date
+
+22. Проверка регистрации попытки доступа ПС к защищаемым ИР:
+      echo TEST >> /etc/ssh/sshd_config
+      ausearch -i -ts 10/25/2023 09:00:00 -te 10/25/2023 18:00:00 -k sshconf -sv no
+      
+23. Проверка привилегий функциональных ролей:
+      getfacl /etc/security/passpolicy.sh && getfacl /etc/security/acl_matrix.sh && getfacl /etc/audit && getfacl /etc/audisp
+      getfacl /etc/audisp/plugins.d && getfacl /etc/audisp/plugins.d/syslog.conf && getfacl /etc/audit/rules.d/ && getfacl /etc/audit/auditd.conf
+      getfacl /etc/audit/rules.d/audit.rules && getfacl /etc/login.defs && getfacl /etc/logrotate.conf && getfacl /etc/rsyslog.conf
+      getfacl /etc/ssh/sshd_config && getfacl /var/log/audit && getfacl /var/log/audit/audit.log && getfacl /var/log/messages && getfacl /var/log/secure

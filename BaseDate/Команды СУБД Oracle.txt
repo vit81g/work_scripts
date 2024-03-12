@@ -1,0 +1,282 @@
+_______________________________________________________________________________
+_______________________________________________________________________________
+					СУБД Oracle
+_______________________________________________________________________________
+_______________________________________________________________________________
+УЗ Администратора СУБД - sysdba
+УЗ АИБА - AIBORACLE
+
+_____________________________________________________
+Выяснить если ли СУБД на хосте:
+
+_____________________________________________________
+1. ps -e |grep oracle - запуск диспетчера задач на Unix с фильтром oracle.
+   найти запущенный процесс oracle - если есть, то есть СУБД
+
+2. cd /var/log/audit/oracle/
+   ls - если есть файл аудита "oracle", то точно есть СУБД
+
+3. cd /
+   ls - если есть папка oracle, то точно есть СУБД (p.s. ps папка )
+   (папка oracle лежит в одном каталоге с папками bin, boot, dev, etc, root и т.д.)
+_____________________________________________________
+
+Выяснить версию СУБД 
+select * from v$version;
+
+_____________________________________________________
+
+
+Подключиться к СУБД:
+1. Войти в роль oradbaib:
+su - oradbaib
+gazprom
+
+
+2. Войти в утилиту sqlplus:
+sqlplus /nolog
+
+
+3.1 Войти в СУБД под своей учеткой:
+connect <username> /<password>»,
+где <username> – УЗ пользователя,
+<password> – пароль
+connect stefands /Gazprom#1234567890
+connect stefands /Gazprom#0987654321
+connect stefands /Gazprom#456123789
+
+
+3.2 Войти в СУБД под учеткой АИБ:
+connect AIBORACLE /gazprom
+connect AIBORACLE /Gazprom#123
+connect AIBORACLE /!2017Gazprom12345
+
+
+4.1 Отключиться от СУБД:
+disconnect
+
+
+4.2 Выйти из СУБД:
+exit
+
+
+5 Cмена пароля СУБД:
+passw
+____________________________
+
+Вывести все УЗ СУБД:
+select username from all_users;
+
+Вывести все УЗ СУБД
+select username from sys.dba_users;
+____________________________
+
+Перечень ВСЕХ зарегистрированных в СУБД ПРОФИЛЕЙ и сложность их паролей:
+select distinct profile from dba_profiles;
+
+Настройки КОНКРЕТНЫХ профилей в СУБД  сложность их паролей (проверить каждый профиль):
+select distinct profile, resource_name, limit from dba_profiles where profile in ('SYSPROF') order by profile;
+select distinct profile, resource_name, limit from dba_profiles where profile in ('SAPUPROF') order by profile;
+select distinct profile, resource_name, limit from dba_profiles where profile in ('DEFAULT') order by profile;
+
+либо
+select distinct resource_name, limit from dba_profiles where profile = 'SYSPROF';
+select distinct resource_name, limit from dba_profiles where profile = 'SAPUPROF';
+select distinct resource_name, limit from dba_profiles where profile = 'DEFAULT';
+____________________________
+
+Просмотр ВСЕХ назначенных ПОЛЬЗОВАТЕЛЯМ - ПРОФИЛЕЙ:
+select username, profile from dba_users;
+
+Просмотр КОНКРЕТНЫХ назначенных профилей определенным УЗ:
+select username, profile from dba_users where username in ('SYS', 'OTAS', 'AIBORACLE');
+
+Просмотр текста функции контроля сложности паролей пользователей:
+select text from dba_source where name = 'VERIFY_FUNCTION';
+____________________________
+
+Просмотр назначенных ролей ВСЕМ пользователям:
+select u.username, ur.granted_role "granted role to user" from dba_users u, dba_role_privs ur where u.username = ur.grantee order by u.username;
+
+Просмотр назначенных ролей КОНКРТЕРНЫМ учетным записям АИБ:
+select u.username, ur.granted_role "granted role to user" from dba_users u, dba_role_privs ur where u.username = ur.grantee and username in ('AIBORACLE') order by u.username;
+
+Просмотр назначенных ролей МОЕЙ УЗ:
+select u.username, ur.granted_role "granted role to user" from dba_users u, dba_role_privs ur where u.username = ur.grantee and username in ('STEFANDS') order by u.username;
+____________________________
+
+Просмотр назначенных пользователям системных привилегий:
+select u.username, rs.privilege "system privilege" from dba_users u, dba_sys_privs rs where u.username = rs.grantee order by u.username;
+____________________________
+
+Просмотр назначенных системных привилегий ролям:
+select u.role, rs.privilege from dba_roles u, dba_sys_privs rs where u.role = rs.grantee and u.role in ('AIBORACLE','MPROLE', 'STEFANDS') order by u.role;
+
+____________________________
+||||||||||||||||||||||||||||
+____________________________
+
+         АУДИТ:
+____________________________
+||||||||||||||||||||||||||||
+____________________________
+
+
+Просмотра настроек аудита СУБД:
+select name, value from v$spparameter where name like 'aud%';
+либо
+select name, value from v$parameter where name like 'aud%';
+
+
+Просмотр включенных опций аудита:
+select audit_option from dba_stmt_audit_opts;
+____________________________
+
+Запрос к представлению v$session:
+select s.username, s.machine, s.program from v$session s where s.type != 'BACKGROUND' and s.program is not null;
+____________________________
+
+Просмотр назначенных пользователям объектных привилегий:
+select u.username, rs.table_name "object name", rs.privilege "object privilege" from dba_users u, dba_tab_privs rs where u.username = rs.grantee order by u.username;
+____________________________
+Контроль настроек роли «mporacle»:
+
+Просмотр назначенных роли mporacle системных привилегий:
+select u.role, rs.privilege "system privilege" from dba_roles u, dba_sys_privs rs where u.role = rs.grantee  and u.role = 'MPROLE' order by u.role;
+
+Просмотра назначенных роли mporacle объектных привилегий:
+select u.role, rs.table_name "object name", rs.privilege "object privilege" from dba_roles u, dba_tab_privs rs where u.role = rs.grantee and u.role = 'MPROLE'order by u.role;
+
+________________________________________________________
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+________________________________________________________
+
+              События ИБ СУБД на уровне ОС:
+________________________________________________________
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+________________________________________________________
+su - auditvw
+cd /var/log/audit/oracle/
+more <имя_файла> | grep '<дата_события>'
+more <имя_файла> | grep '<имя_пользователя>';
+more <имя_файла> | grep '<код ошибки>'.
+
+| grep '<значение>' - фильтрация по значению
+| grep '<значение_01>'| grep '<значение_02>' - фильтрация по двум значениям
+
+Примеры:
+more ora_audit.log | grep 'STEFANDS'
+Вывести все события из под УЗ STEFANDS
+
+more ora_audit.log | grep '2022-03-04'
+Вывести все события за 4 марта 2022 года
+(Дата в формате 'год-месяц-дата')
+
+more ora_audit.log | grep 'Dec  7'
+Вывести все события 7 Декабря
+
+more ora_audit.log | grep '"1017"'
+Ошибка подключения к СУБД - код ошибки ORA-1017
+
+more ora_audit.log | grep '"1031"'
+Ошибка аторизации в СУБД - код ошибки ORA-1031
+
+-------------------------------------------
+ЖУРНАЛ АУДИТА:
+
+more ora_audit.log | grep 'STEFANDS'
+
+Успешный вход под УЗ STEFANDS:
+...USERID:[8] "STEFANDS"... ACTION:[3] "100" RETURNCODE:[1] "0"
+
+Неуспешный вход под УЗ STEFANDS:
+...USERID:[8] "STEFANDS"... ACTION:[3] "100" RETURNCODE:[4] "1017"
+
+Выход из УЗ STEFANDS:
+...USERID:[8] "STEFANDS"... ACTION:[3] "101" RETURNCODE:[1] "0" LOGOFF$PREAD:[1]
+
+Успешное изменение пароля STEFANDS:
+...USERID:[8] "STEFANDS"... ACTION:[3] "190" RETURNCODE:[1] "0" OBJ$NAME:[8] "STEFANDS"
+
+__________________________________________________________
+more ora_audit.log | grep 'AIBORACLE'
+
+Успешный вход под УЗ АИБ:
+...USERID:[9] "AIBORACLE"... ACTION:[3] "100" RETURNCODE:[1] "0"
+
+Неуспешный вход под УЗ АИБ:
+...USERID:[9] "AIBORACLE"...ACTION:[3] "100" RETURNCODE:[4] "1017"
+
+Выход из УЗ АИБ:
+...USERID:[9] "AIBORACLE"...ACTION:[3] "101" RETURNCODE:[1] "0" LOGOFF$PREAD:[1]
+
+Создание УЗ АДМ:
+...USERID:[4] "SYS"...ACTION:[2] "51" RETURNCODE:[1] "0" OBJ$NAME:[4] "<имя_тестовой_УЗ>" 
+
+Изменение пароля УЗ:
+...ACTION:[2] "43" RETURNCODE: "0" OBJ$NAME:[4] "<имя_тестовой_УЗ>"
+
+Удаление УЗ:
+...USERID:[4] "SYS"...ACTION:[2] "53" RETURNCODE:[4] "0" OBJ$NAME:[4] "<имя_тестовой_УЗ>"
+
+Вход Администратора СУБД: 
+...USERID:[5] "<УЗ_Администратора_СУБД>"...ACTION:[3] "100" RETURNCODE:[1] "0"
+
+Неуспешная попытка создания объекта в СУБД Администратором СУБД:
+...USERID:[5] "<УЗ_Администратора_СУБД>"...ACTION:[2] "1" RETURNCODE:[4] "1031" OBJ$NAME:[8] "<тестовый_объект_СУБД>"
+
+Предоставлении привелегии на создание УЗ в СУБД для АИБ:
+...USER:[3] "SYS"...ACTION:[25] " 'grant create user to <УЗ_АИБ>'" PRIVILEGE :[6] 'SYSDBA'
+
+Блокировка УЗ АИБ:
+...USER:[3] "SYS"...ACTION:[28] " 'alter user <УЗ_АИБ> account lock'" PRIVILEGE :[6] 'SYSDBA'
+
+Неудачная попытка создания объекта из под УЗ АИБ в ABAP:
+...ACTION:[37] 'select * from sapsr3.ESH_OM_IOTYPNRFU'...DATABASE USER:[1] '/'...CLIENT USER:[6] 'ora<sid>' STATUS:[1] '0'
+
+
+-------------------------------------------
+Перечень стандартных УЗ В СУБД:
+sys
+system
+sapconn 
+<УЗ АИБ> - AIBORACLE и STEFANDS
+secadmin
+secacctmgr
+sapdba
+SAPACCTMGR
+SECANALYST
+IDMUSER
+OPS$SAPSERVICE<SID>
+OPS$<SID>ADM
+OPS$ORACLE
+SAP<SID>
+MPORACLE
+-------------------------------------------
+
+
+
+
+!!!!!!!!!!!!!ПОДОЛЖИТЬ с РАИБ
+
+Обязанности АИБ:
+Контроль за УЗ пользователей
+Контроль настроек роли «mporacle»;
+Контроль за настройками аудита;
+Просмотр событий ИБ.
+
+–	настройку роли и УЗ АИБ в СУБД Oracle Database 11g;
+–	настройку прав доступа АИБ к ресурсам СУБД;
+–	настройку параметров парольной политики, подключения пользователей в СУБД;
+–	конфигурацию и запуск встроенных средств аудита.
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,29 @@
+param (
+    [string]$targetIP = "192.168.0.200"
+)
+
+function Get-LoggedInUser {
+    param (
+        [string]$ip
+    )
+
+    $loggedUsers = Get-WmiObject -Class Win32_ComputerSystem | Select-Object -ExpandProperty UserName
+
+    foreach ($user in $loggedUsers) {
+        $sessions = quser /server:$ip 2>$null | Where-Object { $_ -match $user }
+        
+        foreach ($session in $sessions) {
+            $sessionInfo = $session -split '\s+'
+            $sessionId = $sessionInfo[2]
+            $sessionState = $sessionInfo[3]
+            $idleTime = $sessionInfo[4]
+            
+            $output = "User: $user`r`nSession ID: $sessionId`r`nSession State: $sessionState`r`nIdle Time: $idleTime`r`n-----`r`n"
+
+            Write-Host $output
+            Add-Content -Path "report.txt" -Value $output
+        }
+    }
+}
+
+Get-LoggedInUser -ip $targetIP

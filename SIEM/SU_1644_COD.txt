@@ -1,0 +1,18 @@
+""UserId"":""GAZPROM\\esa_ldap""}: 3
+""UserId"":""NT AUTHORITY\\ANONYMOUS LOGON""}: 16
+""UserId"":""CNTR\\XDOBAA81""}: 4
+""UserId"":""CNTR\\GFSAA23""}: 5
+""UserId"":""CNTR\\GFBAV14""}: 7
+""UserId"":""CNTR\\ent-AV.levin""}: 6
+""UserId"":""GAZPROM\\arcsight""}: 5
+""UserId"":""GAZPROM\\adrvision""}: 3
+""UserId"":""CNTR\\AV.Igoshkin""}: 1
+""UserId"":""GAZPROM\\ent-ma.komarov""}: 1
+""UserId"":""CNTR\\SerA.Egorov""}: 1
+""UserId"":""CNTR\\GFMAA01""}: 1
+""UserId"":""CNTR\\GFZAP""}: 1
+""UserId"":""GAZPROM\\adm-av.borovkov""}: 4
+""UserId"":""URAL\\DA.Kiselev""}: 1
+""UserId"":""GAZPROM\\ent-au.menshikov""}: 2
+""UserId"":""URAL\\PN.Smirnov""}: 1
+""UserId"":""CNTR\\ADM-AN.Molokov""}: 1

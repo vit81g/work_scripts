@@ -1,0 +1,6 @@
+$logins = Get-Content "D:\!!!_path_!!!\login_list.csv"
+$users_out = ForEach ($login in $logins) {
+Get-ADUser -Identity $login -Properties sAMAccountName, Name, department |
+Select-Object sAMAccountName, Name, department 
+}
+$users_out  | Export-CSV -Force -NoTypeInformation "D:\!!!_path_!!!\login_list_export.csv" -Delimiter ',' -Append -Encoding UTF8

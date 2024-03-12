@@ -1,0 +1,4 @@
+""EventData"":{""SubjectUserSid"":""NT AUTHORITY\\\\SYSTEM"": 49955
+""EventData"":{""SubjectUserSid"":""NT AUTHORITY\\\\NETWORK SERVICE"": 3425
+""EventData"":{""SubjectUserSid"":""ADM-GAZPROM\\\\arcsight_win"": 196
+""EventData"":{""SubjectUserSid"":""NT AUTHORITY\\\\LOCAL SERVICE"": 20

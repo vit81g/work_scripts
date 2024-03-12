@@ -1,0 +1,328 @@
+""ScriptBlockText"":""ping 10.56.238.42 -t"": 4
+""ScriptBlockText"":""prompt"": 96
+""ScriptBlockText"":""\""PS $($executionContext.SessionState.Path.CurrentLocation)$('>' * ($nestedPromptLevel + 1)) \""\n# .Link\n# http://go.microsoft.com/fwlink/?LinkID=225750\n# .ExternalHelp System.Management.Automation.dll-help.xml\n"": 2
+""ScriptBlockText"":""$space = New-Object System.Management.Automation.Host.BufferCell\n$space.Character = ' '\n$space.ForegroundColor = $host.ui.rawui.ForegroundColor\n$space.BackgroundColor = $host.ui.rawui.BackgroundColor\n$rect = New-Object System.Management.Automation.Host.Rectangle\n$rect.Top = $rect.Bottom = $rect.Right = $rect.Left = -1\n$origin = New-Object System.Management.Automation.Host.Coordinates\n$Host.UI.RawUI.CursorPosition = $origin\n$Host.UI.RawUI.SetBufferContents($rect: 2
+""ScriptBlockText"":""param([string[]]$paths)\n\n$OutputEncoding = [System.Console]::OutputEncoding\n\nif($paths)\n: 2
+""ScriptBlockText"":""<# Options include:\n     RelativeFilePaths - [bool]\n         Always resolve file paths using Resolve-Path -Relative.\n         The default is to use some heuristics to guess if relative or absolute is better.\n\n   To customize your own custom options: 2
+""ScriptBlockText"":""<#\n.FORWARDHELPTARGETNAME Get-Help\n.FORWARDHELPCATEGORY Cmdlet\n#>\n[CmdletBinding(DefaultParameterSetName='AllUsersView': 2
+""ScriptBlockText"":""<#\n.FORWARDHELPTARGETNAME New-Item\n.FORWARDHELPCATEGORY Cmdlet\n#>\n[CmdletBinding(DefaultParameterSetName='pathSet': 2
+""ScriptBlockText"":""\nparam(\n    [Parameter(ValueFromPipeline=$true)]\n    [string[]]\n    $verb = '*'\n)\nbegin : 2
+""ScriptBlockText"":""\n[CmdletBinding()]\nparam(\n    [ValidateRange(2: 2
+""ScriptBlockText"":""Set-Location A:"": 2
+""ScriptBlockText"":""Set-Location B:"": 2
+""ScriptBlockText"":""Set-Location D:"": 2
+""ScriptBlockText"":""Set-Location C:"": 2
+""ScriptBlockText"":""Set-Location F:"": 2
+""ScriptBlockText"":""Set-Location E:"": 2
+""ScriptBlockText"":""Set-Location H:"": 2
+""ScriptBlockText"":""Set-Location G:"": 2
+""ScriptBlockText"":""Set-Location I:"": 2
+""ScriptBlockText"":""Set-Location J:"": 2
+""ScriptBlockText"":""Set-Location L:"": 2
+""ScriptBlockText"":""Set-Location K:"": 2
+""ScriptBlockText"":""Set-Location M:"": 2
+""ScriptBlockText"":""Set-Location N:"": 2
+""ScriptBlockText"":""Set-Location P:"": 2
+""ScriptBlockText"":""Set-Location Q:"": 2
+""ScriptBlockText"":""Set-Location R:"": 2
+""ScriptBlockText"":""Set-Location O:"": 2
+""ScriptBlockText"":""Set-Location S:"": 2
+""ScriptBlockText"":""Set-Location U:"": 2
+""ScriptBlockText"":""Set-Location T:"": 2
+""ScriptBlockText"":""Set-Location V:"": 2
+""ScriptBlockText"":""Set-Location W:"": 2
+""ScriptBlockText"":""Set-Location Y:"": 2
+""ScriptBlockText"":""Set-Location Z:"": 2
+""ScriptBlockText"":""Set-Location X:"": 2
+""ScriptBlockText"":""Set-Location .."": 2
+""ScriptBlockText"":""Set-Location \\"": 2
+""ScriptBlockText"":"""": 2
+""ScriptBlockText"":""Read-Host 'Press Enter to continue...' | Out-Null"": 2
+""ScriptBlockText"":""$this.ServiceName"": 2
+""ScriptBlockText"":""[System.Management.ManagementDateTimeConverter]::ToDateTime($args[0])"": 2
+""ScriptBlockText"":""$null = [System.Management.Automation.CommandCompletion]::CompleteInput('Set-Location': 2
+""ScriptBlockText"":""0"": 2
+""ScriptBlockText"":""[System.Management.ManagementDateTimeConverter]::ToDmtfDateTime($args[0])"": 2
+""ScriptBlockText"":""if ($this.InvocationInfo -eq $null) : 2
+""ScriptBlockText"":""$this.GetScriptLocation()"": 2
+""ScriptBlockText"":""$argumentsBuilder = new-object System.Text.StringBuilder\n\n                    $null = $(                    \n                        $argumentsBuilder.Append(\"": 2
+""ScriptBlockText"":""mstsc"": 2
+""ScriptBlockText"":""\n        [System.Diagnostics.DebuggerHidden()]\n        param()\n\n        $foundSuggestion = $false\n        \n        if($lastError -and\n            ($lastError.Exception -is \""System.Management.Automation.CommandNotFoundException\""))\n        : 2
+""ScriptBlockText"":""@: 4
+""ScriptBlockText"":""\""The command $($lastError.TargetObject) was not found: 2
+""ScriptBlockText"":""filter more : 1
+""ScriptBlockText"":""[Microsoft.Windows.PowerShell.Gui.Internal.HostTextWriter]::RegisterHost($host.ui)"": 1
+""ScriptBlockText"":""$OutputEncoding = [System.Console]::OutputEncoding"": 1
+""ScriptBlockText"":""\nfunction psEdit([Parameter(Mandatory=$true)]$filenames)\n: 1
+""ScriptBlockText"":""@(Get-Command  -CommandType Cmdlet: 1
+""ScriptBlockText"":""ipmo ISE"": 1
+""ScriptBlockText"":"".\""\\Program Files\\Microsoft\\Exchange Server\\V15\\bin\\RemoteExchange.ps1\""; Connect-ExchangeServer -auto -ClientApplication:ManagementShell"": 1
+""ScriptBlockText"":""# Localized\t04/18/2019 10:50 PM (GMT)\t303:4.80.0411 \tRemoteExchange.strings.psd1\nConvertFrom-StringData @'\n###PSLOC\nres_types_file_not_loaded=The Exchange types file wasn't loaded because not all of the required files could be found.\nres_welcome_message=\\n         Welcome to the Exchange Management Shell!\\n\nres_full_list=Full list of cmdlets:\nres_0003=Get-Command\nres_only_exchange_cmdlets=Only Exchange cmdlets:\nres_0005=Get-ExCommand\nres_cmdlets_specific_role=Cmdlets that match a specific string:\nres_0007=Help *<string>*\nres_general_help=Get general help:\nres_0009=Help\nres_help_for_cmdlet=Get help for a cmdlet:\nres_0011=Help <cmdlet name> or <cmdlet name> -?\nres_updatable_help=Show quick reference guide:\nres_team_blog=Exchange team blog:\nres_0015=Get-ExBlog\nres_show_full_output=Show full output for a command:\nres_0017=<command> | Format-List\\n\nres_0018=QuickRef\n\n###PSLOC\n'@\n"": 1
+""ScriptBlockText"":""1DB7LA0FCyORWiKSkHGRL4RdIjOltrZp++dExfsst7Z6vJz4+U9\n# eZNI58fVY3KRzbm73OjplfSAB3iNSkHN0wuccK0TrZsvY87TRyYAmyK2qBqi/7eU\n# Wt93Sw8ALBMY72LKaUmVvaxq/COpKePlHMbhHEbqtTaLt61udBOjNHvc4cwY5QID\n# AQABo4IBGzCCARcwHQYDVR0OBBYEFGRzJT/1HI+SftAGhdk5NDzA3jFnMB8GA1Ud\n# IwQYMBaAFNVjOlyKMZDzQ3t8RhvFM2hahW1VMFYGA1UdHwRPME0wS6BJoEeGRWh0\n# dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2kvY3JsL3Byb2R1Y3RzL01pY1RpbVN0\n# YVBDQV8yMDEwLTA3LTAxLmNybDBaBggrBgEFBQcBAQROMEwwSgYIKwYBBQUHMAKG\n# Pmh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9wa2kvY2VydHMvTWljVGltU3RhUENB\n# XzIwMTAtMDctMDEuY3J0MAwGA1UdEwEB/wQCMAAwEwYDVR0lBAwwCgYIKwYBBQUH\n# AwgwDQYJKoZIhvcNAQELBQADggEBAAAAbex8WBtSLDiBYxXxU7GVsgb8IgxKJyIO\n# 0hmc8vzg4w3iUl5Xkt4mv4dgFyjHmu5Zmbj0rb2IGYm/pWJcy0/zWlhnUQUzvfTp\n# j7MsiH+1Lnvg95awe88PRA7FDgc4zYY0+8UB1S+jzPmmBX/kT6U+7rW5QIgFMMRK\n# Ic743utqCpvcwRM+pEo8s0Alwo8NxqUrOeYY+WfNjo/XOin/tr3RVwEdEopD+FO+\n# f/wLxjpv4y+TmRgmHrso1tVVy64FbIVIxlMcZ6cee4dWD2y8fv6Wb9X/AhtlQook\n# k7QdCbKh3JJ4P8ksLs02wNhGkU37b10tG3HR5bJmiwmZPyopsEgwggZxMIIEWaAD\n# AgECAgphCYEqAAAAAAACMA0GCSqGSIb3DQEBCwUAMIGIMQswCQYDVQQGEwJVUzET\n# MBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMV\n# TWljcm9zb2Z0IENvcnBvcmF0aW9uMTIwMAYDVQQDEylNaWNyb3NvZnQgUm9vdCBD\n# ZXJ0aWZpY2F0ZSBBdXRob3JpdHkgMjAxMDAeFw0xMDA3MDEyMTM2NTVaFw0yNTA3\n# MDEyMTQ2NTVaMHwxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAw\n# DgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24x\n# JjAkBgNVBAMTHU1pY3Jvc29mdCBUaW1lLVN0YW1wIFBDQSAyMDEwMIIBIjANBgkq\n# hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqR0NvHcRijog7PwTl/X6f2mUa3RUENWl\n# CgCChfvtfGhLLF/Fw+Vhwna3PmYrW/AVUycEMR9BGxqVHc4JE458YTBZsTBED/Fg\n# iIRUQwzXTbg4CLNC3ZOs1nMwVyaCo0UN0Or1R4HNvyRgMlhgRvJYR4YyhB50YWeR\n# X4FUsc+TTJLBxKZd0WETbijGGvmGgLvfYfxGwScdJGcSchohiq9LZIlQYrFd/Xcf\n# PfBXday9ikJNQFHRD5wGPmd/9WbAA5ZEfu/QS/1u5ZrKsajyeioKMfDaTgaRtogI\n# Neh4HLDpmc085y9Euqf03GS9pAHBIAmTeM38vMDJRF1eFpwBBU8iTQIDAQABo4IB\n# 5jCCAeIwEAYJKwYBBAGCNxUBBAMCAQAwHQYDVR0OBBYEFNVjOlyKMZDzQ3t8RhvF\n# M2hahW1VMBkGCSsGAQQBgjcUAgQMHgoAUwB1AGIAQwBBMAsGA1UdDwQEAwIBhjAP\n# BgNVHRMBAf8EBTADAQH/MB8GA1UdIwQYMBaAFNX2VsuP6KJcYmjRPZSQW9fOmhjE\n# MFYGA1UdHwRPME0wS6BJoEeGRWh0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2kv\n# Y3JsL3Byb2R1Y3RzL01pY1Jvb0NlckF1dF8yMDEwLTA2LTIzLmNybDBaBggrBgEF\n# BQcBAQROMEwwSgYIKwYBBQUHMAKGPmh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9w\n# a2kvY2VydHMvTWljUm9vQ2VyQXV0XzIwMTAtMDYtMjMuY3J0MIGgBgNVHSABAf8E\n# gZUwgZIwgY8GCSsGAQQBgjcuAzCBgTA9BggrBgEFBQcCARYxaHR0cDovL3d3dy5t\n# aWNyb3NvZnQuY29tL1BLSS9kb2NzL0NQUy9kZWZhdWx0Lmh0bTBABggrBgEFBQcC\n# AjA0HjIgHQBMAGUAZwBhAGwAXwBQAG8AbABpAGMAeQBfAFMAdABhAHQAZQBtAGUA\n# bgB0AC4gHTANBgkqhkiG9w0BAQsFAAOCAgEAB+aIUQ3ixuCYP4FxAz2do6Ehb7Pr\n# psz1Mb7PBeKp/vpXbRkws8LFZslq3/Xn8Hi9x6ieJeP5vO1rVFcIK1GCRBL7uVOM\n# zPRgEop2zEBAQZvcXBf/XPleFzWYJFZLdO9CEMivv3/Gf/I3fVo/HPKZeUqRUgCv\n# OA8X9S95gWXZqbVr5MfO9sp6AG9LMEQkIjzP7QOllo9ZKby2/QThcJ8ySif9Va8v\n# /rbljjO7Yl+a21dA6fHOmWaQjP9qYn/dxUoLkSbiOewZSnFjnXshbcOco6I8+n99\n# lmqQeKZt0uGc+R38ONiU9MalCpaGpL2eGq4EQoO4tYCbIjggtSXlZOz39L9+Y1kl\n# D3ouOVd2onGqBooPiRa6YacRy5rYDkeagMXQzafQ732D8OE7cQnfXXSYIghh2rBQ\n# Hm+98eEA3+cxB6STOvdlR3jo+KhIq/fecn5ha293qYHLpwmsObvsxsvYgrRyzR30\n# uIUBHoD7G4kqVDmyW9rIDVWZeodzOwjmmC3qjeAzLhIp9cAvVCch98isTtoouLGp\n# 25ayp0Kiyc8ZQU3ghvkqmqMRZjDTu3QyS99je/WZii8bxyGvWbWu3EQ8l1Bx16HS\n# xVXjad5XwdHeMMD9zOZN+w2/XU/pnR4ZOC+8z1gFLu8NoFA12u8JJxzVs341Hgi6\n# 2jbb01+P3nSISRKhggLSMIICOwIBATCB/KGB1KSB0TCBzjELMAkGA1UEBhMCVVMx\n# EzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoT\n# FU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEpMCcGA1UECxMgTWljcm9zb2Z0IE9wZXJh\n# dGlvbnMgUHVlcnRvIFJpY28xJjAkBgNVBAsTHVRoY"
+: 1
+""ScriptBlockText"":"": 27
+""ScriptBlockText"":""function WidenWindow([int]$preferredWidth)\n: 1
+""ScriptBlockText"":""# Localized\t04/18/2019 10:50 PM (GMT)\t303:4.80.0411 \tCommonConnectFunctions.strings.psd1\nConvertFrom-StringData @'\n###PSLOC\nres_0000=Tip of the day #: 1
+""ScriptBlockText"":""UzET\n# MBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMV\n# TWljcm9zb2Z0IENvcnBvcmF0aW9uMTIwMAYDVQQDEylNaWNyb3NvZnQgUm9vdCBD\n# ZXJ0aWZpY2F0ZSBBdXRob3JpdHkgMjAxMDAeFw0xMDA3MDEyMTM2NTVaFw0yNTA3\n# MDEyMTQ2NTVaMHwxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAw\n# DgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24x\n# JjAkBgNVBAMTHU1pY3Jvc29mdCBUaW1lLVN0YW1wIFBDQSAyMDEwMIIBIjANBgkq\n# hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqR0NvHcRijog7PwTl/X6f2mUa3RUENWl\n# CgCChfvtfGhLLF/Fw+Vhwna3PmYrW/AVUycEMR9BGxqVHc4JE458YTBZsTBED/Fg\n# iIRUQwzXTbg4CLNC3ZOs1nMwVyaCo0UN0Or1R4HNvyRgMlhgRvJYR4YyhB50YWeR\n# X4FUsc+TTJLBxKZd0WETbijGGvmGgLvfYfxGwScdJGcSchohiq9LZIlQYrFd/Xcf\n# PfBXday9ikJNQFHRD5wGPmd/9WbAA5ZEfu/QS/1u5ZrKsajyeioKMfDaTgaRtogI\n# Neh4HLDpmc085y9Euqf03GS9pAHBIAmTeM38vMDJRF1eFpwBBU8iTQIDAQABo4IB\n# 5jCCAeIwEAYJKwYBBAGCNxUBBAMCAQAwHQYDVR0OBBYEFNVjOlyKMZDzQ3t8RhvF\n# M2hahW1VMBkGCSsGAQQBgjcUAgQMHgoAUwB1AGIAQwBBMAsGA1UdDwQEAwIBhjAP\n# BgNVHRMBAf8EBTADAQH/MB8GA1UdIwQYMBaAFNX2VsuP6KJcYmjRPZSQW9fOmhjE\n# MFYGA1UdHwRPME0wS6BJoEeGRWh0dHA6Ly9jcmwubWljcm9zb2Z0LmNvbS9wa2kv\n# Y3JsL3Byb2R1Y3RzL01pY1Jvb0NlckF1dF8yMDEwLTA2LTIzLmNybDBaBggrBgEF\n# BQcBAQROMEwwSgYIKwYBBQUHMAKGPmh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9w\n# a2kvY2VydHMvTWljUm9vQ2VyQXV0XzIwMTAtMDYtMjMuY3J0MIGgBgNVHSABAf8E\n# gZUwgZIwgY8GCSsGAQQBgjcuAzCBgTA9BggrBgEFBQcCARYxaHR0cDovL3d3dy5t\n# aWNyb3NvZnQuY29tL1BLSS9kb2NzL0NQUy9kZWZhdWx0Lmh0bTBABggrBgEFBQcC\n# AjA0HjIgHQBMAGUAZwBhAGwAXwBQAG8AbABpAGMAeQBfAFMAdABhAHQAZQBtAGUA\n# bgB0AC4gHTANBgkqhkiG9w0BAQsFAAOCAgEAB+aIUQ3ixuCYP4FxAz2do6Ehb7Pr\n# psz1Mb7PBeKp/vpXbRkws8LFZslq3/Xn8Hi9x6ieJeP5vO1rVFcIK1GCRBL7uVOM\n# zPRgEop2zEBAQZvcXBf/XPleFzWYJFZLdO9CEMivv3/Gf/I3fVo/HPKZeUqRUgCv\n# OA8X9S95gWXZqbVr5MfO9sp6AG9LMEQkIjzP7QOllo9ZKby2/QThcJ8ySif9Va8v\n# /rbljjO7Yl+a21dA6fHOmWaQjP9qYn/dxUoLkSbiOewZSnFjnXshbcOco6I8+n99\n# lmqQeKZt0uGc+R38ONiU9MalCpaGpL2eGq4EQoO4tYCbIjggtSXlZOz39L9+Y1kl\n# D3ouOVd2onGqBooPiRa6YacRy5rYDkeagMXQzafQ732D8OE7cQnfXXSYIghh2rBQ\n# Hm+98eEA3+cxB6STOvdlR3jo+KhIq/fecn5ha293qYHLpwmsObvsxsvYgrRyzR30\n# uIUBHoD7G4kqVDmyW9rIDVWZeodzOwjmmC3qjeAzLhIp9cAvVCch98isTtoouLGp\n# 25ayp0Kiyc8ZQU3ghvkqmqMRZjDTu3QyS99je/WZii8bxyGvWbWu3EQ8l1Bx16HS\n# xVXjad5XwdHeMMD9zOZN+w2/XU/pnR4ZOC+8z1gFLu8NoFA12u8JJxzVs341Hgi6\n# 2jbb01+P3nSISRKhggLSMIICOwIBATCB/KGB1KSB0TCBzjELMAkGA1UEBhMCVVMx\n# EzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoT\n# FU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEpMCcGA1UECxMgTWljcm9zb2Z0IE9wZXJh\n# dGlvbnMgUHVlcnRvIFJpY28xJjAkBgNVBAsTHVRoYWxlcyBUU1MgRVNOOkM0QkQt\n# RTM3Ri01RkZDMSUwIwYDVQQDExxNaWNyb3NvZnQgVGltZS1TdGFtcCBTZXJ2aWNl\n# oiMKAQEwBwYFKw4DAhoDFQARLfhJYnsN9tIb+BshDBOvOBnw8qCBgzCBgKR+MHwx\n# CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRt\n# b25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xJjAkBgNVBAMTHU1p\n# Y3Jvc29mdCBUaW1lLVN0YW1wIFBDQSAyMDEwMA0GCSqGSIb3DQEBBQUAAgUA5JE9\n# gTAiGA8yMDIxMDcwODEzMDE1M1oYDzIwMjEwNzA5MTMwMTUzWjB3MD0GCisGAQQB\n# hFkKBAExLzAtMAoCBQDkkT2BAgEAMAoCAQACAh+TAgH/MAcCAQACAhFgMAoCBQDk\n# ko8BAgEAMDYGCisGAQQBhFkKBAIxKDAmMAwGCisGAQQBhFkKAwKgCjAIAgEAAgMH\n# oSChCjAIAgEAAgMBhqAwDQYJKoZIhvcNAQEFBQADgYEADNnFMRuGt2zHHgo/l9Yv\n# gtCqT40Wdbv6ucvIrnZFSIJLeSLjDSDiuCBbCWiabmoaBw3l1vrTOBp0VP6Hx7a8\n# Tcx4oRpOsAOhU7nxuQCRYD/NElglpi7yKq4OUBakBV6sow7RsjUmYSRXdzaBCaYK\n# JRJmMro/Rvk2XABV+ofgkIIxggMNMIIDCQIBATCBkzB8MQswCQYDVQQGEwJVUzET\n# MBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMV\n# TWljcm9zb2Z0IENvcnBvcmF0aW9uMSYwJAYDVQQDEx1NaWNyb3NvZnQgVGltZS1T\n# dGFtcCBQQ0EgMjAxMAITMwAAAVdEB2Lcb+i+KgAAAAABVzANBglghkgBZQMEAgEF\n# AKCCAUowGgYJKoZIhvcN"
+: 1
+""ScriptBlockText"":""ptionsTimeout -OpenTimeout $sessionOptionsTimeout;\n\t$setupRegistryEntry = get-itemproperty HKLM:\\SOFTWARE\\Microsoft\\ExchangeServer\\v15\\Setup -erroraction:silentlycontinue\n\tif ( $setupRegistryEntry -ne $null)\n\t: 1
+""ScriptBlockText"":""am>\n        /// <param name=\""pUiInfo\"">\n        /// A pointer to a CREDUI_INFO structure that contains information \n        /// for customizing the appearance of the dialog box.\n        /// </param>\n        /// <param name=\""dwAuthError\"">\n        /// A Windows error code: 1
+""ScriptBlockText"":""SIG # End signature block\n"": 1
+""ScriptBlockText"":""# Copyright (c) 2010 Microsoft Corporation. All rights reserved. \n# This script contains all the common Powershell functions required to connect to remote PS: 1
+""ScriptBlockText"":""#load hashtable of localized string\nImport-LocalizedData -BindingVariable ConnectFunctions_LocalizedStrings -FileName ConnectFunctions.strings.psd1\n\n## Default and minimum timeout value for sessions  = 3 minutes\n## Maximum timeout value for sessions              = 15 minutes\n##\n$sessionOptionsTimeout = 180000;\nif (($env:MsExchEmsTimeout -ne $null) -and ($env:MsExchEmsTimeout -gt 180000) -and ($env:MsExchEmsTimeout -lt 900001))\n: 1
+""ScriptBlockText"":""# Localized\t04/18/2019 10:50 PM (GMT)\t303:4.80.0411 \tConnectFunctions.strings.psd1\nConvertFrom-StringData @'\n###PSLOC\nres_0000=Failed to connect to an Exchange server in the current site.\nres_0001=Enter the server FQDN where you want to connect.\nres_0002=No Exchange servers are available in the Active Directory site : 1
+""ScriptBlockText"":""F0MJoW3Naw9V\n# EV1UL8PydKPlEMhZWvwhMpjSrhykT6CCDYEwggX/MIID56ADAgECAhMzAAAB32vw\n# LpKnSrTQAAAAAAHfMA0GCSqGSIb3DQEBCwUAMH4xCzAJBgNVBAYTAlVTMRMwEQYD\n# VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNy\n# b3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMTH01pY3Jvc29mdCBDb2RlIFNpZ25p\n# bmcgUENBIDIwMTEwHhcNMjAxMjE1MjEzMTQ1WhcNMjExMjAyMjEzMTQ1WjB0MQsw\n# CQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9u\n# ZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMR4wHAYDVQQDExVNaWNy\n# b3NvZnQgQ29ycG9yYXRpb24wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\n# AQC2uxlZEACjqfHkuFyoCwfL25ofI9DZWKt4wEj3JBQ48GPt1UsDv834CcoUUPMn\n# s/6CtPoaQ4Thy/kbOOg/zJAnrJeiMQqRe2Lsdb/NSI2gXXX9lad1/yPUDOXo4GNw\n# PjXq1JZi+HZV91bUr6ZjzePj1g+bepsqd/HC1XScj0fT3aAxLRykJSzExEBmU9eS\n# yuOwUuq+CriudQtWGMdJU650v/KmzfM46Y6lo/MCnnpvz3zEL7PMdUdwqj/nYhGG\n# 3UVILxX7tAdMbz7LN+6WOIpT1A41rwaoOVnv+8Ua94HwhjZmu1S73yeV7RZZNxoh\n# EegJi9YYssXa7UZUUkCCA+KnAgMBAAGjggF+MIIBejAfBgNVHSUEGDAWBgorBgEE\n# AYI3TAgBBggrBgEFBQcDAzAdBgNVHQ4EFgQUOPbML8IdkNGtCfMmVPtvI6VZ8+Mw\n# UAYDVR0RBEkwR6RFMEMxKTAnBgNVBAsTIE1pY3Jvc29mdCBPcGVyYXRpb25zIFB1\n# ZXJ0byBSaWNvMRYwFAYDVQQFEw0yMzAwMTIrNDYzMDA5MB8GA1UdIwQYMBaAFEhu\n# ZOVQBdOCqhc3NyK1bajKdQKVMFQGA1UdHwRNMEswSaBHoEWGQ2h0dHA6Ly93d3cu\n# bWljcm9zb2Z0LmNvbS9wa2lvcHMvY3JsL01pY0NvZFNpZ1BDQTIwMTFfMjAxMS0w\n# Ny0wOC5jcmwwYQYIKwYBBQUHAQEEVTBTMFEGCCsGAQUFBzAChkVodHRwOi8vd3d3\n# Lm1pY3Jvc29mdC5jb20vcGtpb3BzL2NlcnRzL01pY0NvZFNpZ1BDQTIwMTFfMjAx\n# MS0wNy0wOC5jcnQwDAYDVR0TAQH/BAIwADANBgkqhkiG9w0BAQsFAAOCAgEAnnqH\n# tDyYUFaVAkvAK0eqq6nhoL95SZQu3RnpZ7tdQ89QR3++7A+4hrr7V4xxmkB5BObS\n# 0YK+MALE02atjwWgPdpYQ68WdLGroJZHkbZdgERG+7tETFl3aKF4KpoSaGOskZXp\n# TPnCaMo2PXoAMVMGpsQEQswimZq3IQ3nRQfBlJ0PoMMcN/+Pks8ZTL1BoPYsJpok\n# t6cql59q6CypZYIwgyJ892HpttybHKg1ZtQLUlSXccRMlugPgEcNZJagPEgPYni4\n# b11snjRAgf0dyQ0zI9aLXqTxWUU5pCIFiPT0b2wsxzRqCtyGqpkGM8P9GazO8eao\n# mVItCYBcJSByBx/pS0cSYwBBHAZxJODUqxSXoSGDvmTfqUJXntnWkL4okok1FiCD\n# Z4jpyXOQunb6egIXvkgQ7jb2uO26Ow0m8RwleDvhOMrnHsupiOPbozKroSa6paFt\n# VSh89abUSooR8QdZciemmoFhcWkEwFg4spzvYNP4nIs193261WyTaRMZoceGun7G\n# CT2Rl653uUj+F+g94c63AhzSq4khdL4HlFIP2ePv29smfUnHtGq6yYFDLnT0q/Y+\n# Di3jwloF8EWkkHRtSuXlFUbTmwr/lDDgbpZiKhLS7CBTDj32I0L5i532+uHczw82\n# oZDmYmYmIUSMbZOgS65h797rj5JJ6OkeEUJoAVwwggd6MIIFYqADAgECAgphDpDS\n# AAAAAAADMA0GCSqGSIb3DQEBCwUAMIGIMQswCQYDVQQGEwJVUzETMBEGA1UECBMK\n# V2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0\n# IENvcnBvcmF0aW9uMTIwMAYDVQQDEylNaWNyb3NvZnQgUm9vdCBDZXJ0aWZpY2F0\n# ZSBBdXRob3JpdHkgMjAxMTAeFw0xMTA3MDgyMDU5MDlaFw0yNjA3MDgyMTA5MDla\n# MH4xCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdS\n# ZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMT\n# H01pY3Jvc29mdCBDb2RlIFNpZ25pbmcgUENBIDIwMTEwggIiMA0GCSqGSIb3DQEB\n# AQUAA4ICDwAwggIKAoICAQCr8PpyEBwurdhuqoIQTTS68rZYIZ9CGypr6VpQqrgG\n# OBoESbp/wwwe3TdrxhLYC/A4wpkGsMg51QEUMULTiQ15ZId+lGAkbK+eSZzpaF7S\n# 35tTsgosw6/ZqSuuegmv15ZZymAaBelmdugyUiYSL+erCFDPs0S3XdjELgN1q2jz\n# y23zOlyhFvRGuuA4ZKxuZDV4pqBjDy3TQJP4494HDdVceaVJKecNvqATd76UPe/7\n# 4ytaEB9NViiienLgEjq3SV7Y7e1DkYPZe7J7hhvZPrGMXeiJT4Qa8qEvWeSQOy2u\n# M1jFtz7+MtOzAz2xsq+SOH7SnYAs9U5WkSE1JcM5bmR/U7qcD60ZI4TL9LoDho33\n# X/DQUr+MlIe8wCF0JV8YKLbMJyg4JZg5SjbPfLGSrhwjp6lm7GEfauEoSZ1fiOIl\n# XdMhSz5SxLVXPyQD8NF6Wy/VI+NwXQ9RRnez+ADhvKwCgl/bwBWzvRvUVUvnOaEP\n# 6SNJvBi4RHxF5MHDcnrgcuck379GmcXvwhxX24ON7E1JMKerjt/sW5+v/N2wZuLB\n# l4F77dbtS+dJKacTKKanfWeA5opieF+yL4TXV5xcv3coKPHtbcMojyyPQDdPweGF\n# RInECUzF1KVDL3SV9274eCBYLBNdYJWaPk8zhNqwiBfenk70lrC8RqBsmNLg1oiM\n# CwIDAQABo4IB7TCCAekwEAYJKwYBBAGCNxUBBAMCAQAwHQYDVR0OBBYEFEhuZOVQ\n# BdOCqhc3NyK1"
+: 1
+""ScriptBlockText"":""function GetTypeListFromXmlFile( [string] $typeFileName ) \n: 1
+""ScriptBlockText"":""function get-exbanner\n: 1
+""ScriptBlockText"":""function _AutoDiscoverAndConnect ([System.Management.Automation.PSCredential]$Credential: 1
+""ScriptBlockText"":""function Connect-ExchangeServer ($ServerFqdn: 1
+""ScriptBlockText"":""function _GetHostFqdn([Microsoft.Exchange.Data.ServerVersion]$CurrentVersion=$null)\n: 1
+""ScriptBlockText"":""function _GetLocalForest()\n: 1
+""ScriptBlockText"":""function get-tip\n: 1
+""ScriptBlockText"":""function _GetSites()\n: 1
+""ScriptBlockText"":""function _GetExchangeServersInSite($siteDN: 1
+""ScriptBlockText"":""function _ConnectToAnyServer ($servers: 1
+""ScriptBlockText"":""function _GetCAFEServers($servers: 1
+""ScriptBlockText"":""function _GetServerFqdnFromNetworkAddress($server)\n: 1
+""ScriptBlockText"":""function _OpenExchangeRunspace([String]$fqdn: 1
+""ScriptBlockText"":""New-PSSession -ConnectionURI \""$connectionUri\"" -ConfigurationName Microsoft.Exchange -SessionOption $so"": 1
+""ScriptBlockText"":""function _NewExchangeRunspace(\n\t\t\t\t[String]$fqdn: 1
+""ScriptBlockText"":""function ImportPSSession ([bool]$ClearCache: 1
+""ScriptBlockText"":""function ExportPSSessionAndImportModule ($remotePSSettinsPath: 1
+""ScriptBlockText"":""\n                param($sourcePath: 1
+""ScriptBlockText"":""function CreateRegistryEntryAndImportModule ($remotePSSettinsPath: 1
+""ScriptBlockText"":""function ClearRegistryEntryAndModule ($remotePSSettinsPath: 1
+""ScriptBlockText"":""\n                param($path)\n                Get-ChildItem -LiteralPath $path\n            "": 1
+""ScriptBlockText"":""<#\n # Implicit remoting module\n # generated on 06.03.2024 11:42:51\n # by Export-PSSession cmdlet\n # Invoked with the following command line: \t\tExport-PSSession -Session $global:remoteSession -OutputModule $modulePath -force | out-null\n\n #>\n        \n@: 1
+""ScriptBlockText"":""}: 1
+""ScriptBlockText"":"" $PSBoundParameters: 2
+""ScriptBlockText"":""<#\n # Implicit remoting module\n # generated on 06.03.2024 11:42:50\n # by Export-PSSession cmdlet\n # Invoked with the following command line: \t\tExport-PSSession -Session $global:remoteSession -OutputModule $modulePath -force | out-null\n\n #>\n        \nparam(\n    <# Optional parameter that can be used to specify the session on which this proxy module works #>    \n    [System.Management.Automation.Runspaces.PSSession] $PSSessionOverride: 1
+""ScriptBlockText"":"".Remove($parameterName)\n            }\n            $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""} catch : 1
+""ScriptBlockText"":""Variable}: 1
+""ScriptBlockText"":""$null = $PSBoundParameters.Remove($parameterName)\n            }\n            $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":"") & $name @boundParams @unboundParams } `\n                         }\n\n            $steppablePipeline = $scriptCmd.GetSteppablePipeline($myInvocation.CommandOrigin)\n            $steppablePipeline.Begin($myInvocation.ExpectingInput: 1
+""ScriptBlockText"":""        -HideComputerName `\n                            -Session (Get-PSImplicitRemotingSession -CommandName 'Disable-UMAutoAttendant') `\n                            -Arg ('Disable-UMAutoAttendant': 1
+""ScriptBlockText"":""bug}: 1
+""ScriptBlockText"":""ram(\n    \n    [Alias('ea')]\n    $: 1
+""ScriptBlockText"":"")\n            }\n            $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""      $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""criptCmd.GetSteppablePipeline($myInvocation.CommandOrigin)\n            $steppablePipeline.Begin($myInvocation.ExpectingInput: 1
+""ScriptBlockText"":""\n\n    [Alias('wv')]\n    $: 1
+""ScriptBlockText"":""\n    [Alias('ov')]\n    $: 1
+""ScriptBlockText"":""      $null = $PSBoundParameters.Remove($parameterName)\n            }\n            $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""$PSBoundParameters: 1
+""ScriptBlockText"":""iveSyncDeviceClass': 1
+""ScriptBlockText"":""      $steppablePipeline.Begin($myInvocation.ExpectingInput: 2
+""ScriptBlockText"":""em 'function:script:Get-AgentLog' `\n: 1
+""ScriptBlockText"":""\n\n    [Alias('ob')]\n    $: 1
+""ScriptBlockText"":""$: 3
+""ScriptBlockText"":""ppablePipeline = $scriptCmd.GetSteppablePipeline($myInvocation.CommandOrigin)\n            $steppablePipeline.Begin($myInvocation.ExpectingInput: 1
+""ScriptBlockText"":""itch]\n    $: 1
+""ScriptBlockText"":""   # .ForwardHelpTargetName Get-ExchangeAssistanceConfig\n    # .ForwardHelpCategory Function\n    # .RemoteHelpRunspace PSSession\n}\n        \n& $script:SetItem 'function:script:Get-ExchangeCertificate' `\n: 1
+""ScriptBlockText"":""s.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""er}: 1
+""ScriptBlockText"":""edContentFilterRule': 1
+""ScriptBlockText"":""null = $positionalArguments.Add( $PSBoundParameters[$parameterName] )\n                $null = $PSBoundParameters.Remove($parameterName)\n            }\n            $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""    $: 3
+""ScriptBlockText"":""d.GetSteppablePipeline($myInvocation.CommandOrigin)\n            $steppablePipeline.Begin($myInvocation.ExpectingInput: 1
+""ScriptBlockText"":""  $: 1
+""ScriptBlockText"":""                          -HideComputerName `\n                            -Session (Get-PSImplicitRemotingSession -CommandName 'Get-MailboxFolderPermission') `\n                            -Arg ('Get-MailboxFolderPermission': 1
+""ScriptBlockText"":""     throw\n    }\n }\n\n    # .ForwardHelpTargetName Get-MailboxMessageConfiguration\n    # .ForwardHelpCategory Function\n    # .RemoteHelpRunspace PSSession\n}\n        \n& $script:SetItem 'function:script:Get-MailboxPermission' `\n: 1
+""ScriptBlockText"":"" try : 1
+""ScriptBlockText"":""                  }\n\n            $steppablePipeline = $scriptCmd.GetSteppablePipeline($myInvocation.CommandOrigin)\n            $steppablePipeline.Begin($myInvocation.ExpectingInput: 1
+""ScriptBlockText"":""ch]\n    $: 1
+""ScriptBlockText"":""ers $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":"" : 3
+""ScriptBlockText"":""BoundParameters.Remove($parameterName)\n            }\n            $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""              -Script : 1
+""ScriptBlockText"":""lias('wa')]\n    $: 1
+""ScriptBlockText"":""deParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""ch : 1
+""ScriptBlockText"":""Alias('vb')]\n    [switch]\n    $: 1
+""ScriptBlockText"":""nts = & $script:NewObject collections.arraylist\n            foreach ($parameterName in $PSBoundParameters.BoundPositionally)\n            : 1
+""ScriptBlockText"":""getName Get-MigrationBatch\n    # .ForwardHelpCategory Function\n    # .RemoteHelpRunspace PSSession\n}\n        \n& $script:SetItem 'function:script:Get-MigrationConfig' `\n: 1
+""ScriptBlockText"":""itionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""'function:script:Get-RoleAssignmentPolicy' `\n: 1
+""ScriptBlockText"":""ngSession -CommandName 'Get-SecurityPrincipal') `\n                            -Arg ('Get-SecurityPrincipal': 1
+""ScriptBlockText"":""Positionally)\n            : 1
+""ScriptBlockText"":""m 'function:script:Get-SiteMailbox' `\n: 1
+""ScriptBlockText"":""terName `\n                            -Session (Get-PSImplicitRemotingSession -CommandName 'Get-SyncConfig') `\n                            -Arg ('Get-SyncConfig': 1
+""ScriptBlockText"":""tity}: 1
+""ScriptBlockText"":""ram($name: 1
+""ScriptBlockText"":""hrow\n    }\n }\n\n    # .ForwardHelpTargetName Get-TransportServer\n    # .ForwardHelpCategory Function\n    # .RemoteHelpRunspace PSSession\n}\n        \n& $script:SetItem 'function:script:Get-TransportService' `\n: 1
+""ScriptBlockText"":""$PSBoundParameters.BoundPositionally)\n            : 1
+""ScriptBlockText"":""am(\n    \n    [Alias('ea')]\n    $: 1
+""ScriptBlockText"":""ine = $scriptCmd.GetSteppablePipeline($myInvocation.CommandOrigin)\n            $steppablePipeline.Begin($myInvocation.ExpectingInput: 1
+""ScriptBlockText"":""dParameters.Remove($parameterName)\n            }\n            $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":"" catch : 1
+""ScriptBlockText"":""\n\n    $: 1
+""ScriptBlockText"":"" $PSBoundParameters[$parameterName] )\n                $null = $PSBoundParameters.Remove($parameterName)\n            }\n            $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""SBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""                 -Script : 1
+""ScriptBlockText"":""n}: 1
+""ScriptBlockText"":""yInvocation.ExpectingInput: 1
+""ScriptBlockText"":""Arguments) `\n                            -Script : 1
+""ScriptBlockText"":""ssion\n}\n        \n& $script:SetItem 'function:script:New-MigrationBatch' `\n: 1
+""ScriptBlockText"":""ry Function\n    # .RemoteHelpRunspace PSSession\n}\n        \n& $script:SetItem 'function:script:New-ManagementRole' `\n: 1
+""ScriptBlockText"":""row\n    }\n }\n    End : 1
+""ScriptBlockText"":""ion.CommandOrigin)\n            $steppablePipeline.Begin($myInvocation.ExpectingInput: 1
+""ScriptBlockText"":""           }\n\n            $steppablePipeline = $scriptCmd.GetSteppablePipeline($myInvocation.CommandOrigin)\n            $steppablePipeline.Begin($myInvocation.ExpectingInput: 1
+""ScriptBlockText"":""row\n        }\n    }\n    Process : 1
+""ScriptBlockText"":""\n            $positionalArguments = & $script:NewObject collections.arraylist\n            foreach ($parameterName in $PSBoundParameters.BoundPositionally)\n            : 1
+""ScriptBlockText"":""   $: 3
+""ScriptBlockText"":"" $: 2
+""ScriptBlockText"":""iceCutoffBalance}: 1
+""ScriptBlockText"":"" Process : 1
+""ScriptBlockText"":""lias('ev')]\n    $: 1
+""ScriptBlockText"":""ylist\n            foreach ($parameterName in $PSBoundParameters.BoundPositionally)\n            : 1
+""ScriptBlockText"":""        }\n\n            $steppablePipeline = $scriptCmd.GetSteppablePipeline($myInvocation.CommandOrigin)\n            $steppablePipeline.Begin($myInvocation.ExpectingInput: 1
+""ScriptBlockText"":"" [switch]\n    $: 1
+""ScriptBlockText"":""       -HideComputerName `\n                            -Session (Get-PSImplicitRemotingSession -CommandName 'Remove-DatabaseAvailabilityGroupConfiguration') `\n                            -Arg ('Remove-DatabaseAvailabilityGroupConfiguration': 1
+""ScriptBlockText"":""lePipeline.Process($_)\n    } catch : 1
+""ScriptBlockText"":""\n    [switch]\n    $: 2
+""ScriptBlockText"":""name: 1
+""ScriptBlockText"":""   $steppablePipeline.Process($_)\n    } catch : 1
+""ScriptBlockText"":""           -HideComputerName `\n                            -Session (Get-PSImplicitRemotingSession -CommandName 'Remove-LinkedUser') `\n                            -Arg ('Remove-LinkedUser': 1
+""ScriptBlockText"":""rameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""agementRoleAssignment') `\n                            -Arg ('Remove-ManagementRoleAssignment': 1
+""ScriptBlockText"":""]\n    $: 1
+""ScriptBlockText"":"" }\n }\n\n    # .ForwardHelpTargetName Remove-OutlookProvider\n    # .ForwardHelpCategory Function\n    # .RemoteHelpRunspace PSSession\n}\n        \n& $script:SetItem 'function:script:Remove-OwaMailboxPolicy' `\n: 1
+""ScriptBlockText"":""nally)\n            : 1
+""ScriptBlockText"":""tionSubscription': 1
+""ScriptBlockText"":""as('wv')]\n    $: 1
+""ScriptBlockText"":""iptCmd = : 1
+""ScriptBlockText"":""dHelpCategory Function\n    # .RemoteHelpRunspace PSSession\n}\n        \n& $script:SetItem 'function:script:Remove-SystemMessage' `\n: 1
+""ScriptBlockText"":"" [Alias('pv')]\n    $: 1
+""ScriptBlockText"":""tionRequest') `\n                            -Arg ('Resume-PublicFolderMailboxMigrationRequest': 1
+""ScriptBlockText"":""ev')]\n    $: 1
+""ScriptBlockText"":""    try : 1
+""ScriptBlockText"":""ablePipeline.End()\n    } catch : 1
+""ScriptBlockText"":""   [switch]\n    $: 1
+""ScriptBlockText"":""rameterName)\n            }\n            $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""s.Add( $PSBoundParameters[$parameterName] )\n                $null = $PSBoundParameters.Remove($parameterName)\n            }\n            $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""urage}: 1
+""ScriptBlockText"":""'Set-DlpPolicy') `\n                            -Arg ('Set-DlpPolicy': 1
+""ScriptBlockText"":""Parameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""alCustomAttribute15}: 1
+""ScriptBlockText"":""$PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""OrganizationConnector': 1
+""ScriptBlockText"":""blePipeline.Process($_)\n    } catch : 1
+""ScriptBlockText"":""itSendReceiveQuota}: 1
+""ScriptBlockText"":""as('wa')]\n    $: 1
+""ScriptBlockText"":""    $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""rtificate}: 1
+""ScriptBlockText"":""text)\n        } catch : 1
+""ScriptBlockText"":""lientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""blicComputers}: 1
+""ScriptBlockText"":"" @clientSideParameters `\n                            -HideComputerName `\n                            -Session (Get-PSImplicitRemotingSession -CommandName 'Set-OrganizationConfig') `\n                            -Arg ('Set-OrganizationConfig': 1
+""ScriptBlockText"":""nspace PSSession\n}\n        \n& $script:SetItem 'function:script:Set-PendingFederatedDomain' `\n: 1
+""ScriptBlockText"":"" param($name: 1
+""ScriptBlockText"":""pablePipeline = $scriptCmd.GetSteppablePipeline($myInvocation.CommandOrigin)\n            $steppablePipeline.Begin($myInvocation.ExpectingInput: 1
+""ScriptBlockText"":""               -Session (Get-PSImplicitRemotingSession -CommandName 'Set-SenderReputationConfig') `\n                            -Arg ('Set-SenderReputationConfig': 1
+""ScriptBlockText"":""ry : 1
+""ScriptBlockText"":""    Process : 1
+""ScriptBlockText"":""pelineVariable}: 1
+""ScriptBlockText"":""\n        $steppablePipeline.Process($_)\n    } catch : 1
+""ScriptBlockText"":""maticReplies}: 1
+""ScriptBlockText"":"" [Alias('ev')]\n    $: 1
+""ScriptBlockText"":""ipt:InvokeCommand `\n                            @clientSideParameters `\n                            -HideComputerName `\n                            -Session (Get-PSImplicitRemotingSession -CommandName 'Set-TransportServer') `\n                            -Arg ('Set-TransportServer': 1
+""ScriptBlockText"":""($myInvocation.CommandOrigin)\n            $steppablePipeline.Begin($myInvocation.ExpectingInput: 1
+""ScriptBlockText"":""iable}: 1
+""ScriptBlockText"":""deParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""ommandName 'Set-UMMailbox') `\n                            -Arg ('Set-UMMailbox': 1
+""ScriptBlockText"":""   try : 1
+""ScriptBlockText"":""dParameters.BoundPositionally)\n            : 1
+""ScriptBlockText"":""           $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""                 -Arg ('Test-OwaConnectivity': 1
+""ScriptBlockText"":""witch]\n    $: 1
+""ScriptBlockText"":""ngInput: 1
+""ScriptBlockText"":""nalArguments.Add( $PSBoundParameters[$parameterName] )\n                $null = $PSBoundParameters.Remove($parameterName)\n            }\n            $positionalArguments.AddRange($args)\n\n            $clientSideParameters = Get-PSImplicitRemotingClientSideParameters $PSBoundParameters $False\n\n            $scriptCmd = : 1
+""ScriptBlockText"":""function prompt \n: 1
+""ScriptBlockText"":""$ip = \""10.56.26.20\"" #10.56.238.72\n$recCons = Get-ReceiveConnector | ? : 2
+""ScriptBlockText"":""ion': 1
+""ScriptBlockText"":""$ip = \""10.56.26.21\"" #10.56.238.72\n$recCons = Get-ReceiveConnector | ? : 2
+""ScriptBlockText"":""$ip = \""10.56.26.22\"" #10.56.238.72\n$recCons = Get-ReceiveConnector | ? : 1
+""ScriptBlockText"":""import-module ActiveDirectory"": 1
+""ScriptBlockText"":""cd\\"": 1
+""ScriptBlockText"":""function PSConsoleHostReadLine\n: 4
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-02059_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03071_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03072_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03073_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03074_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03075_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03076_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-02059_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03071_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03072_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03073_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03074_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03075_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03076_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-02059_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03071_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03072_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03074_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03075_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03076_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03073_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-02059_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03071_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03072_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03073_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03074_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03075_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03076_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-02059_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03071_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03073_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03074_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03072_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03075_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03076_USER -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03071_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03072_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03073_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03074_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03075_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-03076_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-02059_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03071_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03072_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03073_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03074_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03075_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-02059_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SEVZ_G_ECP-KROSS-BR-03076_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03071_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03073_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03074_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03075_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03076_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name SIBR_G_ECP-KROSS-BR-03072_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-02059_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03071_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03072_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03073_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03074_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03075_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name URAL_G_ECP-KROSS-BR-03076_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-02059_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03071_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03072_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03073_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03074_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03075_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name YUG_G_ECP-KROSS-BR-03076_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""New-ADGroup -Name CNTR_G_ECP-KROSS-BR-02059_TEST -Path 'OU=ECP-KROSS: 1
+""ScriptBlockText"":""ping  esatp-p05-ws03"": 1
+""ScriptBlockText"":""ping 10.56.205.18"": 1
+""ScriptBlockText"":""& \""C:\\Users\\ADM-GG~1.KOR\\AppData\\Local\\Temp\\1283\\SDIAG_4cb23b5b-6735-4702-888a-47c823bfc245\\NetworkDiagnosticsTroubleshoot.ps1\"""": 1
+""ScriptBlockText"":""# Copyright © 2008: 1
+""ScriptBlockText"":""# Localized\t08/22/2013 12:35 PM (GMT)\t303:4.80.0411 \tLocalizationData.psd1\nConvertFrom-StringData @'\n\n###PSLOC\n\nprogress_Diagnosing_NoDetails=Looking for problems...\nprogress_Diagnosing_SafeMode=Verifying boot mode...\nprogress_Diagnosing_DPS=Verifying that the network diagnostics service is running...\nprogress_Diagnosing_Initializing=Starting network diagnostics...\nprogress_Repairing=Executing Repair...\nprogress_Vaildating_NoDetails=Verifying that the problem is resolved...\nprogress_Collecting_Logs=Collecting results...\nprogress_Collecting_Config=Collecting configuration details...\ninteraction_AllAdapters=All network adapters\ninteraction_InvalidURL_Desc=For example: 1
+""ScriptBlockText"":""                \""Attaching catch-all Root Cause instead. ID:\"" + $rcToAttach | convertto-xml | Update-DiagReport -id CatchAllRootCause -name \""Catch-all Root Cause used.\"" -verbosity Debug\n                    }\n                }\n\n                #collect the replacement parameters\n                $params = @: 1
+""ScriptBlockText"":""function DefineConstant($curVal: 1
+""ScriptBlockText"":""function InContextEntry()\n: 1
+""ScriptBlockText"":""function WaitWithProgress($ActivityNoDetails: 1

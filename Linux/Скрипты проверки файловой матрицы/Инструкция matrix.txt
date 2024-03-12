@@ -1,0 +1,123 @@
+Все действия выполняем в ssh клиенте SecureCRT или SuperPutty на терминальной ферме или сервере для администрирования.
+
+Состав файлов:
+----------filematrix.sh------------
+#!/bin/bash
+while read line
+do
+getfacl -p $line
+done<"filematrix.txt"
+-----------------------------------
+
+----------filecompare.sh------------
+#!/bin/bash
+ARGS=2
+E_BADARGS=65
+E_UNREADABLE=66
+
+if [ $# -ne "$ARGS" ]
+then
+    echo "Use Order: `basename $0` file1 file2"
+  exit $E_BADARGS
+fi
+
+if [[ ! -r "$1" || ! -r "$2" ]]
+then
+    echo "Both files must be present and have read-right"
+  exit $E_UNREADABLE
+fi
+
+cmp $1 $2 &> /dev/null
+
+
+if [ $? -eq 0 ]
+then
+    echo "file_1 "$1" identical to file_2 "$2"."
+else
+    echo "file_1 "$1" differs from file_2 "$2"."
+    echo "Differences:"
+    comm -3 --output-delimiter=file_2: $1 $2
+fi
+exit 0
+------------------------------------------------------------
+
+chmod +x file*.sh
+
+---------filematrix.txt------------
+----------берем из ОН--------------
+/etc/security/acl_matrix.sh
+/etc/audit
+/etc/audisp
+/etc/audisp/plugins.d
+/etc/audisp/plugins.d/syslog.conf
+/etc/audit/rules.d/
+/etc/audit/auditd.conf
+/etc/sysconfig/auditd
+/etc/audit/audit.rules
+/etc/audit/rules.d/audit.rules
+/etc/login.defs
+/etc/logrotate.conf
+/etc/logrotate.d/audit
+/etc/pam.d/
+/etc/rsyslog.conf
+/etc/ssh/sshd_config
+/var/log/audit
+/var/log/messages
+/var/log/secure
+--------------------------------
+
+Ход действий:
+на первом хосте проверяем по файловой матрице, затем эталон клонируем на все хосты в домашний каталог.
+
+-------filematrixlog-first-------
+./filematrix.sh > filematrix.log - на первом хосте выполняем проверяем по матрице (можно нагенерить для каждой ОС), если все ок выполняем следующую команду
+
+cp filematrix.log filematrix_standard.log - копируем в стандарт
+
+cp filematrix_standard.log /tmp - копируем в tmp
+
+клонируем ssh сессию (клонированная сессия попапдает в профиль персональной уз на хосте, не в auditvw)
+
+cp /tmp/filematrix_standard.log ~ - копируем эталон файл в домашнюю директорию
+
+осущетсвляем Connect SFTP Session
+В sftp сессии выполняем следующую команду:
+sftp> get filematrix_standard.log
+
+Файл скопируется в домашнюю директорию на ТФ или в домашнюю директорию на сервере RDP (c1p1-adm...)
+
+открываем по аналогии на всех остальных хостах sftp, 
+filematrix_standard.log  - берем за стандарт и через sftp сессию получаем его на всех хостах, так же получаем все скрипты и матрицу
+
+sftp>put file*
+
+из домашней директории персональной уз копируем все файлы в tmp:
+cp ~/file* /tmp
+
+переходим в уз auditvw
+su - auditvw
+
+копируем из tmp в домашную директорию auditvw
+
+cp /tmp/file* ~
+
+выполняем команду
+chmod +x file*.sh - доавляем право запуска исполняемого файла (скрипта)
+---------------------------------------------
+
+выполняем следующие команды на каждом хосте
+----------filematrixlog-other----------------
+./filematrix.sh > filematrix_`hostname`.log
+
+
+./filecompare.sh filematrix_standard.log filematrix_`hostname`.log  - сравниваем файлы быстро, если отличаются выполняем следующую команду
+
+diff -y filematrix_standard.log filematrix_`hostname`.log - отличия будут отмечены символом pipe | и символом <
+
+-------------------the end---------------------------------------------------------------------------
+
+
+-------------tmp command---------------------
+cp filematrix.log filematrix_`hostname`.log
+cp filematrix.log filematrix_standard.log
+---------------------------------------------

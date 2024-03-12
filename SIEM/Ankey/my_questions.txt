@@ -1,0 +1,108 @@
+Для выгрузки событий с полезными сведениями сделан набор полей "!!! не сделан !!!"
+
+Поля:
+name - сообщение антивируса (~заголовок)
+message - сообщение антивируса (подробности)
+destinationAddress - IP АРМ   (так не ищет иногда)
+destinationHostName  - имя АРМ     
+destinationUserName  - имя пользователя
+filePath - путь/ссылка, где обнаружен вирус
+
+========================================================
+Все события в KES:
+deviceVendor = "KasperskyLab"
+новое значение для поиска	
+!!!
+Правильно:
+deviceVendor = "AO Kaspersky Lab"
+
+========================================================
+Статистика по пользователю:
+((destinationUserName CONTAINS "username") OR (destinationUserName CONTAINS "USERNAME")) AND deviceVendor CONTAINS "KasperskyLab"
+
+
+========================================================
+Поиск в пути/ссылке:
+filePath CONTAINS "inquirypatch.top"
+
+========================================================
+Поиск в сообщении от антивируса (название вируса, путь, ссылка, имя пользователя):
+message CONTAINS "Phish.gen"
+message CONTAINS "Kaspersky - Host Critical Status"
+
+========================================================
+Поиск сайтов, зараженных через CMS Bitrix (классификация вируса в "deviceCustomString1" может со временем измениться, поэтому этот параметр можно опустить):
+deviceVendor = "KasperskyLab" AND filePdestinationAddressath CONTAINS "core.js" AND deviceCustomString1 = "HEUR:Trojan.Script.Generic"
+
+
+Примеры:
+Поиск по IP устройства и Device Vender 
+destinationAddress = "10.1.37.69" AND deviceVendor CONTAINS "AO Kaspersky Lab"
+выдасти результат событий касперского на ip 10.1.37.69
+
+Поиск сообщения от вендера "" содержащим тип сообщения и и тему(текст)
+deviceVendor CONTAINS "AO Kaspersky Lab" AND deviceSeverity CONTAINS "WARNING" AND deviceCustomString1 CONTAINS "*Trojan*"
+Выдаст сообщения от вендера "AO Kaspersky Lab" содержащим "WARNING" и все с трояном "*Trojan*"
+
+deviceVendor CONTAINS "AO Kaspersky Lab" AND priority > "3" AND name CONTAINS "обработан"
+Сбор сообщений от Kaspersky с приоритетом выше 3
+
+deviceVendor CONTAINS "AO Kaspersky Lab" AND priority = "9" AND message CONTAINS "выключена"
+Сбор сообщений Kaspersky "защита выключена"
+
+Поиск по имени хоста:
+destinationHostName CONTAINS "czc5522vtj"
+Выдаст сообщения относящиеся к хосту czc5522vtj
+
+Поиск - сообщения от хоста
+deviceHostName CONTAINS "spb-02-nv-ksc.adm.gazprom.ru"
+Выдаст все сообщения отправленные с хоста spb-02-nv-ksc.adm.gazprom.ru (сервер каспера)
+
+
+***********************************StaffCop************************************
+Поиск событьй по стафкоп
+deviceProduct CONTAINS "StaffCop"
+Выдаст результат по всем событиям StaffCop
+10.78.9.28 AND deviceProduct CONTAINS "StaffCop"
+10.78.9.28 AND deviceProduct CONTAINS "StaffCop" AND destinationHostName CONTAINS "CZC53835N2.adm.gazprom.ru"
+(deviceProduct CONTAINS "StaffCop" AND message CONTAINS "Скачивание") AND agentAddress = "10.78.9.28"
+Выдаст результат по событиям StaffCop с собщением "Скачивание" и с определенного IP
+
+Поиск событий KAV с приоритетом более 5 и в сообщении не должно быть "чтения."
+deviceVendor CONTAINS "AO Kaspersky Lab" AND priority > "5" AND name CONTAINS "обработан" AND (NOT message CONTAINS "чтения.")
+Выдаст все сообщения в которых в сообщении нет слова - чтения. Пример : "внутренняя ошибка"
+                deviceVendor CONTAINS "AO Kaspersky Lab" AND priority > "5" AND name CONTAINS "Операция" AND "MTP"
+Поиск событий связанных с подключением портативных устройств (device MTP)
+deviceVendor CONTAINS "AO Kaspersky Lab" AND priority > "5" AND name CONTAINS "Операция"
+Выдаст события "Операция с устройством запрещена"
+дополнительно можно фильтровать по raw_event CONTAINS "MTP"
+deviceVendor CONTAINS "AO Kaspersky Lab" AND priority > "5" AND name CONTAINS "Операция" AND "MTP"
+
+***************СХГД*****************************
+Поиск событий по использованию КТ в системе СХГД
+deviceProduct = "SHGD-MA-KT"
+Выдаст все сообщения где есть использование документов КТ, входа в систему с ИОД (информация ограниченного доступа)
+
+Поиск событий по использованию КТ и конкретному IP в системе СХГД
+deviceProduct = "SHGD-MA-KT" AND "10.56.16.234"
+Выдаст все сообщения с действиями пользователей с ИОД в СХГД
+
+Поиск событий по использованию КТ в системе СХГД  Superset
+deviceProduct = "Superset" AND raw_event CONTAINS "[КТ образец]"
+Выдаст результат, если в syslog содержит "[КТ образец]"
+
+В Superset были добавлены значения
+Выбираем фильтр Custom -> Custom Fields -> deviceCustom -> Device Custom String 2 и Device Custom String 3
+cs2="название dashboard" cs3= "значение -имя документа"
+cs2=Device Custom String 2 ;  cs3= Device Custom String 3
+
+destinationAddress = "10.56.16.222"
+
+
+*********************************** Windows Events ID *********************************
+externalId CONTAINS "4731" AND deviceEventClassId CONTAINS "Microsoft-Windows-Security-Auditing:4731"
+Выведет все события Window Security Event ID 4731
+4731 можно менять на любой ID
+
+
+

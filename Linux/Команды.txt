@@ -1,0 +1,156 @@
+RHEL
+
+Проверка привелегий на файлы
+getfacl
+
+cat /etc/audit/audit.rules | grep -e "-a exit,never -S all -F auid="
+
+cat /etc/audit/rules.d/audit.rules | grep -e "-a exit,never -S all -F auid="
+
+
+iptables
+ip6tables
+SELinux
+
+
+systemctl -at service | grep iptables
+systemctl -at service | grep ip6tables 
+systemctl -at service | grep SELinux
+
+
+
+chkconfig --list | grep iptables
+chkconfig --list | grep ip6tables
+chkconfig --list | grep SELinux
+
+-ts 11/19/2018 -te 11/19/2018
+
+aureport -au -ts 11/19/2018 -te 11/19/2018 | grep yes
+
+aureport -e -i -ts 11/19/2018 -te 11/19/2018 | grep USER_END
+
+aureport -au -ts 11/19/2018 -te 11/19/2018 | grep no
+
+
+ausearch -m USER_AUTH -sv no -i -ts 11/19/2018 -te 11/19/2018 | less
+
+
+AIX
+cat /etc/passwd перечень уз
+cat /etc/group перечень и состав груп
+lsuser -f jukoromv информация об УЗ
+
+for FILE in $(cat /etc/security/acl.tmpl | grep -E '^/' ); do echo "$FILE"; aclget "$FILE"; done
+cat /etc/security/roles | grep -p auditctr | grep authorizations | awk '{print $3}'
+
+auditpr -i /var/sys/audit/trail.2018121814 -v | awk '{ if (substr($0,1,1) == " ") {print $0} else  {printf "%s", $0}}' | grep connclose
+
+/var/sys/audit/trail.2018121814 -v | awk '{ if (substr($0,1,1) == " ") {print $0} else  {printf "%s", $0}}' | grep PROC_Execute
+
+
+ls -ldv 
+ntpq -pn
+
+auditpr -i  /var/sys/audit/trail.2014022515 |grep passwd
+pdosaudview –l -s today
+ps -ef | grep auditbin - проверка ведения аудита
+ps -ef | grep syslog - список запущенных процессов
+ps -ef | grep cron
+more /var/sys/log/messages
+more /var/spool/cron/crontabs/root - настройки планировщика задач cron
+auditpr < /var/sys/audit/trail.2014073015
+
+
+Solaris
+
+cat /etc/security/audit_control | grep -v ^'#'
+auditpr -i  /var/sys/audit/trail.2014022515 |grep passwd
+pdosaudview –l -s today
+ps -ef | grep auditbin - проверка ведения аудита
+ps -ef | grep syslog - список запущенных процессов
+ps -ef | grep cron
+more /var/sys/log/messages
+more /var/spool/cron/crontabs/root - настройки планировщика задач cron
+auditpr < /var/sys/audit/trail.2014073015
+cat /etc/syslog.conf-отсылка в arcsight
+
+auditreduce | praudit –l /var/audit/*.not_terminated 
+pfexec /usr/sbin/auditreduce /var/audit/20120514185900.not_terminated.u3proddb | /usr/sbin/praudit -l | grep root
+ pfexec passwd -f koloandp - принудительная смена пароля
+cat /etc/passwd - просмотр уз
+cat /etc/user_attr - просмотр УЗ по ролям
+netstat -a | grep EST | wc -l - число активных подключений
+ps -ef | grep audit - запущен ли аудит 
+svcs -x system-log -  включен ли системный журнал
+svcs -x auditd
+svcs -a - запущенные процессы
+svcs cron - крон
+grep "\-root" /var/adm/sulog | grep -v \+ | tail -25
+pfexec passwd koloandp - смена пароля
+pfexec /usr/sbin/usermod -R  oradbaib,usersec,auditctr,auditvw,useracc koloandp
+pfexec passwd -s koloandp - просмотр блокировки
+pfexec /usr/sbin/praudit -l /var/audit/20140902110000.not_terminated.sz54 | grep "logout"
+cat /etc/security/audit_control - настройки демона аудита
+cat /etc/default/passwd
+ more /var/log/authlog - просмотр переход в роли
+pfexec passwd -x 90 -n 1 -w 7 <имя_УЗ> - восстановление парольной политики
+more /var/log/authlog - контроль журнала аутентификации
+ls -lah /var/audit | tail - проверка ротации
+grep -v "\#" /etc/default/passwd - проверка парольной политики
+grep -v "\#" /etc/default/login
+cat /etc/security/audit_user - настройки аудита
+svcs -l svc:/network/ssh:default - состояние службы
+ ps –ef | grep auditd
+df -h - заполнение файловых системва -р
+cat /etc/ssh/sshd_config | grep PermitRootLogin
+pfexec /usr/sbin/ifconfig –a6;
+
+auditreduce | praudit –l /var/audit/*.not_terminated 
+pfexec /usr/sbin/auditreduce /var/audit/20120514185900.not_terminated.u3proddb | /usr/sbin/praudit -l | grep root
+ pfexec passwd -f koloandp - принудительная смена пароля
+cat /etc/passwd - просмотр уз
+cat /etc/user_attr - просмотр УЗ по ролям
+netstat -a | grep EST | wc -l - число активных подключений
+ps -ef | grep audit - запущен ли аудит 
+svcs system-log -  включен ли системный журнал
+svcs cron - крон
+grep "\-root" /var/adm/sulog | grep -v \+ | tail -25
+pfexec passwd koloandp - смена пароля
+pfexec /usr/sbin/usermod -R  oradbaib,usersec,auditctr,auditvw,useracc koloandp
+pfexec passwd -s koloandp - просмотр блокировки
+pfexec /usr/sbin/praudit -l /var/audit/20140902110000.not_terminated.sz54 | grep "logout"
+cat /etc/security/audit_control - настройки демона аудита
+cat /etc/default/passwd
+ more /var/log/authlog - просмотр переход в роли
+pfexec passwd -x 90 -n 1 -w 7 <имя_УЗ> - восстановление парольной политики
+more /var/log/authlog - контроль журнала аутентификации
+ls -lah /var/audit | tail - проверка ротации
+grep -v "\#" /etc/default/passwd - проверка парольной политики
+grep -v "\#" /etc/default/login
+cat /etc/security/audit_user - настройки аудита
+svcs -l svc:/network/ssh:default - состояние службы
+ ps –ef | grep auditd
+pfexec /usr/sbin/praudit /home/auditctr/20150703070000.20150703080000.pbs-ar9k5 > /home/auditvw/log
+cp /var/ausedit/20150714110000.20150714120000.gpp-di-r9k4.bz2 .
+bzip2 -d 20150714110000.20150714120000.gpp-di-r9k4.bz2
+ ls -lV - просмотр прав на файл
+ pfexec /usr/sbin/praudit /var/audit/20151009070000.20151009080000.gd2-di-r9k4 | less - просмотр в редакторе
+cat /etc/inet/hosts - таблица соответствия имен компьютеров и их адресов
+prstat -Z - сколько памяти занимают процессы
+
+
+SLES:
+Просмотр прав доступа к файлам:
+getfacl -a /etc/passwd
+
+Регистрация запуска ПС:
+Выполнить команду : date
+команду : vi &
+Перейти в роль auditvw и выполнить команду cat /var/log/audit/audit.log | ausearch -m SYSCALL -sv yes -c vi -ts 10/04/2017 16:51:00 -i
+
+Регистрация попытки доступа:
+Попытаться внести изменения в файл /etc/ssh/sshd_config, выполнив команду : echo 12345 >> /etc/ssh/sshd_config
+Выполнить команду cat /var/log/audit/audit.log | ausearch -ts 10/04/2017 16:57:00 -sv no -m SYSCALL -ua jukoromv -i
+
+Выгрузка установленных ПС:
+Выполнить команду : rpm -aq

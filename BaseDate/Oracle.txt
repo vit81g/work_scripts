@@ -1,0 +1,1613 @@
+-- Просмотр состояния опции ODV
+set line 400
+set pagesize 2000
+col PARAMETER format a25
+col VALUE format a10
+select PARAMETER, VALUE from V$OPTION where PARAMETER='Oracle Database Vault';
+
+-- Просмотр имени экземпляра
+select INSTANCE_NAME from V$INSTANCE;
+
+-- Просмотр текущих сессий
+set line 400
+set pagesize 2000
+col username format a15
+col machine format a15
+col program format a40
+select username, machine, program from v_$session where type != 'BACKGROUND' and program is not null and username='TEST';
+
+-- Просмотр текста функции парольной политики
+select TEXT from DBA_SOURCE where NAME='VERIFY_FUNCTION';
+
+-- Просмотр состояния аудита
+set line 400
+show parameter aud%
+
+-- Просмотр параметров аудита
+set line 400
+set pagesize 2000
+col AUDIT_OPTION format a30
+col SUCCESS format a20
+col FAILURE format a20
+col USER_NAME format a30
+-- Все опции со всеми параметрами
+select AUDIT_OPTION, SUCCESS, FAILURE, USER_NAME from dba_stmt_audit_opts order by 1;
+-- Список включенных опций без вывода параметров
+select AUDIT_OPTION from dba_stmt_audit_opts;
+-- Список опций без привязки к УЗ
+select AUDIT_OPTION from dba_stmt_audit_opts where USER_NAME is NULL order by 1;
+-- Список опций, привязанных к УЗ
+select AUDIT_OPTION, SUCCESS, FAILURE, USER_NAME from dba_stmt_audit_opts where USER_NAME is not NULL order by 4,1;
+-- Определенной опции
+select AUDIT_OPTION, SUCCESS, FAILURE, USER_NAME from dba_stmt_audit_opts where AUDIT_OPTION like '%PUBLIC%';
+
+-- Просмотр списка пользователей с паролем по умолчанию
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PRODUCT format a125
+select USERNAME, PRODUCT from DBA_USERS_WITH_DEFPWD order by 1;
+-- Просмотр активных пользователей с паролем по умолчанию
+select U.USERNAME, S.ACCOUNT_STATUS from DBA_USERS_WITH_DEFPWD U, DBA_USERS S where U.USERNAME = S.USERNAME and S.ACCOUNT_STATUS='OPEN' order by 1;
+
+-- Просмотр списка профилей
+select distinct PROFILE from DBA_PROFILES order by 1;
+
+-- Просмотр настроек профилей
+-- В зависимости от проекта может настраиваться профиль DCMPROF
+set line 128
+set pagesize 2000
+col RESOURCE_NAME format a50
+col LIMIT format a30
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='DEFAULT';
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='SYSPROF';
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='SAPUPROF';
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='SERVPROF';
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='DCMPROF';
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='SAPPROF';
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='FINDER_PROF';
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='MONITORING_PROFILE';
+
+-- Просмотр настроек пользователей (назначенный профиль, статус аккаунта)
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16
+select USERNAME, PROFILE, ACCOUNT_STATUS from DBA_USERS order by 1;
+-- Просмотр настроек активных пользователей
+select USERNAME, PROFILE, ACCOUNT_STATUS from DBA_USERS where ACCOUNT_STATUS='OPEN' order by 1;
+-- Просмотр настроек определенного пользователя
+select USERNAME, PROFILE, ACCOUNT_STATUS from DBA_USERS where USERNAME='SYSTEM';
+select USERNAME, PROFILE, ACCOUNT_STATUS from DBA_USERS where username='IDMUSER';
+select USERNAME, PROFILE, ACCOUNT_STATUS from DBA_USERS where USERNAME like '%SAPSR%';
+select USERNAME, PROFILE, ACCOUNT_STATUS from DBA_USERS where USERNAME='ORABACKUP';
+-- Просмотр списка пользователей с определенным профилем
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='DEFAULT' order by 1;
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='SAPPROF' order by 1;
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='SAPUPROF' order by 1;
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='SYSPROF' order by 1;
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='FINDER_PROF' order by 1;
+-- Просмотр данных по блокировке пользователей
+select USERNAME, ACCOUNT_STATUS, EXPIRY_DATE, LOCK_DATE, LAST_LOGIN from DBA_USERS where profile='SYSPROF' order by 1;
+-- Просмотр данных по блокировке пользователей (для версии 11)
+select USERNAME, ACCOUNT_STATUS, EXPIRY_DATE, LOCK_DATE from DBA_USERS where profile='SYSPROF' order by 1;
+
+-- Просмотр списка ролей
+select ROLE from DBA_ROLES order by 1;
+select ROLE from DBA_ROLES where ROLE in ('MPSAPJAVAROLE', 'MPROLE');
+
+-- Просмотр списка пользователей с назначенной ролью
+set line 400
+set pagesize 2000
+col GRANTEE format a25
+col GRANTED_ROLE format a15
+col ADMIN_OPTION format a12
+select GRANTEE, GRANTED_ROLE, ADMIN_OPTION  from DBA_ROLE_PRIVS where GRANTED_ROLE='AIBROLE' order by 1;
+select GRANTEE, GRANTED_ROLE, ADMIN_OPTION  from DBA_ROLE_PRIVS where GRANTED_ROLE='MPROLE' order by 1;
+select GRANTEE, GRANTED_ROLE, ADMIN_OPTION  from DBA_ROLE_PRIVS where GRANTED_ROLE='DV_SECANALYST' order by 1;
+select GRANTEE, GRANTED_ROLE, ADMIN_OPTION  from DBA_ROLE_PRIVS where GRANTED_ROLE='DV_ACCTMGR' order by 1;
+select GRANTEE, GRANTED_ROLE, ADMIN_OPTION  from DBA_ROLE_PRIVS where GRANTED_ROLE='CONNECT' order by 1;
+select GRANTEE, GRANTED_ROLE  from DBA_ROLE_PRIVS where GRANTED_ROLE='SAPDBA' order by 1;
+
+-- Просмотр списка ролей, назначенных пользователю
+set line 400
+set pagesize 2000
+col GRANTEE format a25
+col GRANTED_ROLE format a15
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='IDMUSER';
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='AIBROLE';
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='BRTDBA';
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='SECMGRPRIVS_ROLE';
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='OPS$ORAH1B';
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='MPSAPJ';
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='SAPACCTMGR';
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='MPROLE';
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='SECACCTMGR';
+
+-- Просмотр прав на таблицы
+set line 400
+set pagesize 2000
+col OWNER format a15
+col TABLE_NAME format a45
+col PRIVILEGE format a15
+col GRANTEE format a15
+select OWNER, TABLE_NAME, PRIVILEGE, GRANTEE from DBA_TAB_PRIVS where GRANTEE='AIBROLE' order by 1,2;
+select OWNER, TABLE_NAME, PRIVILEGE, GRANTEE from DBA_TAB_PRIVS where GRANTEE='IDMUSER' order by 1,2;
+select OWNER, TABLE_NAME, PRIVILEGE, GRANTEE from DBA_TAB_PRIVS where GRANTEE='MPROLE' order by 1,2;
+select OWNER, TABLE_NAME, PRIVILEGE, GRANTEE from DBA_TAB_PRIVS where GRANTEE='OPS$ORAH1B' order by 1,2;
+select OWNER, TABLE_NAME, PRIVILEGE, GRANTEE from DBA_TAB_PRIVS where GRANTEE='MPSAPJAVAROLE' order by 1,2;
+
+-- Просмотр системных привилегий
+set line 400
+set pagesize 2000
+col PRIVILEGE format a30
+col GRANTEE format a15
+select PRIVILEGE, GRANTEE from DBA_SYS_PRIVS where GRANTEE='MPROLE' order by 1;
+select PRIVILEGE, GRANTEE from DBA_SYS_PRIVS where GRANTEE='AIBROLE' order by 1;
+select PRIVILEGE, GRANTEE from DBA_SYS_PRIVS where GRANTEE='DV_SECANALYST' order by 1;
+select PRIVILEGE, GRANTEE from DBA_SYS_PRIVS where GRANTEE='ORABACKUP' order by 1;
+select PRIVILEGE, GRANTEE from DBA_SYS_PRIVS where GRANTEE='IDMUSER' order by 1;
+
+-- Просмотр зарегистрированных триггеров
+set linesize 400
+set pagesize 2000
+col TRIGGER_NAME a15
+col BASE_OBJECT_TYPE format a8
+col TRIGGER_TYPE format a20
+col TRIGGERING_EVENT format a15
+col STATUS format a10
+col DESCRIPTION format a40
+select TRIGGER_NAME,BASE_OBJECT_TYPE,TRIGGER_TYPE,TRIGGERING_EVENT,STATUS, DESCRIPTION from all_triggers where OWNER='IDMUSER';
+
+-- Просмотр тела триггера
+select TRIGGER_BODY from ALL_TRIGGERS where TRIGGER_NAME='ATR_LOGON';
+
+-- Поиск хранимой процедуры
+select distinct NAME from ALL_SOURCE where TYPE='PROCEDURE' and OWNER='IDMUSER';
+
+-- Просмотр текста хранимой процедуры
+select TEXT from ALL_SOURCE where NAME='UPR_USER_LOGON_DELETE';
+
+-- Просмотр статуса и настройки задач планировщика
+set line 400
+set pagesize 2000
+col OWNER format a5
+col JOB_NAME format a22
+col ENABLED format a6
+col JOB_ACTION format a80
+col RUN_COUNT format a2
+col LAST_START_DATE format a15
+col NEXT_RUN_DATE format a15
+select OWNER, JOB_NAME, ENABLED, JOB_ACTION, LAST_START_DATE,NEXT_RUN_DATE from DBA_SCHEDULER_JOBS where JOB_NAME like '%TRAIL%';
+
+
+
+
+
+СУБД Oracle:
+select audit_option from dba_stmt_audit_opts;
+ ls -la -t | head -4
+cd /oracle/Q4H/112_64/rdbms/audit/
+ps -ef
+ select instance_name from v$instance;
+select distinct profile from dba_users;
+select username, profile from dba_users;
+cd $ORACLE_HOME/OPatch- патчи
+opatch lsinventory
+select * from v$version;
+select value from v$parameter where name='spfile';-путь к файлу
+
+select * from dict where table_name like'%def%';
+
+cat /opt/oracle/product/10.2.0/Db_1
+
+$ORACLE_HOME/network/admin/listener.ora
+
+export ORACLE_HOME=/oracle/PH5/121
+export PATH=/usr/bin::/oracle/PH5/121/bin:/usr/sbin:/usr/bin
+
+oracle
+select audit_option from dba_stmt_audit_opts;
+ ls -la -t | head -4
+cd /oracle/Q4H/112_64/rdbms/audit/
+ps
+
+select username, ACCOUNT_STATUS from dba_users;
+select distinct resource_name, limit from dba_profiles where profile = 'DEFAULT';
+select u.username, rs.table_name, rs.privilege from dba_users u, dba_tab_privs rs where u.username = rs.grantee order by u.username;
+select * from table_privileges where grantee = 'AIB_ASUP' order by owner, table_name;
+select rs.grantee, rs.table_name, rs.privilege from dba_tab_privs rs where rs.grantee = 'AIB_ASUP' order by rs.grantee;
+select grantee, granted_role "granted role to user" from dba_role_privs where grantee='AIB_ASUP';
+show parameter audit; 
+show parameter remote_login;
+
+set linesize 160 pagesize 10000
+col username format a30;
+col profile format a20;
+col limit format a20;
+
+Стандартные УЗ, у которых Пароли не изменены:
+select * from dba_users_with_defpwd;
+
+Для просмотра зарегистрированных в СУБД пользователей необходимо выполнить запрос:
+select username, account_status from all_users;
+
+Для просмотра зарегистрированных в СУБД профилей необходимо выполнить запрос:
+select distinct profile from dba_profiles;
+
+Для просмотра назначенных пользователям профилей необходимо выполнить запрос:
+select username, profile from dba_users;
+
+Для просмотра настроек конкретного профиля необходимо выполнить запрос:
+select distinct resource_name, limit from dba_profiles where profile = '<наименование профиля>';
+select * from dba_profiles where profile='SYSPROF';
+select * from dba_profiles where profile='SAPUPROF';
+select * from dba_profiles where profile='DEFAULT';
+select * from dba_profiles where profile='ISDO';
+select * from dba_profiles where profile='ORA_STIG_PROFILE';
+select * from dba_profiles where profile='SERVPROF';
+select * from dba_profiles where profile='LIMIT1_NOEXPIRE';
+select * from dba_profiles where profile='DCMPROF';
+
+Для просмотра текста функции контроля сложности паролей пользователей необходимо выполнить запрос:
+select text from dba_source where name = 'VERIFY_FUNCTION';
+select text from dba_source where name = 'ORA12C_STRONG_VERIFY_FUNCTION';
+select text from all_source where name='VERIFY_FUNCTION'$ and type='FUNCTION' order by line;
+
+Для просмотра назначенных пользователям ролей необходимо выполнить запрос:
+select
+u.username,
+ur.granted_role "granted role to user"
+from
+dba_users u,
+dba_role_privs ur
+where
+u.username = ur.grantee
+order by u.username;
+
+Для просмотра пользователей с ролью DBA необходимо выполнить запрос:
+select
+u.username,
+ur.granted_role "granted role to user"
+from
+dba_users u,
+dba_role_privs ur
+where
+u.username = ur.grantee
+and ur.granted_role in ('DBA')
+order by u.username;
+
+Для просмотра назначенных пользователям системных привилегий необходимо выполнить запрос:
+select
+u.username,
+rs.privilege "system privilege"
+from
+dba_users u,
+dba_sys_privs rs
+where
+u.username = rs.grantee
+order by u.username;
+
+select
+u.username,
+rs.privilege "system privilege"
+from
+dba_users u,
+dba_tab_privs rs
+where
+u.username = rs.grantee
+order by u.username;
+
+Для просмотра пользователей с системной привилегией SYSDBA, SYSOPER необходимо выполнить запрос:
+select username, sysdba, sysoper from v$pwfile_users;
+
+Для просмотра назначенных пользователям объектных привилегий необходимо выполнить запрос:
+select
+u.username,
+rs.table_name "object name",
+rs.privilege "object privilege"
+from
+dba_users u,
+dba_tab_privs rs
+where
+u.username = rs.grantee
+order by u.username;
+
+Для просмотра параметров аудита необходимо выполнить команду:
+show parameters aud%;
+
+Для просмотра зарегистрированных опций аудита необходимо выполнить запрос:
+select audit_option from dba_stmt_audit_opts;
+
+select name, value from sys.v_$spparameter where name = 'audit_file_dest';
+
+ODV
+select * from dba_role_privs where GRANTED_ROLE='DV_SECANALYST';
+select * from dba_role_privs where GRANTEE='<USERNAME>';
+
+
+POSTGRESQL
+psql -d ius_gdb -p 5437
+
+SELECT * FROM geoserver_audit;
+SELECT * FROM qgis_audit;
+
+
+GRANT SELECT ON geoserver_audit TO posdbaib;
+GRANT SELECT ON qgis_audit TO posdbaib;
+
+
+SET LINESIZE 80
+COL grantee FORMAT A40
+COL granted_role FORMAT A40
+select grantee, granted_role from dba_role_privs where grantee='SYSDBA';
+select grantee, granted_role from dba_role_privs where grantee='SAPDBA';
+select grantee, granted_role from dba_role_privs where grantee='SAPCONN';
+select grantee, granted_role from dba_role_privs where grantee='SAPACCTMGR';
+select grantee, granted_role from dba_role_privs where grantee='AIBROLE';
+select grantee, granted_role from dba_role_privs where grantee='MPROLE';
+select grantee, granted_role from dba_role_privs where grantee='SECADMIN';
+select grantee, granted_role from dba_role_privs where grantee='SECACCTMGR';
+select grantee, granted_role from dba_role_privs where grantee='AVSZI';
+select grantee, granted_role from dba_role_privs where grantee='IDMUSER';
+select grantee, granted_role from dba_role_privs where grantee='SECMGRPRIVS_ROLE';
+
+
+Проверка привелегий ролей:
+set line 128
+col OWNER format a10
+col TABLE_NAME format a50
+col PRIVILEGE format a10
+col GRANTEE format a15
+select OWNER,TABLE_NAME,PRIVILEGE,GRANTEE from dba_tab_privs where GRANTEE='AIBROLE' order by 2;
+
+
+set line 400
+col AUDIT_OPTION format a30
+col SUCCESS format a20
+col FAILURE format a20
+col USER_NAME format a30
+select AUDIT_OPTION, SUCCESS, FAILURE, USER_NAME from dba_stmt_audit_opts order by 1;
+
+
+
+
+cd /var/log/audit/oracle
+
+
+find . -maxdepth 1 -mtime 0 -type f -name 'ora_audit.log' -exec grep 'TESRUSER' {} \;
+
+REVOKE CREATE USER FROM AIBORACLE;
+
+set line 400
+set pagesize 2000
+col USERNAME format a30
+col ACCOUNT_STATUS format a30
+select username, ACCOUNT_STATUS, profile from dba_users order by 1;
+
+connect sys as sysdba;
+
+
+create user MPORACLE identified by P#ssword1234567890;
+
+
+Alter user MPORACLE identified by passw0rd#1234567890;
+
+drop user testuser;
+
+'grant create user to aiboracle
+
+find . -maxdepth 1 -mtime 0 -type f -name 'ora_audit.log' -exec grep 'grant create user to aiboracle' {} \;
+
+find . -maxdepth 1 -mtime 0 -type f -name 'ora_audit.log' -exec grep 'TUSER' {} \;
+
+select s.username, s.machine, s.program from v$session s where s.type != 'BACKGROUND' and s.program is not null;
+
+
+
+col USER_NAME format a30
+col ACCOUNT_STATUS format a30
+select username, ACCOUNT_STATUS, profile from dba_users order by 1;
+
+SELECT DISTINCT PROFILE,RESOURCE_NAME, LIMIT FROM DBA_PROFILES WHERE RESOURCE_NAME IN ('PASSWORD_REUSE_MAX','PASSWORD_LIFE_TIME','PASSWORD_REUSE_TIME','PASSWORD_REUSE_MAX') ORDER BY PROFILE;
+
+
+
+
+export ORACLE_HOME=/oracle/PH4/121
+export PATH=/usr/bin::/oracle/PH4/121/bin:/usr/sbin:/usr/bin
+
+
+
+
+select machine, program  from sys.v_$session where type != 'BACKGROUND' and program is not null;
+
+
+-- Посмотреть текст функции парольной политики
+select text from dba_source where name = 'VERIFY_FUNCTION';
+
+-- Просмотр состояния аудита
+show parameter aud%
+
+-- Просмотр параметров аудита
+select AUDIT_OPTION, USER_NAME, SUCCESS, FAILURE from dba_stmt_audit_opts order by 1;
+select AUDIT_OPTION from dba_stmt_audit_opts order by 1;
+
+-- Просмотр списка пользователей
+select USERNAME, PROFILE from dba_users;
+
+-- Просмотр списка ролей
+select ROLE from dba_roles;
+
+-- Просмотр списка профилей
+select PROFILE from dba_profiles;
+
+-- Просмотр настроек профиля SYSPROF (наиболее защищенный профиль)
+select RESOURCE_NAME, LIMIT from dba_profiles where profile='SYSPROF';
+
+-- Просмотр настроек профиля SAPPROF (профиль ограниченный только парольной политикой)
+-- В зависимости от проекта может настраиваться профиль DCMPROF
+select RESOURCE_NAME, LIMIT from dba_profiles where profile='SAPPROF';
+
+-- Просмотр настроек пользователя (назначенный профиль, статус аккаунта)
+select USERNAME, PROFILE, ACCOUNT_STATUS from dba_users order by username;
+
+-- Просмотр списка пользователей с назначенной ролью AIBROLE
+select * from dba_role_privs where GRANTED_ROLE='AIBROLE';
+
+-- Просмотр списка ролей, назначенных пользователю AIB
+select * from dba_role_privs where GRANTEE='AIB';
+
+-- Просмотр прав роли AIBROLE на таблицы
+select TABLE_NAME from dba_tab_privs where GRANTEE='AIBROLE';
+
+***********************************************************************************************
+SQL> show parameter aud%
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+audit_file_dest                      string      /oracle/PR2/saptrace/audit
+audit_sys_operations                 boolean     TRUE
+audit_syslog_level                   string
+audit_trail                          string      OS
+SQL> select username from dba_users;
+
+USERNAME
+------------------------------
+OPS$SAPSERVICEDR2
+OPS$ORADR2
+OPS$PR2ADM
+OPS$ORAPR2
+MPORACLE
+OPS$DR2ADM
+IDMUSER
+DBSNMP
+SYS
+SYSTEM
+SAPSR3
+
+USERNAME
+------------------------------
+OUTLN
+ORACLE_OCM
+DIP
+APPQOSSYS
+
+15 rows selected.
+
+***********************************************************************************************
+SQL> select * from dba_roles;
+
+ROLE
+------------------------------
+CONNECT
+RESOURCE
+DBA
+SELECT_CATALOG_ROLE
+EXECUTE_CATALOG_ROLE
+DELETE_CATALOG_ROLE
+EXP_FULL_DATABASE
+IMP_FULL_DATABASE
+RECOVERY_CATALOG_OWNER
+GATHER_SYSTEM_STATISTICS
+LOGSTDBY_ADMINISTRATOR
+
+ROLE
+------------------------------
+AQ_ADMINISTRATOR_ROLE
+AQ_USER_ROLE
+GLOBAL_AQ_USER_ROLE
+SCHEDULER_ADMIN
+HS_ADMIN_ROLE
+OEM_ADVISOR
+OEM_MONITOR
+SAPDBA
+SAPCONN
+DBFS_ROLE
+DATAPUMP_EXP_FULL_DATABASE
+
+ROLE
+------------------------------
+DATAPUMP_IMP_FULL_DATABASE
+ADM_PARALLEL_EXECUTE_TASK
+HS_ADMIN_SELECT_ROLE
+HS_ADMIN_EXECUTE_ROLE
+AIBROLE
+MPROLE
+
+***********************************************************************************************
+SQL> select profile from dba_profiles;
+
+PROFILE
+------------------------------
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+
+PROFILE
+------------------------------
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+SAPPROF
+SYSPROF
+
+PROFILE
+------------------------------
+SAPUPROF
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+SAPPROF
+
+PROFILE
+------------------------------
+SYSPROF
+SAPUPROF
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+
+PROFILE
+------------------------------
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+
+PROFILE
+------------------------------
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+SAPPROF
+SYSPROF
+SAPUPROF
+DEFAULT
+
+***********************************************************************************************
+SQL> select RESOURCE_NAME, LIMIT from dba_profiles where profile='SYSPROF';
+
+RESOURCE_NAME                    LIMIT
+-------------------------------- ----------------------------------------
+COMPOSITE_LIMIT                  DEFAULT
+SESSIONS_PER_USER                DEFAULT
+CPU_PER_SESSION                  DEFAULT
+CPU_PER_CALL                     DEFAULT
+LOGICAL_READS_PER_SESSION        DEFAULT
+LOGICAL_READS_PER_CALL           DEFAULT
+IDLE_TIME                        DEFAULT
+CONNECT_TIME                     DEFAULT
+PRIVATE_SGA                      DEFAULT
+FAILED_LOGIN_ATTEMPTS            3
+PASSWORD_LIFE_TIME               90
+
+RESOURCE_NAME                    LIMIT
+-------------------------------- ----------------------------------------
+PASSWORD_REUSE_TIME              450
+PASSWORD_REUSE_MAX               5
+PASSWORD_VERIFY_FUNCTION         VERIFY_FUNCTION
+PASSWORD_LOCK_TIME               1
+PASSWORD_GRACE_TIME              DEFAULT
+
+***********************************************************************************************
+SQL> select RESOURCE_NAME, LIMIT from dba_profiles where profile='SAPPROF';
+
+RESOURCE_NAME                    LIMIT
+-------------------------------- ----------------------------------------
+COMPOSITE_LIMIT                  DEFAULT
+SESSIONS_PER_USER                DEFAULT
+CPU_PER_SESSION                  DEFAULT
+CPU_PER_CALL                     DEFAULT
+LOGICAL_READS_PER_SESSION        DEFAULT
+LOGICAL_READS_PER_CALL           DEFAULT
+IDLE_TIME                        DEFAULT
+CONNECT_TIME                     DEFAULT
+PRIVATE_SGA                      DEFAULT
+FAILED_LOGIN_ATTEMPTS            DEFAULT
+PASSWORD_LIFE_TIME               DEFAULT
+
+RESOURCE_NAME                    LIMIT
+-------------------------------- ----------------------------------------
+PASSWORD_REUSE_TIME              DEFAULT
+PASSWORD_REUSE_MAX               DEFAULT
+PASSWORD_VERIFY_FUNCTION         VERIFY_FUNCTION
+PASSWORD_LOCK_TIME               DEFAULT
+PASSWORD_GRACE_TIME              DEFAULT
+
+***********************************************************************************************
+SQL> set linesize 128
+
+***********************************************************************************************
+SQL> select username, profile, account_status from dba_users order by username;
+
+USERNAME                       PROFILE                        ACCOUNT_STATUS
+------------------------------ ------------------------------ ------------------
+APPQOSSYS                      DEFAULT                        EXPIRED & LOCKED
+DBSNMP                         DEFAULT                        OPEN
+DIP                            DEFAULT                        EXPIRED & LOCKED
+IDMUSER                        DEFAULT                        OPEN
+KONDSERA                       SYSPROF                        OPEN
+MPORACLE                       DEFAULT                        OPEN
+OPS$DR2ADM                     DEFAULT                        OPEN
+OPS$ORADR2                     DEFAULT                        OPEN
+OPS$ORAPR2                     DEFAULT                        OPEN
+OPS$PR2ADM                     DEFAULT                        OPEN
+OPS$SAPSERVICEDR2              DEFAULT                        OPEN
+
+USERNAME                       PROFILE                        ACCOUNT_STATUS
+------------------------------ ------------------------------ ------------------
+ORACLE_OCM                     DEFAULT                        EXPIRED & LOCKED
+OUTLN                          DEFAULT                        LOCKED
+SAPSR3                         SAPPROF                        EXPIRED(GRACE)
+SYS                            SYSPROF                        OPEN
+SYSTEM                         SAPPROF                        OPEN
+
+***********************************************************************************************
+SQL> select * from dba_role_privs where GRANTED_ROLE='AIBROLE';
+
+GRANTEE                        GRANTED_ROLE                   ADM DEF
+------------------------------ ------------------------------ --- ---
+KONDSERA                       AIBROLE                        NO  YES
+SYS                            AIBROLE                        YES YES
+
+***********************************************************************************************
+SQL> select AUDIT_OPTION, SUCCESS, FAILURE from dba_stmt_audit_opts;
+
+AUDIT_OPTION                             SUCCESS    FAILURE
+---------------------------------------- ---------- ----------
+ALTER SYSTEM                             BY ACCESS  BY ACCESS
+SYSTEM AUDIT                             BY ACCESS  BY ACCESS
+CREATE SESSION                           BY ACCESS  BY ACCESS
+CREATE USER                              BY ACCESS  BY ACCESS
+ALTER USER                               BY ACCESS  BY ACCESS
+DROP USER                                BY ACCESS  BY ACCESS
+ROLE                                     BY ACCESS  BY ACCESS
+DIRECTORY                                BY ACCESS  BY ACCESS
+CREATE ANY TABLE                         BY ACCESS  BY ACCESS
+ALTER ANY TABLE                          BY ACCESS  BY ACCESS
+DROP ANY TABLE                           BY ACCESS  BY ACCESS
+
+AUDIT_OPTION                             SUCCESS    FAILURE
+---------------------------------------- ---------- ----------
+CREATE PUBLIC DATABASE LINK              BY ACCESS  BY ACCESS
+GRANT ANY ROLE                           BY ACCESS  BY ACCESS
+SYSTEM GRANT                             BY ACCESS  BY ACCESS
+ALTER DATABASE                           BY ACCESS  BY ACCESS
+CREATE ANY PROCEDURE                     BY ACCESS  BY ACCESS
+ALTER ANY PROCEDURE                      BY ACCESS  BY ACCESS
+DROP ANY PROCEDURE                       BY ACCESS  BY ACCESS
+CREATE PROFILE                           BY ACCESS  BY ACCESS
+ALTER PROFILE                            BY ACCESS  BY ACCESS
+DROP PROFILE                             BY ACCESS  BY ACCESS
+GRANT ANY PRIVILEGE                      BY ACCESS  BY ACCESS
+
+AUDIT_OPTION                             SUCCESS    FAILURE
+---------------------------------------- ---------- ----------
+CREATE ANY LIBRARY                       BY ACCESS  BY ACCESS
+EXEMPT ACCESS POLICY                     BY SESSION BY SESSION
+GRANT ANY OBJECT PRIVILEGE               BY ACCESS  BY ACCESS
+CREATE ANY JOB                           BY SESSION BY SESSION
+CREATE EXTERNAL JOB                      BY SESSION BY SESSION
+CREATE ANY EDITION                       BY ACCESS  BY ACCESS
+DROP ANY EDITION                         BY ACCESS  BY ACCESS
+
+***********************************************************************************************
+SQL> select TABLE_NAME from dba_tab_privs where GRANTEE='AIBROLE';
+
+TABLE_NAME
+------------------------------
+V_$PARAMETER
+V_$SESSION
+V_$SPPARAMETER
+DBA_PROFILES
+DBA_USERS
+DBA_AUDIT_TRAIL
+DBA_SOURCE
+DBA_STMT_AUDIT_OPTS
+DBA_TAB_PRIVS
+DBA_ROLE_PRIVS
+
+***********************************************************************************************
+
+pfexec /usr/sbin/ifconfig –a;
+select username, ACCOUNT_STATUS from dba_users;
+cat /network/admin/listener.ora
+
+
+select * from table_privileges where grantee = 'AIB_ASUP' order by owner, table_name;
+select rs.grantee, rs.table_name, rs.privilege from dba_tab_privs rs where rs.grantee = 'AIB_ASUP' order by rs.grantee;
+
+ALTER SYSTEM
+SYSTEM AUDIT
+CREATE SESSION
+TABLE
+CREATE USER
+ALTER USER
+DROP USER
+PUBLIC SYNONYM
+DATABASE LINK
+ROLE
+PROFILE
+
+AUDIT_OPTION
+----------------------------------------
+CREATE TABLE
+CREATE ANY TABLE
+ALTER ANY TABLE
+DROP ANY TABLE
+ALTER TABLE
+CREATE PUBLIC DATABASE LINK
+CREATE ROLE
+GRANT ANY ROLE
+SYSTEM GRANT
+ALTER DATABASE
+CREATE ANY PROCEDURE
+
+AUDIT_OPTION
+----------------------------------------
+ALTER ANY PROCEDURE
+DROP ANY PROCEDURE
+CREATE PROFILE
+ALTER PROFILE
+DROP PROFILE
+GRANT ANY PRIVILEGE
+CREATE ANY LIBRARY
+EXEMPT ACCESS POLICY
+GRANT ANY OBJECT PRIVILEGE
+CREATE ANY JOB
+CREATE EXTERNAL JOB
+
+AUDIT_OPTION
+----------------------------------------
+CREATE ANY EDITION
+DROP ANY EDITION
+
+SYSTEM                         DCMPROF
+SYS                            SYSPROF
+AIBORACLE                      SYSPROF
+JUKOROMV                       SYSPROF
+OPS$PH6ADM                     DEFAULT
+OPS$SAPSERVICEPH6              DEFAULT
+OPS$ORAPH6                     DEFAULT
+SAPSR3                         DCMPROF
+OUTLN                          DCMPROF
+DIP                            DCMPROF
+ORACLE_OCM                     DEFAULT
+
+USERNAME                       PROFILE
+------------------------------ ------------------------------
+DBSNMP                         DEFAULT
+APPQOSSYS     
+
+-- --------------------------------------------------------------------------------------------------------------------------------------------------
+-- Сценарий настройки ВВ СУБД Oracle в соответствии с ЭД ПОИБ ЦОД «МОСКВА» Встроенные возможности СУБД Oracle. Описание настроек ЦОД-М.ЭД.П2.ИБ.ПН.13
+-- 23.01.2020
+-- --------------------------------------------------------------------------------------------------------------------------------------------------
+-- 1. Зайти под УЗ владельца БД
+conn / as sysdba
+-- 1.1 Проверить имя экземпляра
+select INSTANCE_NAME from V$INSTANCE;
+-- 1.2 Просмотреть spfile
+show parameter spfile
+-- Внимание Настройка [7.2 Настройка параметров аудита с отправкой в SYSLOG], [п.10.2 Настройка использования файла паролей]  возможна только при запуске инстанции БД от spfile.
+-- 1.3 Проверить настройку прослушивающего процесса (Listener)
+-- Зайти в ОС под УЗ владельца БД
+lsnrctl status
+-- Проверить:	Security ON: Local OS Authentication
+--				Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=OTD9H-db)(PORT=2009)))
+--				STATUS of the LISTENER
+-- Стандартный порт подключения к СУБД TCP/1521(1527) должен быть изменен на TCP/2009. должен быть заменен на 2009. Изменение стандартного порта осуществляется с помощью изменения настроек Listener в файле $ORACLE_HOME/network/admin/listener.ora
+-- Пример настройки: 
+«listener_name=
+(DESCRIPTION=
+(ADDRESS=(PROTOCOL=tcp)(HOST=<имя_сервера>)(PORT=2009)))»
+
+-- ------------------------------------------------------------------------- 
+-- 2. Настройка функции контроля сложности пароля
+-- 2.1 Скопировать текст функции контроля сложности пароля в /tmp/verify_function.sql
+select TEXT from DBA_SOURCE where NAME='VERIFY_FUNCTION';
+-- 2.2 Выполнить
+@/tmp/verify_function.sql
+-- 2.3 Проверить функцию контроля сложности пароля
+select TEXT from DBA_SOURCE where NAME='VERIFY_FUNCTION';
+
+-- ------------------------------------------------------------------------- 
+-- 3. Настройка профилей
+-- 3.1 Просмотр настроек пользователей (назначенный профиль, статус аккаунта) (Выполняется при необходимости)
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16
+select USERNAME, PROFILE, ACCOUNT_STATUS from DBA_USERS order by 1;
+
+-- 3.2 Вывести список профилей (для инф.) 
+select distinct PROFILE from DBA_PROFILES order by 1;
+
+-- 3.3 Выполнить создание/настройку профиля 'SYSPROF' 
+-- 3.3.1 Просмотр настроек профиля 'SYSPROF' 
+set line 128
+set pagesize 2000
+col RESOURCE_NAME format a50
+col LIMIT format a30
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='SYSPROF';
+
+-- Проверить на соответствие эталонному результату выполнения запроса 
+-- FAILED_LOGIN_ATTEMPTS                              5
+-- PASSWORD_LIFE_TIME                                 83
+-- PASSWORD_REUSE_TIME                                365
+-- PASSWORD_REUSE_MAX                                 5
+-- PASSWORD_VERIFY_FUNCTION                           VERIFY_FUNCTION
+-- PASSWORD_LOCK_TIME                                 UNLIMITED
+-- PASSWORD_GRACE_TIME                                7
+
+
+-- 3.3.2 Создание профиля 'SYSPROF' 
+create profile SYSPROF limit
+  failed_login_attempts 5
+  password_life_time 83
+  password_grace_time 7
+  password_reuse_time 365
+  password_reuse_max 5
+  password_lock_time UNLIMITED 
+  password_verify_function VERIFY_FUNCTION;
+
+-- 3.3.3 Настройка профиля 'SYSPROF' 
+alter profile SYSPROF limit
+  failed_login_attempts 5
+  password_life_time 83
+  password_grace_time 7
+  password_reuse_time 365
+  password_reuse_max 5
+  password_lock_time UNLIMITED
+  password_verify_function VERIFY_FUNCTION;
+
+-- 3.4 Выполнить создание/настройку специализированного профиля 'SAPUPROF' 
+-- Внимание!!! Данный профиль создатся и настраивается для SAP систем.
+-- 3.4.1 Просмотр списка пользователей с профилем 'SAPUPROF'
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16  
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='SAPUPROF' order by 1;
+
+-- 3.4.2 Просмотр настроек профиля 'SAPUPROF' 
+set line 128
+set pagesize 2000
+col RESOURCE_NAME format a50
+col LIMIT format a30
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='SAPUPROF';
+
+-- Проверить на соответствие эталонному результату выполнения запроса 
+-- FAILED_LOGIN_ATTEMPTS                              UNLIMITED
+-- PASSWORD_LIFE_TIME                                 UNLIMITED
+-- PASSWORD_VERIFY_FUNCTION                           VERIFY_FUNCTION
+
+-- 3.4.3 Создание профиля профиля 'SAPUPROF' (при необходимости)
+create profile SAPUPROF limit
+  failed_login_attempts UNLIMITED
+  password_life_time UNLIMITED
+  password_verify_function VERIFY_FUNCTION;
+  
+-- 3.4.4 Настройка профиля 'SAPUPROF':
+alter profile SAPUPROF limit
+  failed_login_attempts UNLIMITED
+  password_life_time UNLIMITED
+  password_verify_function VERIFY_FUNCTION;
+
+-- 3.5 Выполнить создание/настройку специализированного профиля 'SERVPROF'
+-- Внимание!!! Данный профиль создатся и настраивается для систем отличных от SAP систем.
+-- 3.5.1 Просмотр списка пользователей с профилем 'SERVPROF'
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16  
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='SERVPROF' order by 1;
+
+-- 3.5.2 Просмотр настроек профиля 'SERVPROF' 
+set line 128
+set pagesize 2000
+col RESOURCE_NAME format a50
+col LIMIT format a30
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='SERVPROF';
+
+-- 3.5.3 Создание профиля профиля 'SERVPROF' (при необходимости)
+create profile SERVPROF limit
+  failed_login_attempts UNLIMITED
+  password_life_time UNLIMITED
+  password_verify_function VERIFY_FUNCTION;
+
+  -- 3.5.4 Настройка профиля 'SERVPROF' 
+alter profile SERVPROF limit
+  FAILED_LOGIN_ATTEMPTS UNLIMITED
+  PASSWORD_LIFE_TIME UNLIMITED
+  password_verify_function VERIFY_FUNCTION;
+ 
+-- 3.6 Выполнить cоздание/настройку специализированного профиля 'PP_PROF':(при необходимости)
+-- Внимание!!! Данный профиль создатся и настраивается для Подсистемы Планирования АСБУ PROGNOZ PLATFORM
+-- 3.6.1 Просмотр списка пользователей с профилем 'PP_PROF'
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16  
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='PP_PROF' order by 1;
+
+-- 3.6.2 Просмотр настроек профиля 'PP_PROF' 
+set line 128
+set pagesize 2000
+col RESOURCE_NAME format a50
+col LIMIT format a30
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='PP_PROF';
+
+-- 3.6.3 Создание профиля 'PP_PROF'
+create profile PP_PROF limit
+  failed_login_attempts UNLIMITED
+  password_life_time UNLIMITED
+  password_verify_function NULL;
+
+-- 3.6.4 Настройка профиля 'PP_PROF'
+alter profile PP_PROF limit
+  failed_login_attempts UNLIMITED
+  password_life_time UNLIMITED
+  password_verify_function NULL;
+
+-- 3.7 Выполнить cоздание/настройку специализированного профиля 'PROGPROF':(при необходимости)
+-- Внимание!!! Данный профиль создатся и настраивается для Подсистемы Планирования АСБУ PROGNOZ PLATFORM
+-- 3.7.1 Просмотр списка пользователей с профилем 'PROGPROF'
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16  
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='PROGPROF' order by 1;
+
+-- 3.7.2 Просмотр настроек профиля 'PROGPROF' 
+set line 128
+set pagesize 2000
+col RESOURCE_NAME format a50
+col LIMIT format a30
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='PROGPROF';
+
+-- 3.7.3 Создание профиля профиля 'PROGPROF' (при необходимости)
+create profile PROGPROF limit
+  failed_login_attempts UNLIMITED
+  password_life_time UNLIMITED
+  password_verify_function VERIFY_FUNCTION;
+
+-- 3.7.4 Настройка профиля 'PROGPROF' 
+alter profile PROGPROF limit
+  FAILED_LOGIN_ATTEMPTS UNLIMITED
+  PASSWORD_LIFE_TIME UNLIMITED
+  password_verify_function VERIFY_FUNCTION;
+
+-- 3.7.5 Пример назначения профиля 'PROGPROF'  (Для инф.)
+alter user MPORACLE profile PROGPROF;  
+  
+ 
+-- 3.8 Проверка настроек профиля 'DEFAULT' 
+-- Внимание!!!Настройка профиля 'DEFAULT' выполняется в [п.6 Настройка профиля 'DEFAULT'] после выполнения [п.4 Назначение профилей]
+-- 3.8.1 Просмотр списка пользователей с профилем 'DEFAULT' 
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16  
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='DEFAULT' order by 1;
+
+-- Проверить на соответствие эталонному результату выполнения запроса "Просмотр списка пользователей с профилем 'DEFAULT'"
+-- USERNAME                  ACCOUNT_STATUS
+-- ------------------------- ----------------
+-- XS$NULL                   EXPIRED & LOCKED
+
+-- 3.8.2 Просмотр настроек профиля 'DEFAULT' 
+set line 128
+set pagesize 2000
+col RESOURCE_NAME format a50
+col LIMIT format a30
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='DEFAULT' order by 1;
+
+-- Проверить настройки профиля 'DEFAULT' с нижеследующими эталонным параметрам:
+-- FAILED_LOGIN_ATTEMPTS    5									
+-- PASSWORD_GRACE_TIME      7									
+-- PASSWORD_LIFE_TIME       83									
+-- PASSWORD_LOCK_TIME       UNLIMITED									
+-- PASSWORD_REUSE_MAX       5									
+-- PASSWORD_REUSE_TIME      365									
+-- PASSWORD_VERIFY_FUNCTION VERIFY_FUNCTION									
+
+-- Если результаты выполнения п.3.8.1 и п.3.8.2  не соответствую эталонным параметрам - переходим к п.6
+
+-- -------------------------------------------------------------------------
+-- ------------------------------------------------------------------------- 
+-- 4 Назначение профилей
+-- 4.1 Просмотр настроек пользователей (назначенный профиль, статус аккаунта)
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16
+select USERNAME, PROFILE, ACCOUNT_STATUS, LOCK_DATE, EXPIRY_DATE, CREATED from DBA_USERS order by 1;
+
+-- 4.2 Назначить профиль 'SYSPROF' для системным УЗ SYS и УЗ SYSTEM
+alter user SYS profile SYSPROF;
+alter user SYSTEM profile SYSPROF;
+
+-- 4.3 Назначение специализированного профиля для служебных УЗ
+-- 4.3.1 Назначить специализированный профиль служебной УЗ по шаблону.
+-- Внимание!!! Данный пункт выполняется, если к данному сценарию прилагается список УЗ и имя присваемого профиля из состава профилей, определенных в [п.3 Настройка профилей]
+alter user <имя служебной УЗ> profile <имя специализированного профиля>;
+
+-- 4.3.2 Вывести список пользователей с профилем 'DEFAULT':
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='DEFAULT' order by 1;
+-- 4.3.3 Исключить из списка УЗ 'XS$NULL'. Для УЗ 'XS$NULL' остается профиль 'DEFAULT'.
+-- 4.3.4 Исключить из списка УЗ Aдминистраторов Ииформационной Bезопасности <AИБ> (для УЗ <AИБ> назначается профиль 'SYSPROF' п.11.3.2/п.11.3.3)
+-- Оставшиеся УЗ переводятся в разряд служебных УЗ, которым присваивается специализированный профиль.
+-- Выполнить команду для каждой служебной УЗ
+-- 4.3.4.1 Для Подсистемы Планирования АСБУ PROGNOZ PLATFORM
+alter user <имя служебной УЗ> profile PP_PROF;
+-- 4.3.4.2 Для SAP систем 
+alter user <имя служебной УЗ> profile SAPUPROF;
+-- 4.3.4.3 Для систем OpenText 
+alter user <имя служебной УЗ> profile SAPUPROF;
+-- 4.3.4.4 Для систем отличных от SAP систем
+alter user <имя служебной УЗ> profile SERVPROF;
+
+-- ------------------------------------------------------------------------- 
+-- 5 Удалить неиспользуемые профили
+-- Вывести список профилей (для инф.) 
+select distinct PROFILE from DBA_PROFILES order by 1;
+
+-- 5.1  Для УЗ имеющих  профиль 'GSM_PROF'  заменить на 'SAPUPROF'
+-- 5.1.1  Вывести список пользователей с профилем 'GSM_PROF'
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='GSM_PROF' order by 1;
+-- 5.1.2  Изменить профиль для служебной УЗ  GSMUSER, выполнив команду
+alter user GSMUSER profile SAPUPROF;
+
+-- 5.2  Для УЗ имеющих  профиль 'ORA_STIG_PROFILE' заменить на 'SAPUPROF'
+-- 5.2.1  Вывести список пользователей с профилем 'GSM_PROF'
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='ORA_STIG_PROFILE' order by 1;
+-- 5.2.2  При необходимости Выполнить команду для каждой УЗ с профилем 'ORA_STIG_PROFILE'
+alter user <имя служебной УЗ> profile SAPUPROF;
+или команду(для систем отличных от SAP) 
+alter user <имя служебной УЗ> profile SERVPROF;
+
+-- 5.3 Удалить профили
+drop profile SAPPROF; (если неиспользуется)
+drop profile ORA_STIG_PROFILE;
+drop profile GSM_PROF;
+
+-- ------------------------------------------------------------------------- 
+-- 6 Настройка профиля 'DEFAULT'
+-- 6.1 Выполнить просмотр списка пользователей с профилем 'DEFAULT':
+set line 400
+set pagesize 2000
+col USERNAME format a25
+col PROFILE format a20
+col ACCOUNT_STATUS format a16
+select USERNAME, ACCOUNT_STATUS from DBA_USERS where profile='DEFAULT' order by 1;
+
+-- 6.2 Убедиться, что в списке присутствует только одна УЗ XS$NULL, иначе перейти к выполнению [п.4 Назначение профилей], возможно потребуется дополнитнльная информапция к выполнению п.4.3.1                     
+
+-- 6.3 Просмотр настроек профиля 'DEFAULT' (Для инф.)
+set line 128
+set pagesize 2000
+col RESOURCE_NAME format a50
+col LIMIT format a30
+select RESOURCE_NAME, LIMIT from DBA_PROFILES where profile='DEFAULT';
+
+-- Проверить настройки профиля 'DEFAULT' с нижеследующими эталонным параметрам:
+-- FAILED_LOGIN_ATTEMPTS    5									
+-- PASSWORD_GRACE_TIME      7									
+-- PASSWORD_LIFE_TIME       83									
+-- PASSWORD_LOCK_TIME       UNLIMITED									
+-- PASSWORD_REUSE_MAX       5									
+-- PASSWORD_REUSE_TIME      365									
+-- PASSWORD_VERIFY_FUNCTION VERIFY_FUNCTION									
+
+-- 6.4 Выполнить настройку профиля 'DEFAULT'
+ alter profile DEFAULT limit
+  failed_login_attempts 5
+  password_life_time 83
+  password_grace_time 7
+  password_reuse_time 365
+  password_reuse_max 5
+  password_lock_time UNLIMITED
+  password_verify_function VERIFY_FUNCTION;
+  
+-- ------------------------------------------------------------------------- 
+-- 7 Настройка аудита
+-- 7.1 Вывести состояния аудита 
+set line 400
+show parameter aud%
+select name, value, display_value from V$PARAMETER where name like '%aud%';
+
+-- 7.2 Настройка параметров аудита с отправкой в SYSLOG
+-- Внимание Возможно п.7.2 уже настроен.
+-- Риски/ограничения Для применения настроек по п.7.2, требуется перезагрузка инстанции БД.
+alter system set audit_sys_operations=true scope=spfile;
+alter system set audit_syslog_level='local1.warning' scope=spfile;
+alter system set AUDIT_TRAIL=OS scope=spfile;
+
+-- ------------------------------------------------------------------------- 
+-- 8 Наcтройка опций аудита
+-- 8.1 Проверить список опций без привязки к УЗ
+-- Примечание установленная опция 'audit SESSION' отображается как 'CREATE SESSION'
+set line 400
+set pagesize 2000
+col AUDIT_OPTION format a30
+col SUCCESS format a20
+col FAILURE format a20
+col USER_NAME format a30
+select AUDIT_OPTION from dba_stmt_audit_opts where USER_NAME is NULL order by 1;
+
+-- 8.2 установить опции аудита
+audit ALTER ANY PROCEDURE;
+audit ALTER ANY TABLE;
+audit ALTER DATABASE;
+audit ALTER PROFILE;
+audit ALTER SYSTEM;
+audit ALTER TABLE;
+audit ALTER USER;
+audit BECOME USER;
+audit CREATE ANY EDITION;
+audit CREATE ANY JOB;
+audit CREATE ANY LIBRARY;
+audit CREATE ANY PROCEDURE;
+audit CREATE ANY TABLE;
+audit CREATE EXTERNAL JOB;
+audit CREATE PROFILE;
+audit CREATE PUBLIC DATABASE LINK;
+audit CREATE ROLE;
+audit SESSION;
+audit CREATE TABLE;
+audit CREATE USER;
+audit DATABASE LINK;
+audit DIRECTORY;
+audit DROP ANY EDITION;
+audit DROP ANY PROCEDURE;
+audit DROP ANY TABLE;
+audit DROP PROFILE;
+audit DROP USER;
+audit EXEMPT ACCESS POLICY;
+audit GRANT ANY OBJECT PRIVILEGE;
+audit GRANT ANY PRIVILEGE;
+audit GRANT ANY ROLE;
+audit PLUGGABLE DATABASE;
+audit PROFILE;
+audit PUBLIC SYNONYM;
+audit ROLE;
+audit SYSTEM AUDIT;
+audit SYSTEM GRANT;
+audit TABLE;
+audit USER;
+
+
+-- 8.3 Проверить список опций с привязкой к УЗ
+-- При необходимости: наcтроить опции аудита для УЗ <персонифицированная УЗ АИБ> в соответствии с п.8.5
+select AUDIT_OPTION, SUCCESS, FAILURE from dba_stmt_audit_opts;
+select AUDIT_OPTION from dba_stmt_audit_opts;
+set linesize 128
+col AUDIT_OPTION format a30
+col SUCCESS format a15
+col FAILURE format a15
+col USER_NAME format a30
+select AUDIT_OPTION, SUCCESS, FAILURE, USER_NAME from dba_stmt_audit_opts order by 4;
+
+-- 8.4 Наcтроить опции аудита для УЗ 'SYSTEM'
+audit SELECT ANY TABLE BY SYSTEM BY ACCESS;
+audit UPDATE ANY TABLE BY SYSTEM BY ACCESS;
+audit INSERT ANY TABLE BY SYSTEM BY ACCESS;
+audit DELETE ANY TABLE BY SYSTEM BY ACCESS;
+audit SELECT TABLE BY SYSTEM BY ACCESS;
+audit UPDATE TABLE BY SYSTEM BY ACCESS;
+audit INSERT TABLE BY SYSTEM BY ACCESS;
+audit DELETE TABLE BY SYSTEM BY ACCESS;
+
+-- 8.5 Наcтроить опции аудита для УЗ <персонифицированная УЗ АИБ>
+audit SELECT ANY TABLE BY <персонифицированная УЗ АИБ> BY ACCESS;
+audit UPDATE ANY TABLE BY <персонифицированная УЗ АИБ> BY ACCESS;
+audit INSERT ANY TABLE BY <персонифицированная УЗ АИБ> BY ACCESS;
+audit DELETE ANY TABLE BY <персонифицированная УЗ АИБ> BY ACCESS;
+audit SELECT TABLE BY <персонифицированная УЗ АИБ> BY ACCESS;
+audit UPDATE TABLE BY <персонифицированная УЗ АИБ> BY ACCESS;
+audit INSERT TABLE BY <персонифицированная УЗ АИБ> BY ACCESS;
+audit DELETE TABLE BY <персонифицированная УЗ АИБ> BY ACCESS;
+
+-- ------------------------------------------------------------------------- 
+-- 9 Сменить  пароли для стандартных УЗ, у которых предустановлены по умолчанию пароли.
+-- 9.1 Вывести список  УЗ с паролем по умолчанию
+select username from sys.dba_users_with_defpwd;
+
+-- 9.2 Для каждой УЗ из списка УЗ с паролем по умолчанию назначить новый пароль
+-- Примечание Пароль формируется в соответствии с утвержденной парольной политикой ИВС и ЦОД.
+alter user <имя УЗ с паролем по умолчанию> identified by <пароль>;
+
+-- ------------------------------------------------------------------------- 
+-- 10 Настроить использование файла паролей
+-- Внимание Во всех СУБД на серверах с ППО отличным от SAP значение параметра СУБД «remote_login_passwordfile» должно быть равным «NONE».
+-- Внимание Во всех СУБД на серверах с SAP параметр СУБД «remote_login_passwordfile»  в рамках настройки ПОИБ СУБД Oracle не настраивается и может принимать значение:
+
+-- NAME                                 TYPE        VALUE
+-- ------------------------------------ ----------- ------------------------------
+-- remote_login_passwordfile            string      EXCLUSIVE
+
+
+-- 10.1 Просмотр настройки использования файла паролей
+show parameter remote_login_passwordfile
+
+-- 10.2 Настройка использования файла паролей
+-- Внимание Возможно 10.2 уже настроен.
+-- Риски/ограничения Для применения настроек по п.8.2, требуется перезагрузка инстанции БД.
+alter system set remote_login_passwordfile=none scope=spfile;
+
+-- ------------------------------------------------------------------------- 
+-- 11 Настройки для АИБ.
+-- 11.1 Создание роли 'AIBROLE' и назначение роли и привилегий
+-- 11.1.1 Просмотр списка ролей/роли 'AIBROLE'
+select ROLE from DBA_ROLES order by 1;
+select ROLE from DBA_ROLES where ROLE in ('AIBROLE');
+
+-- При необходимости Создаnm роль 'AIBROLE'
+create role AIBROLE;
+
+-- 11.1.2 Просмотр прав на таблицы для  роли 'AIBROLE'
+set line 400
+set pagesize 2000
+col OWNER format a15
+col TABLE_NAME format a45
+col PRIVILEGE format a15
+col GRANTEE format a15
+select OWNER, TABLE_NAME, PRIVILEGE, GRANTEE from DBA_TAB_PRIVS where GRANTEE='AIBROLE' order by 1,2;
+
+-- 11.1.4 Просмотр привилегий для  роли 'AIBROLE'
+select TABLE_NAME from dba_tab_privs where GRANTEE='AIBROLE';							
+							
+-- TABLE_NAME							
+-- -----------------------------------					
+-- V_$SESSION
+-- V_$PARAMETER
+-- V_$SPPARAMETER
+-- DBA_ROLE_PRIVS
+-- DBA_TAB_PRIVS
+-- DBA_PROFILES
+-- DBA_USERS
+-- DBA_STMT_AUDIT_OPTS
+-- DBA_AUDIT_TRAIL
+-- AUDIT_UNIFIED_POLICIES
+-- AUDIT_UNIFIED_ENABLED_POLICIES
+-- DBA_ROLES
+-- DBA_SYS_PRIVS
+-- DBA_SOURCE
+-- DBA_USERS_WITH_DEFPWD
+-- 
+-- 15 rows selected.
+
+-- 11.1.4 назначение роли и привилегий для  роли 'AIBROLE'
+grant connect to AIBROLE;
+grant select on sys.dba_audit_trail to AIBROLE;
+grant select on sys.dba_stmt_audit_opts to AIBROLE;
+grant select on sys.dba_profiles to AIBROLE;
+grant select on sys.dba_source to AIBROLE;
+grant select on sys.dba_users to AIBROLE;
+grant select on sys.dba_role_privs to AIBROLE;
+grant select on sys.dba_tab_privs to AIBROLE;
+grant select on sys.dba_sys_privs to AIBROLE;
+grant select on sys.dba_roles to AIBROLE;
+grant select on sys.v_$spparameter to AIBROLE;
+grant select on sys.v_$parameter to AIBROLE;
+grant select on sys.v_$session to AIBROLE;
+grant select on sys.audit_unified_policies to AIBROLE;
+grant select on sys.audit_unified_enabled_policies to AIBROLE;
+grant select on SYS.DBA_USERS_WITH_DEFPWD to AIBROLE;
+
+
+
+-- ----------------------------------------------------------
+-- 11.2 Только в БД OpenText мназначаем привилегии
+grant select on ECR.ADM_AUDIT to AIBROLE;
+-- ----------------------------------------------------------
+
+-- 11.3 Создание УЗ АИБ (выполняется при необходимости)
+
+-- 11.3.1 Просмотр списка пользователей с назначенной ролью 'AIBROLE'
+set line 400
+set pagesize 2000
+col GRANTEE format a25
+col GRANTED_ROLE format a15
+col ADMIN_OPTION format a12
+select GRANTEE, GRANTED_ROLE, ADMIN_OPTION  from DBA_ROLE_PRIVS where GRANTED_ROLE='AIBROLE' order by 1;
+-- Примечание УЗ SYS  роль 'AIBROLE' присваивается автоматически.
+
+-- 11.3.2 Создать/изменить неперсонифицированную УЗ АИБ "AIBORACLE" (если отсутсвует).
+create user AIBORACLE identified by <пароль>;
+-- Примечание Пароль формируется в соответствии с утвержденной парольной политикой ИВС и ЦОД.
+alter user AIBORACLE profile SYSPROF;
+grant AIBROLE to AIBORACLE;
+
+-- 11.3.3 Создать/изменить персонифицированную УЗ АИБ
+-- Условие выполнения Наличие списка УЗ АИБ от УМРКЭМЗИ
+create user <персонифицированная УЗ АИБ> identified by <пароль>;
+-- Примечание Пароль формируется в соответствии с утвержденной парольной политикой ИВС и ЦОД.
+alter user <персонифицированная УЗ АИБ> profile SYSPROF;
+grant AIBROLE to <персонифицированная УЗ АИБ>;
+
+-- 11.3.4 Включение объектного аудита УЗ  АИБ 'AIBORACLE'
+audit SELECT ANY TABLE BY AIBORACLE BY ACCESS;
+audit UPDATE ANY TABLE BY AIBORACLE BY ACCESS;
+audit INSERT ANY TABLE BY AIBORACLE BY ACCESS;
+audit DELETE ANY TABLE BY AIBORACLE BY ACCESS;
+audit SELECT TABLE BY AIBORACLE BY ACCESS;
+audit UPDATE TABLE BY AIBORACLE BY ACCESS;
+audit INSERT TABLE BY AIBORACLE BY ACCESS;
+audit DELETE TABLE BY AIBORACLE BY ACCESS;
+
+
+-- 11.3.5 Включение объектного аудита Для персонифицированной УЗ  АИБ
+audit SELECT ANY TABLE BY <УЗ АИБ> BY ACCESS;
+audit UPDATE ANY TABLE BY <УЗ АИБ> BY ACCESS;
+audit INSERT ANY TABLE BY <УЗ АИБ> BY ACCESS;
+audit DELETE ANY TABLE BY <УЗ АИБ> BY ACCESS;
+audit SELECT TABLE BY <УЗ АИБ> BY ACCESS;
+audit UPDATE TABLE BY <УЗ АИБ> BY ACCESS;
+audit INSERT TABLE BY <УЗ АИБ> BY ACCESS;
+audit DELETE TABLE BY <УЗ АИБ> BY ACCESS;
+
+-- ------------------------------------------------------------------------- 
+-- 12 Только в БД OpenText 
+-- 12.1 Настройки для КСОСБ 
+-- 12.1.1 Создать УЗ КСОСБ
+create user ARCLOG profile SAPUPROF identified by <пароль>;
+grant connect to ARCLOG;
+-- 12.1.2 Предоставить права на аудит OpenText
+grant select on ECR.ADM_AUDIT to arclog;
+create or replace synonym ARCLOG.ADM_AUDIT for ECR.ADM_AUDIT;
+
+-- 12.2 Настройка мониторинга БД средствами SAP SM 
+-- 12.2.1 Создать УЗ SAPMON и предоставить права
+create user SAPMON profile SAPUPROF identified by <пароль>;
+grant select_catalog_role to SAPMON;
+grant alter session to SAPMON;
+grant analyze any to SAPMON ;
+grant create session to SAPMON;
+grant select any table to SAPMON;
+grant advisor to SAPMON;
+grant execute on dbms_advisor to SAPMON;
+grant execute on dbms_workload_repository to SAPMON;
+
+-- ----------------------------------------------------------
+-- ----------------------------------------------------------
+-- п.13 Только в БД с активированной опцией 'Oracle Database Vault'
+-- ----------------------------------------------------------
+-- ----------------------------------------------------------
+-- Просмотр имени экземпляра
+select INSTANCE_NAME from V$INSTANCE;
+
+-- 13.1. Просмотр состояния опции ODV
+set line 400
+set pagesize 2000
+col PARAMETER format a25
+col VALUE format a10
+select PARAMETER, VALUE from V$OPTION where PARAMETER='Oracle Database Vault';
+
+-- ------------------------------ 
+-- 13.2. Настройка роли АИБ "AIBROLE"
+-- ------------------------------ 
+-- 13.2.1 Просмотр привилегии для роли "AIBROLE"
+set line 400
+set pagesize 2000
+col GRANTEE format a25
+col GRANTED_ROLE format a15
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='AIBROLE';
+
+-- 13.2.2 Назначить привилегии для роли АИБ "AIBROLE" (при необходимости)
+grant DV_SECANALYST to AIBROLE;
+grant SELECT_CATALOG_ROLE to AIBROLE;
+
+-- ------------------------------ 
+-- 13.4. Настройка УЗ SECADMIN
+-- ------------------------------ 
+-- 13.4.1 Настройка системных привилегий для УЗ "SECADMIN"
+grant ALTER ANY TRIGGER to SECADMIN;
+grant SET CONTAINER to SECADMIN;
+grant ADMINISTER DATABASE TRIGGER to SECADMIN;
+grant CREATE ANY JOB to SECADMIN;
+
+-- 13.4.2 Просмотр системных привилегий для  УЗ  "SECADMIN"
+set line 400
+set pagesize 2000
+col PRIVILEGE format a30
+col GRANTEE format a15
+select PRIVILEGE, GRANTEE from DBA_SYS_PRIVS where GRANTEE='SECADMIN' order by 1;
+
+-- 13.4.3 Просмотр привилегии для УЗ "SECADMIN":
+set line 400
+set pagesize 2000
+col GRANTEE format a25
+col GRANTED_ROLE format a15
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='SECADMIN';
+
+-- 13.4.4 Назначить привилегии для УЗ "SECADMIN" (при необходимости):
+grant CONNECT to SECADMIN;
+grant DV_OWNER to SECADMIN;
+grant SELECT_CATALOG_ROLE to SECADMIN;
+
+
+-- ------------------------------ 
+-- 13.5. Настройка УЗ SECACCTMGR
+-- ------------------------------
+-- 13.5.1 Просмотр системных привилегий для  УЗ  "SECACCTMGR"
+set line 400
+set pagesize 2000
+col PRIVILEGE format a30
+col GRANTEE format a15
+select PRIVILEGE, GRANTEE from DBA_SYS_PRIVS where GRANTEE='SECACCTMGR' order by 1;
+ 
+-- 13.5.2 Просмотр привилегии для УЗ "SECACCTMGR"
+set line 400
+set pagesize 2000
+col GRANTEE format a25
+col GRANTED_ROLE format a15
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='SECACCTMGR';
+
+-- 13.5.3 Назначить привилегии для УЗ "SECACCTMGR" (при необходимости)
+grant DV_ACCTMGR to SECACCTMGR;
+grant SELECT_CATALOG_ROLE to SECACCTMGR;
+grant CONNECT to SECACCTMGR;
+grant SECMGRPRIVS_ROLE to SECACCTMGR;
+
+-- ------------------------------
+-- 13.6. Настройка УЗ SAPACCTMGR
+-- ------------------------------
+-- 13.6.1 Просмотр привилегии для УЗ "SAPACCTMGR"
+set line 400
+set pagesize 2000
+col GRANTEE format a25
+col GRANTED_ROLE format a15
+select GRANTEE,GRANTED_ROLE from DBA_ROLE_PRIVS where GRANTEE='SAPACCTMGR';
+
+-- 13.6.2 Назначить привилегии для УЗ "SAPACCTMGR" (при необходимости)
+grant CONNECT to SAPACCTMGR;
+grant DV_ACCTMGR to SAPACCTMGR;
+grant SELECT_CATALOG_ROLE to SAPACCTMGR;
+
+-- 13.7 Проверка работы задачи по очистке таблицы аудита ODV
+-- 13.7.1 Проверить дату/время последнего запуска задачи по очистке таблицы аудита ODV
+set pagesize 200
+set linesize 300
+col job_name format A23
+col job_action format A18
+col start_date format A26
+col repeat_interval format A16
+col end_date format A26
+col enabled format A8
+col LAST_START_DATE format A26
+select job_name, job_action, start_date, repeat_interval, end_date, LAST_START_DATE, enabled from DBA_SCHEDULER_JOBS where job_name like '%DROP%';
+
+-- 13.7.2  Создание задачи по очистке таблицы аудита ODV (выставить дату/время начала и завершения задачи)
+-- Внимание Данный пункт выполняется, если отсутствует задача по очистке таблицы аудита ODV
+-- Риски/ограничения Возможен останов БД по заполнению таблицы аудита ODV.
+-- Выполнить команду из-под УЗ SECADMIN
+BEGIN
+DBMS_SCHEDULER.CREATE_JOB (
+   job_name      => 'dvsys.drop_dvsys_audit_trail',
+   job_type             => 'PLSQL_BLOCK',
+   job_action           => 'BEGIN DELETE FROM DVSYS.AUDIT_TRAIL$ where timestamp < sysdate -7; commit; END;',
+   start_date           => to_timestamp_tz('2018-11-26 12:05:36 +03:00', 'YYYY-MM-DD HH24:MI:SS TZH:TZM'),
+   repeat_interval      => 'FREQ=DAILY', 
+   end_date             => to_timestamp_tz('2048-08-24 14:05:37 +03:00', 'YYYY-MM-DD HH24:MI:SS TZH:TZM'),
+   enabled              =>  TRUE,
+   comments             => 'Drops dvsys.audit_trail$ audit data');
+END;
+/
+
+-- ------------------------------------------------------------------------- 
+-- 14. Контроль выполненных настроек ВВ СУБД Oracle 
+--     Контроль выполненных настроек ВВ СУБД Oracle выполняет АИБ
+--     Условие выполнения предоставление логин/пароль
+
+-- ------------------------------------------------------------------------- 
+-- 15. Создание, удалениен, разблокировка и смена пароля для УЗ
+-- Условие выполнения по запросу АИБ
+alter user <имя УЗ > account unlock;
+alter user <имя УЗ> identified by <Пароль>;
+drop user <имя УЗ>;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

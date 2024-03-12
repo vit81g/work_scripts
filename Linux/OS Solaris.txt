@@ -1,0 +1,59 @@
+Проверки ОС Solaris.
+
+1. Проверка параметров парольной политики:
+    cat /etc/default/passwd
+
+2. Проверка параметров аудита:
+     more /etc/sshd_config
+
+3. Проветка идентификации терминалов:
+    netstat -n -f inet -P tcp
+
+4. Проверка идентификации ЭВМ, узлов сети:
+    /usr/sbin/nslookup <ip-хост>
+
+5. Проверка идентификации каналов связи:
+    /usr/sbin/traceroute <ip-хост>
+
+6. Проверка идентификации ПС:
+    ps -ef
+    prstat
+    ps -ef | grep prstat
+
+7. Проверка идентификации томов, каталогов, файлов:
+    ls -la /export/home/<УЗ АИБ>
+
+8. Проверка перечня УЗ пользователей:
+    more /etc/passwd
+
+9. Проверка перечня ролей:
+    more /etc/user_attr
+
+10. Проверка перечня групп:
+      more /etc/group
+
+11. Определение местоположения файла аудита:
+     ls -la /var/audit/
+
+12. Проверка регистрации неуспешной попытки входа:
+      pfexec praudit -l /var/audit/<файл аудита> | grep <УЗ АИБ> | grep failure
+
+13. Проверка регистрации входа:
+      pfexec /usr/sbin/auditreduce /var/audit/<файл аудита> | /usr/sbin/praudit -l | grep login
+
+14. Проверка регистрации выхода:
+      pfexec /usr/sbin/auditreduce /var/audit/<файл аудита> | /usr/sbin/praudit -l | grep logout
+
+15. Проверка регистрации запуска ПС:
+      prstat
+      pfexec /usr/sbin/praudit -l /var/audit/<файл аудита> | grep prstat
+
+16. Проверка регистрации попытки доступа ПС к защищаемым ИР:
+      echo 'test line' >> /etc/shadow
+      pfexec /usr/sbin/praudit -l /var/audit/<файл аудита> | grep shadow
+
+17. Проверка матрицы доступа:
+      ls -Val /etc/security/audit_startup && ls -Val /etc/security/audit_control && ls -Val /etc/security/audit_user && ls -Val /etc/security/audit_event && ls -Val /etc/security/exec_attr
+      ls -Val /etc/security/prof_attr && ls -Val /etc/security/auth_attr && ls -Val /etc/default/login && ls -Val /etc/security/policy.conf && ls -Val /etc/default/passwd
+      ls -Val /etc/syslog.conf && ls -Val /etc/logadm.conf && ls -Val /etc/ssh/sshd_config && ls -Val /var/log/authlog && ls -Val /etc/security/passpolicy.sh
+      ls -Val /etc/security/audit_log_rotate.sh && ls -Val /etc/security/audit_perm.sh && ls -Val /etc/security/acl_matrix.sh && ls -Val /etc/rc3.d/S99efros && ls -Val /var/cron/log

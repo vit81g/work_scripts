@@ -1,0 +1,7 @@
+Админы ЦОД (инвентаризация УЗ с привелегиями без смаркарты):
+$servers = Get-Content "Z:\!!!_path_!!!\server_list_COD.csv"
+$users_out = ForEach ($server in $servers) {
+Get-ADUser -Filter {AdminCount -eq 1 -AND Enabled -eq "True" -AND SmartcardLogonRequired -eq "False" -AND ObjectClass -eq "user"} -server $server -Properties UserPrincipalName,Name,PasswordLastSet,LastLogonDate,Description,TrustedToAuthForDelegation |
+Select-object UserPrincipalName,Name,PasswordLastSet,LastLogonDate,Description,TrustedToAuthForDelegation}
+$users_out  | Export-CSV -Force -NoTypeInformation Z:\!!!_path_!!!\export_admin_cod.csv -Delimiter ',' -Append -Encoding UTF8
+=========================================================================
