@@ -1,0 +1,204 @@
+*************************************************************
+****************** Монтирование *****************************
+*************************************************************
+
+****************** Где мои диски? ***************************
+В катологе /dev/
+Пример:
+/dev/sda
+/dev/sda1
+/dev/sdb
+/dev/sdf
+
+s - порт sata
+h - старый порт (hadware driver)
+
+если вконце есть цифра (sda1, sda2), то это логические диски (логичиская структура на физическом носителе)
+
+VFS Virtual File System (Виртуальная файловая система)
+
+************************ Mount монтирование дисков **********
+Все точки монтирования при запуске системы прописаны в файле /etc/fstab
+UUID - по нему осуществляется монтирование в Linux
+
+Команда lsblk выдаст информацию о наших блочных устройствах, дисках
+Пример:
+└─$ lsblk  
+
+# Результат:        
+NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+nvme0n1     259:0    0 476.9G  0 disk 
+├─nvme0n1p1 259:1    0   100M  0 part /boot/efi
+├─nvme0n1p2 259:2    0    16M  0 part 
+├─nvme0n1p3 259:3    0 292.3G  0 part 
+├─nvme0n1p4 259:4    0 183.5G  0 part /
+└─nvme0n1p5 259:5    0   977M  0 part [SWAP]
+
+Пример lsblk с выводом UUID:
+└─$ lsblk -o UUID
+
+# Результат:
+UUID
+
+84B2-3AE9
+
+F8B8BA27B8B9E3F2
+bc2c36b9-3d46-487c-82f9-7561f1739ef8
+18483727-c197-47ef-af45-6bb485e14b00
+
+Просмотр /etc/fstav с фильтром UUID:
+└─$ grep UUID /etc/fstab
+
+# Результат:
+# device; this may be used with UUID= as a more robust way to name devices
+UUID=bc2c36b9-3d46-487c-82f9-7561f1739ef8 /               ext4    errors=remount-ro 0       1
+UUID=84B2-3AE9  /boot/efi       vfat    umask=0077      0       1
+UUID=18483727-c197-47ef-af45-6bb485e14b00 none            swap    sw              0       0
+
+Просмотр UUID и дисков выведеных с помощью lsblk:
+└─$ lsblk -o UUID /dev/nvme0n1p5
+
+# Результат:
+UUID
+18483727-c197-47ef-af45-6bb485e14b00
+                                                                                            
+└─$ lsblk -o UUID /dev/nvme0n1p4
+
+# Результат:
+UUID
+bc2c36b9-3d46-487c-82f9-7561f1739ef8
+
+Просмотр всех подмонтированных дисков в нашей ОС:
+# какие блочные устройства связаны с нашей файловой системой
+└─$ df -h
+
+# Результат:
+Filesystem      Size  Used Avail Use% Mounted on
+udev            7.7G     0  7.7G   0% /dev
+tmpfs           1.6G  1.9M  1.6G   1% /run
+/dev/nvme0n1p4  180G   68G  104G  40% /
+tmpfs           7.7G  264K  7.7G   1% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+efivarfs        128K  104K   20K  84% /sys/firmware/efi/efivars
+/dev/nvme0n1p1   96M   46M   51M  48% /boot/efi
+tmpfs           1.6G  136K  1.6G   1% /run/user/1000
+
+/dev/nvme0n1p4  180G   68G  104G  40% /   - подмонтирован в корневой каталог
+
+Более полную информацию (что и куда подмонтировано) можно увидеть с помощью mount:
+└─$ mount
+
+# Результат:                       
+sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime)
+proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+udev on /dev type devtmpfs (rw,nosuid,relatime,size=7993732k,nr_inodes=1998433,mode=755,inode64)
+devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000)
+tmpfs on /run type tmpfs (rw,nosuid,nodev,noexec,relatime,size=1607176k,mode=755,inode64)
+/dev/nvme0n1p4 on / type ext4 (rw,relatime,errors=remount-ro,stripe=32)
+securityfs on /sys/kernel/security type securityfs (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev,inode64)
+tmpfs on /run/lock type tmpfs (rw,nosuid,nodev,noexec,relatime,size=5120k,inode64)
+cgroup2 on /sys/fs/cgroup type cgroup2 (rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot)
+pstore on /sys/fs/pstore type pstore (rw,nosuid,nodev,noexec,relatime)
+efivarfs on /sys/firmware/efi/efivars type efivarfs (rw,nosuid,nodev,noexec,relatime)
+bpf on /sys/fs/bpf type bpf (rw,nosuid,nodev,noexec,relatime,mode=700)
+systemd-1 on /proc/sys/fs/binfmt_misc type autofs (rw,relatime,fd=32,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=471)
+mqueue on /dev/mqueue type mqueue (rw,nosuid,nodev,noexec,relatime)
+debugfs on /sys/kernel/debug type debugfs (rw,nosuid,nodev,noexec,relatime)
+hugetlbfs on /dev/hugepages type hugetlbfs (rw,nosuid,nodev,relatime,pagesize=2M)
+tracefs on /sys/kernel/tracing type tracefs (rw,nosuid,nodev,noexec,relatime)
+fusectl on /sys/fs/fuse/connections type fusectl (rw,nosuid,nodev,noexec,relatime)
+configfs on /sys/kernel/config type configfs (rw,nosuid,nodev,noexec,relatime)
+/dev/nvme0n1p1 on /boot/efi type vfat (rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro)
+binfmt_misc on /proc/sys/fs/binfmt_misc type binfmt_misc (rw,nosuid,nodev,noexec,relatime)
+sunrpc on /run/rpc_pipefs type rpc_pipefs (rw,relatime)
+tmpfs on /run/user/1000 type tmpfs (rw,nosuid,nodev,relatime,size=1607172k,nr_inodes=401793,mode=700,uid=1000,gid=1000,inode64)
+gvfsd-fuse on /run/user/1000/gvfs type fuse.gvfsd-fuse (rw,nosuid,nodev,relatime,user_id=1000,group_id=1000)
+portal on /run/user/1000/doc type fuse.portal (rw,nosuid,nodev,relatime,user_id=1000,group_id=1000)
+
+# Вот наш диск в корневом каталоге, с правом на запись
+/dev/nvme0n1p4 on / type ext4 (rw,relatime,errors=remount-ro,stripe=32)
+
+Команда mount берет информацию из каталога /proc/
+Есть симлинк (ссылка на какой-то другой файл) в каталоге proc:
+└─$ ls -l /etc/mtabl
+lrwxrwxrwx 1 root root 19 Jul 12  2023 /etc/mtab -> ../proc/self/mounts
+
+└─$ ls -l /proc/self/mounts 
+-r--r--r-- 1 vit81 vit81 0 Mar 27 09:50 /proc/self/mounts
+
+└─$ cat /proc/self/mounts
+
+# Результат:
+sysfs /sys sysfs rw,nosuid,nodev,noexec,relatime 0 0
+proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0
+udev /dev devtmpfs rw,nosuid,relatime,size=7993732k,nr_inodes=1998433,mode=755,inode64 0 0
+devpts /dev/pts devpts rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000 0 0
+tmpfs /run tmpfs rw,nosuid,nodev,noexec,relatime,size=1607176k,mode=755,inode64 0 0
+/dev/nvme0n1p4 / ext4 rw,relatime,errors=remount-ro,stripe=32 0 0
+securityfs /sys/kernel/security securityfs rw,nosuid,nodev,noexec,relatime 0 0
+tmpfs /dev/shm tmpfs rw,nosuid,nodev,inode64 0 0
+tmpfs /run/lock tmpfs rw,nosuid,nodev,noexec,relatime,size=5120k,inode64 0 0
+cgroup2 /sys/fs/cgroup cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot 0 0
+pstore /sys/fs/pstore pstore rw,nosuid,nodev,noexec,relatime 0 0
+efivarfs /sys/firmware/efi/efivars efivarfs rw,nosuid,nodev,noexec,relatime 0 0
+bpf /sys/fs/bpf bpf rw,nosuid,nodev,noexec,relatime,mode=700 0 0
+systemd-1 /proc/sys/fs/binfmt_misc autofs rw,relatime,fd=32,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=471 0 0
+mqueue /dev/mqueue mqueue rw,nosuid,nodev,noexec,relatime 0 0
+debugfs /sys/kernel/debug debugfs rw,nosuid,nodev,noexec,relatime 0 0
+hugetlbfs /dev/hugepages hugetlbfs rw,nosuid,nodev,relatime,pagesize=2M 0 0
+tracefs /sys/kernel/tracing tracefs rw,nosuid,nodev,noexec,relatime 0 0
+fusectl /sys/fs/fuse/connections fusectl rw,nosuid,nodev,noexec,relatime 0 0
+configfs /sys/kernel/config configfs rw,nosuid,nodev,noexec,relatime 0 0
+/dev/nvme0n1p1 /boot/efi vfat rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro 0 0
+binfmt_misc /proc/sys/fs/binfmt_misc binfmt_misc rw,nosuid,nodev,noexec,relatime 0 0
+sunrpc /run/rpc_pipefs rpc_pipefs rw,relatime 0 0
+tmpfs /run/user/1000 tmpfs rw,nosuid,nodev,relatime,size=1607172k,nr_inodes=401793,mode=700,uid=1000,gid=1000,inode64 0 0
+gvfsd-fuse /run/user/1000/gvfs fuse.gvfsd-fuse rw,nosuid,nodev,relatime,user_id=1000,group_id=1000 0 0
+portal /run/user/1000/doc fuse.portal rw,nosuid,nodev,relatime,user_id=1000,group_id=1000 0 0
+
+Так же есть симлинк (ссылка на какой-то файл) с /proc/mounts -> self/mounts
+└─$ ls -l /proc/mounts 
+lrwxrwxrwx 1 root root 11 Mar 27 08:30 /proc/mounts -> self/mounts
+
+Монтирование:
+В Linux есть каталог /mnt который предназначен для монтирования каких-то временных устройств (временных, потому что они не прописаны в файле /etc/fstav)
+
+Пример монтирования домашнего каталога /home как блочное устройство:
+# монтирование только от root
+# параметры команды mount первое - что мы монтируем, второе - куда мы монтируем
+└─$ sudo mount /dev/nvme0n1p4 /mnt 
+# монтирование логического блока nvme0n1p4 (физического диска nvme0n1) в папку /mnt
+# вместо nvme0n1p4 может быть флешка, достаточно указать ее имя из /dev или  df -h 
+
+Отключить диски (отмонтировать) - umount и что мы отключаем
+sudo umount /mnt
+
+
+Итог:
+1. Что такое монтирование?
+"Связывание" реальной файловой системы с виртуальной
+
+2. Как в Linux обозначаются диски?
+/dev/sda, /dev/sdb и т.д.
+
+3. Где происходит работа с реальной файловой системой?
+В пространстве ядра
+
+4. Где хранится информация о том, какие диски сейчас примонтированы в системе?
+/proc/self/mounts
+# все остальное симлинки (ссылки на какой-то файл) /etc/mtab -> ../proc/self/mounts или /proc/mounts -> self/mounts
+
+5. Что означает цифра в имени файла диского устройства (/dev/sda1)?
+Что логический раздел на физическом диске /dev/sda
+
+6. Как в Linux перейти на диск C?
+Никак. В Linux нет такого понятия.
+
+7. Какая команда в Linux "связывает" файл дискового устройства и каталог?
+mount
+
+8. Что такое VFS?
+Virtual file system - виртуальная файловая система
+
+

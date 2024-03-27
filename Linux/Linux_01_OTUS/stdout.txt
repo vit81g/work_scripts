@@ -1,0 +1,9 @@
+total 180
+drwxr-xr-x 2 vit81 vit81  4096 Mar 26 14:20 dirnew
+-rw-r--r-- 1 vit81 vit81    54 Mar 26 13:08 errors.txt
+-rw-r--r-- 1 vit81 vit81 11884 Mar 25 15:45 linux_start.txt
+-rw-r--r-- 1 vit81 vit81 58593 Mar 25 17:27 STDIN_STDOUT_STDERR.jpg
+-rw-r--r-- 1 vit81 vit81  3677 Mar 26 14:20 STDIN_STDOUT_STDERR.txt
+-rw-r--r-- 1 vit81 vit81     0 Mar 26 14:20 stdout.txt
+-rw-r--r-- 1 vit81 vit81 87590 Mar 25 13:02 user_group_other.jpg
+-rw-r--r-- 1 vit81 vit81  4231 Mar 25 16:52 work_file.txt

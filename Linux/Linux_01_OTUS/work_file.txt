@@ -1,0 +1,81 @@
+**************** grep ********************
+Пример работы с log файлом (прописать полный путь до файла log):
+# Выведет все с Failed (для аутентификации)
+grep "Failed" ./log
+
+┌──(root㉿kali)-[/var/log]
+└─# ls -l /var/log/ | grep "j"
+# Выведет только файлы содержашие букву f
+drwxr-xr-x  2 jenkins           jenkins           4096 Dec 13 20:17 jenkins
+drwxr-sr-x+ 3 root              systemd-journal   4096 Jul 12  2023 journal
+
+└─# cat /var/log/dpkg.log | grep "trigproc"
+# Выведет строки с содержанием trigproc
+2024-03-20 14:21:44 trigproc initramfs-tools:all 0.142 <none>
+2024-03-20 14:22:00 trigproc libc-bin:amd64 2.37-12 <none>
+
+grep регистрозависим (учитывает регистр). Если хотим игнорировать регистр:
+grep -i "failed" ./log
+
+┌──(root㉿kali)-[/var/log]
+└─# ls -l /var/log/ | grep -i "F"
+# игнорирование регистара. Выведет только файлы где встречается f и F (включая параметры)
+-rw-r--r--  1 root              root             26996 Feb  7 10:56 alternatives.log.1
+-rw-rw----  1 root              utmp               768 Feb 24 22:00 btmp.1
+-rw-r--r--  1 root              root            289555 Feb  7 10:57 dpkg.log.1
+-rw-r--r--  1 root              root                 0 Jul 12  2023 faillog
+-rw-r--r--  1 root              root              7120 Mar 20 14:21 fontconfig.log
+drwxr-xr-x  2 _gvm              _gvm              4096 Feb 27  2023 gvm
+drwxr-xr-x  2 _gvm              _gvm              4096 Feb 15  2023 notus-scanner
+
+
+************************** head *******************************
+head выводет первые 10 строк файла
+Пример (./log полный путь до файла лог):
+head ./log
+
+Премер вывод первых трех строк:
+head -3 ./log
+
+# данный пример лучше использовать при написании скриптов
+head -n 3 ./log  
+# выведет 20 первых строк
+head -n 20 ./log
+
+
+*************************** tail ***************************
+tail выведет последнии 10 строк файла
+Пример вывода /etc/passwd:
+└─$ tail /etc/passwd
+rtkit:x:128:136:RealtimeKit,,,:/proc:/usr/sbin/nologin
+colord:x:129:137:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin
+nm-openvpn:x:130:138:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/nologin
+nm-openconnect:x:131:139:NetworkManager OpenConnect plugin,,,:/var/lib/NetworkManager:/usr/sbin/nologin
+vit81:x:1000:1000:vit81,,,:/home/vit81:/usr/bin/zsh
+nvpd:x:132:143:NVIDIA Persistence Daemon,,,:/var/run/nvpd/:/usr/sbin/nologin
+_gophish:x:133:144::/var/lib/gophish:/usr/sbin/nologin
+ntpsec:x:134:146::/nonexistent:/usr/sbin/nologin
+_galera:x:135:65534::/nonexistent:/usr/sbin/nologin
+jenkins:x:136:147:Jenkins,,,:/var/lib/jenkins:/bin/bash
+
+# вывод последних 15 строк 
+tail -n 15 /etc/passwd
+
+# Особенность tail с ключем -f (не прекратит работу, а будет и дальше выводить последние строки файла оналйн):
+# Вывод кто логинелся на сервер, кто запускал sudo
+sudo tail -f /var/log/secure
+
+
+***************************** more и less **************************************
+more - утилита открывает файл на чтение, можно листать постранично
+Выйти можно нажав клавишу q
+more /var/log/fontconfig.log 
+
+less - утилита как и more, но с улучшеной навигацией и работает поиск через / (после слеша вводим что ищем)
+
+*********************** итог ****************************************
+grep - фильтр
+head - посмотреть начало файла
+tail - посмотреть конец файла
+more - посмотреть файл
+less - лучше чем more, расширенный просмотр, поиск по слову

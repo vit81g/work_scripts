@@ -1,0 +1,266 @@
+******************************************************
+***************** Установка ПО ***********************
+******************************************************
+
+***************** rpm и yum **************************
+Устанвка програм из исходных кодов - только в крайней необходимости! Обычно если мы не имеем доступа к root и ставим сами в свой домашний каталог
+В данном случае мы теряем контроль версионности данного программного обеспеения
+Нам придется в ручную контролировать версии и устанавливать последню версию ПО. На одной машине это сделать можно, а если их много? Этот вариант не подходит для системного администрирования.
+
+Вариант установка из пакетов или репозиториев хороший вариант
+В CentOS пакетный менеджер rpm
+yum - работает непосредственно с репозиторием
+
+Поиск репозитория Apache с помощью yum:
+yum search http
+# выдаст много программ с http
+
+yum search http | wc -l 
+# параметр wc -l выдаст количество строк
+# пример с apt в Kali
+└─$ apt search http | wc -l
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+21878
+
+
+
+# применим фильтр grep с ключем -i (не будет учитывать регистр)
+yum search http | grep -i apache
+# пример с apt в Kali
+└─$ apt search http | grep -i apache
+
+└─$ apt search http | grep -i apache | wc -l
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+118
+# тоже много
+# два фильтра
+└─$ apt search http | grep -i apache | grep server
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+  Apache HTTP Server (utility programs for web servers)
+  log analyzer and interactive viewer for the Apache Webserver
+  Integration of perl with the Apache2 web server
+  Apache Subversion server modules for Apache httpd
+  upload progress support for the Apache web server
+  PHP extension for communicating with Apache Solr server
+  PHP extension for communicating with Apache Solr server
+  PHP extension for communicating with Apache Solr server
+  Prometheus exporter for Apache server metrics
+
+# CentOS установка apache
+sudo yum install httpd  
+
+# Debian, Kali
+sudo apt install name_app
+
+
+************************ Список установленных пакетов, удаление ПО ***********
+Для этого используем пакетный менеджер rpm
+# CentOS
+rpm -qa 
+# ключи q (query); a (all)
+# выведет имя, номер версии, для какой ос пакет собран, на какой архитектуре собран
+
+rpm -qa | wc -l
+# подсчитает количество строк, что означает сколько у нас установлено пакетов
+
+rpm -qa | grep httpd
+# фильтрация по имени пакета, если он есть, выведет на экран
+
+Удаление пакетов
+Осуществить можно с помощью rpm и yum
+sudo yum remove httpd
+# удалит httpd (нужен root)
+
+sudo rpm -e httpd
+# удалит httpd (нужен root)
+
+# Debian, Kali
+└─$ apt list  
+# ключ list выведетт все пакеты установленные в системе
+# выведет имя, номер версии, для какой ос пакет собран, на какой архитектуре собран
+
+└─$ apt list | wc -l
+# подсчитает количество строк, что означает сколько у нас установлено пакетов
+
+└─$ apt list | grep name_app
+# фильтрация по имени пакета, если он есть, выведет на экран
+
+Удаление пакетов
+Осуществить можно с помощью apt remove (autoremove - автоматически удалит все неиспользуемые пакеты из системы)
+apt remove name_app
+
+
+*********************** Поиск пакета по файлу ****************
+# CentOS
+yum provides *ls
+# список очень большой
+# сузим поиск, добавив после * слеш /
+yum provides */ls
+# список все равно большой
+
+# Получение количества строк (пакетов) из репозитория
+yum provides *ls | wc -l
+yum provides */ls | wc -l
+# добавим фильтр grep, исходя из того что ls это бинарный файл bin
+yum provides */ls | grep bin
+# уже 4 строки с результатами
+# теперь добавим каталог полностью /bin/ls (исходя из предыдушего результата)
+yum provides /bin/ls
+# теперь мы видим результат поиска ls: пакет, версию, для какой системы и архитектуру
+
+# проверка с помощью команды which
+└─$ which ls
+ls: aliased to ls --color=auto
+
+# Вывод всех пакетов для приложения
+rpm -ql coreutils
+
+# Подсчет зависимостей (зависимых пакетов) пакета
+rpm -ql name_app | wc -l
+# много, исключим все архивы
+rpm -ql name_app | grep -v ".gz"
+# посчитаем количество
+rpm -ql name_app | grep -v ".gz" | wc -l
+# меньше, но это CentOS пакет coreutils содержит много бинарников
+
+# Debian, Kali
+which ls | xargs dpkg -S
+# уменбшим результаты с помощью grep
+which ls | xargs dpkg -S | grep '/bin/'
+
+# подсчитаем пакеты
+which ls | xargs dpkg -S | grep '/bin/' | wc -l
+390
+
+# в нашем случае (Kali) сработает только type -a ls (which ls или type ls будут ссылаться на алиасы(псевдоним) без вывода пути
+└─$ type -a ls
+
+ls is an alias for ls --color=auto
+ls is /usr/bin/ls
+ls is /bin/ls
+
+
+# тут уже так найдем. Это klibc-utils: /usr/lib/klibc/bin/ls
+# пакет klibc-utils
+# вывод информации
+└─$ apt list | grep klibc-utils
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+klibc-utils/kali-rolling,now 2.0.13-4 amd64 [installed,automatic]
+
+# более детальный вывод информации
+─$ apt show  klibc-utils
+Package: klibc-utils
+Version: 2.0.13-4
+Priority: optional
+Section: libs
+Source: klibc
+Maintainer: Debian Kernel Team <debian-kernel@lists.debian.org>
+Installed-Size: 490 kB
+Depends: libklibc (= 2.0.13-4)
+Homepage: https://git.kernel.org/cgit/libs/klibc/klibc.git
+Tag: role::shared-lib
+Download-Size: 95.0 kB
+APT-Manual-Installed: no
+APT-Sources: http://http.kali.org/kali kali-rolling/main amd64 Packages
+Description: small utilities built with klibc for early boot
+ This package contains a collection of programs that are linked
+ against klibc. These duplicate some of the functionality of a
+ regular Linux toolset, but are typically much smaller than their
+ full-function counterparts.  They are intended for inclusion in
+ initramfs images and embedded systems.
+
+
+
+******************** Список файлов в пакете ******************
+Для того что бы увидеть количество файлов в пакете используем rpm
+# CentOS  rpm -ql name_packet
+rpm -ql httpd
+# отфильтруем с помощью grep (фильтр bin)
+rpm -ql httpd | grep bin
+# уже приемлемо. мы находим /usr/sbin/httpd
+# посмотрим на его права
+ls -l /usr/sbin/httpd
+# исполняемый файл. то что надо, посмотрим help
+/usr/sbin/httpd --help
+# не сработало, используем альтернативу - man 
+man httpd
+# выведет полное руководство по программе httpd
+# проверим ключи из инструкции (ключ -V)
+/usr/sbin/httpd -V
+# работаетб, выведет информацию о компиляции, версию и прочее
+
+
+# Debian, Kali : dpkg -L name_packets
+└─$ dpkg -L mc
+
+# применим фильтрацию grep (фильтр bin)
+└─$ dpkg -L mc | grep bin
+/usr/bin
+/usr/bin/mc
+/usr/share/mc/bin
+/usr/bin/mcdiff
+/usr/bin/mcedit
+/usr/bin/mcview
+/usr/share/mc/bin/mc-wrapper.csh
+/usr/share/mc/bin/mc-wrapper.sh
+/usr/share/mc/bin/mc.csh
+/usr/share/mc/bin/mc.sh
+
+# наш файл /usr/bin/mc
+# проверка с помощью ключа help или утилиты man
+└─$ /usr/bin/mc --help
+Usage:
+  mc [OPTION…] [this_dir] [other_panel_dir]
+
+
+GNU Midnight Commander 4.8.30
+# работает
+
+
+Итог по CentOS
+1. Как посмотреть все пакеты доступные в репозитории в CentOS
+yum list  
+
+2. Как посмотреть все установленные пакеты в CentOS
+rpm -qa
+# Debian, Kali : apt list
+
+3. Как искать пакет в репозитории по ключевым словам?
+yum search <word>
+# Debian, Kali : apt search
+
+4. Как посмотреть список файлов в установленом пакете?
+rpm -qs <package_name>
+
+5. Как удалить установленный пакет?
+yum remove <package_name>
+# Debian, Kali : apt remove <package_name>
+
+6. Как найти пакет в репозитории по имени файла?
+yum provides <file_name>
+
+7. Как найти установленный пакет по имени файла?
+rpm -qf <file_name>
+
+8. Какая программа в CentOS отвечает за работу с пакетами?
+rpm
+# Debian, Kali : apt
+
+9. Какая программа в CentOS отвечает за работу с репозиторием?
+yum
+
+10. Как установить пакет из репозитория?
+yum install <package_name>
+# Debian, Kali : apt install <package_name>
+
+
+
+
