@@ -1,3 +1,8 @@
+https://medium.com/@robert.broeckelmann/kerberos-wireshark-captures-a-spnego-example-e22e6b1d662a
+https://www.wireshark.org/docs/dfref/k/kerberos.html
+
+https://www.golinuxcloud.com/kerberos-auth-packet-analysis-wireshark/
+
 Шаг 1. Запуск Wireshark
 Шаг 2. Открыть PCAP файл ранее созданный (Destination 10.75.228.20 and Source 10.78.26.17)
 Шаг 3. Navigate to Edit → Preferences and a window opens.
