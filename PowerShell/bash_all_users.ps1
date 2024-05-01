@@ -29,12 +29,18 @@ foreach ($user in $users) {
     $userData | Add-Member -MemberType NoteProperty -Name "Отдел" -Value $user.Department
     $userData | Add-Member -MemberType NoteProperty -Name "Должность" -Value $user.Title
     $userData | Add-Member -MemberType NoteProperty -Name "Email" -Value $user.EmailAddress
+    $userData | Add-Member -MemberType NoteProperty -Name "Enabled" -Value $user.Enabled
+    $userData | Add-Member -MemberType NoteProperty -Name "lastlogontimestamp" -Value   $user.lastlogontimestamp
+    $userData | Add-Member -MemberType NoteProperty -Name "PasswordExpired" -Value $user.PasswordExpired
+    $userData | Add-Member -MemberType NoteProperty -Name "PasswordLastSet" -Value $user.PasswordLastSet
+    $userData | Add-Member -MemberType NoteProperty -Name "PasswordNeverExpires" -Value $user.PasswordNeverExpires
+    
     
     # Добавляем объект $userData в массив $results
     $results += $userData
 }
 
 # Экспортируем данные в CSV-файл
-$results | Export-Csv -Path $csvPath -NoTypeInformation
+$results | Export-Csv -Delimiter ',' -Append -Encoding UTF8 $csvPath -NoTypeInformation 
 
 Write-Host "Данные успешно экспортированы в файл CSV ($csvPath)"
