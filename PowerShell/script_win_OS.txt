@@ -1,0 +1,19 @@
+Пользователи:
+Get-ADUser -Filter * -Properties sAMAccountName,Name,Company,telephonenumber,mail,office,SmartcardLogonRequired,PasswordLastSet,PasswordExpired,Enabled,lockedout,whenchanged,whencreated,extensionAttribute1,extensionAttribute2,badPwdCount,badPasswordTime,logonCount,description,msDS-LastSuccessfulInteractiveLogonTime,lastlogon,memberof | Select-Object sAMAccountName,Name,Company,telephonenumber,mail,office,SmartcardLogonRequired,PasswordLastSet,PasswordExpired,Enabled,lockedout,whenchanged,whencreated,extensionAttribute1,extensionAttribute2,badPwdCount,badPasswordTime,logonCount,description,@{Name="Last Successful Logon Time";Expression={[datetime]::FromFileTime($_.'msDS-LastSuccessfulInteractiveLogonTime')}}, @{Name="Last Logon";Expression={[datetime]::FromFileTime($_.'LastLogon')}}, @{name=”MemberOf”;expression={$_.memberof -join “;”}}|
+Export-Csv -NoTypeInformation "C:\Users\GPIadmin78\Downloads\gpe-ad-users.csv" -Delimiter '|' -Append -Encoding UTF8
+ 
+Админы:
+Get-ADUser -Filter {AdminCount -eq 1} -Properties sAMAccountName,Name,Company,telephonenumber,mail,office,SmartcardLogonRequired,PasswordLastSet,PasswordExpired,Enabled,lockedout,whenchanged,whencreated,extensionAttribute1,extensionAttribute2,badPwdCount,badPasswordTime,logonCount,description,msDS-LastSuccessfulInteractiveLogonTime,lastlogon,memberof |
+Select-Object sAMAccountName,Name,Company,telephonenumber,mail,office,SmartcardLogonRequired,PasswordLastSet,PasswordExpired,Enabled,lockedout,whenchanged,whencreated,extensionAttribute1,extensionAttribute2,badPwdCount,badPasswordTime,logonCount,description,@{Name="Last Successful LogonTime";Expression={[datetime]::FromFileTime($_.'msDSLastSuccessfulInteractiveLogonTime')}}, @{Name="Last Logon";Expression={[datetime]::FromFileTime($_.'LastLogon')}}, @{name=”MemberOf”;expression={$_.memberof -join “;”}} |
+Export-Csv -NoTypeInformation "C:\Users\GPIadmin78\Downloads\gpe-ad-admins.csv" -Delimiter '|' -Append -Encoding UTF8
+ 
+Группы:
+Get-Adgroup -Filter * -Properties sAMAccountName, DistinguishedName, groupcategory, description |
+Select-Object sAMAccountName, DistinguishedName, Name, groupcategory, description |
+Export-Csv -NoTypeInformation "C:\Users\GPIadmin78\Downloads\gpe-ad-groups.csv" -Delimiter '|' -Append -Encoding UTF8
+ 
+ 
+Компьютеры:
+Get-ADComputer -Filter * -Properties Name,DNSHostName,IPv4Address,OperatingSystem,lastlogondate,whenCreated,whenChanged,LockedOut,enabled,description |
+Select-Object Name,DNSHostName,IPv4Address,OperatingSystem,lastlogondate,whenCreated,whenChanged,LockedOut,enabled,description |
+Export-Csv -NoTypeInformation "C:\Users\GPIadmin78\Downloads\gpe-ad-hosts.csv" -Delimiter '|' -Append -Encoding UTF8

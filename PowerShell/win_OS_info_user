@@ -1,0 +1,12 @@
+Информация о пользователе:
+
+Get-ADUser -Identity GFSHOA -Properties Name, Enabled, telephonenumber, office, SmartcardLogonRequired, PasswordLastSet, PasswordExpired, lockedout, whenchanged, extensionAttribute1, extensionAttribute2, badPwdCount, badPasswordTime, logonCount, description, msDS-LastSuccessfulInteractiveLogonTime, LastLogon |
+
+Select-Object Name, Enabled, telephonenumber, office, SmartcardLogonRequired, PasswordLastSet, PasswordExpired, lockedout, whenchanged, extensionAttribute1, extensionAttribute2, badPwdCount, logonCount, description,
+
+@{Name="Bad Password Time";Expression={[datetime]::FromFileTime($_.'badPasswordTime')}}, @{Name="Last Successful Logon Time";Expression={[datetime]::FromFileTime($_.'msDS-LastSuccessfulInteractiveLogonTime')}}, @{Name="Last Logon";Expression={[datetime]::FromFileTime($_.'LastLogon')}}
+
+************************************************************************
+
+
+
