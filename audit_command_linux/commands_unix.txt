@@ -1,0 +1,127 @@
+ls -l /var/log/audit/ - выводит подробный список файлов в каталоге /var/log/audit
+
+cat /etc/ssh/sshd_config - выводит содержимое файла /etc/ssh/sshd_config
+
+echo #test >> /etc/pam.d/sshd - добавляет строку "#test" в конец файла /etc/pam.d/sshd
+
+rm -f /var/log/audit/<log_file> - удаляет файл <log_file> из /var/log/audit без подтверждения
+
+touch /tmp/testfile - создаёт файл
+
+Общий доступ:
+
+    sudo su - auditctr - переходит в функциональную роль "auditctr"
+
+    sudo su - usersec - переходит в функциональную роль "usersec"
+
+    sudo su - userctr - переходит в функциональную роль "userctr"
+
+    sudo su - usermngt - переходит в функциональную роль "usermngt"
+
+    sudo su - useracc - переходит в функциональную роль "useracc"
+
+Управление пользователями и группами:
+
+    useradd testuser - создаёт пользователя "testuser"
+
+    groupadd testgrp - создаёт группу "testgrp"
+
+    usermod -a -G testgrp testuser - добавляет пользователя "testuser" в группу "testgrp"
+
+    userdel -r testuser - удаляет пользователя "testuser" и его домашний каталог
+
+    groupdel testgrp - удаляет группу "testgrp"
+
+Аудит:
+
+    aureport -au | grep yes - выводит записи об успешных входах в систему
+
+    aureport -e -i | grep USER_END - выводит записи о выходах из системы
+
+    aureport -au | grep no - выводит записи о неуспешных входах в систему
+
+    ausearch -m USER_CHAUTHTOK -sv no -i | less - выводит записи о неуспешных попытках смены пароля
+
+    ausearch -m USER_CHAUTHTOK -sv yes -i | less - выводит записи об успешных попытках смены пароля
+
+    ausearch -m USER_AUTH -sv no -i | less - выводит записи о неуспешных попытках перехода к другому пользователю
+
+    ausearch -i -ts today -k access -sv no - выводит записи о неуспешных попытках доступа к файлам
+
+    ausearch -i -ts today -k CFG_pam -sv yes - выводит записи об успешных попытках изменения настроек PAM
+
+    ausearch -i -x useradd -sv no -ts today - выводит записи о неуспешных попытках создания пользователей
+
+    ausearch -i -f /etc/sudoers -k access -x bash - выводит записи о неуспешных попытках доступа к /etc/sudoers
+
+    ausearch -i -k CFG_privileges_roles -ts today - выводит записи об успешных попытках изменения /etc/sudoers
+
+    ausearch -m ADD_USER -sv yes -i - выводит записи о создании пользователей
+
+    ausearch -m ADD_GROUP -sv yes -i - выводит записи о создании групп
+
+    ausearch -m USER_MGMT -sv yes -i | grep add-user - выводит записи о добавлении пользователей в группы
+
+    *ausearch -m DEL_USER -i && ausearch -m EXECVE -i | grep sudo.userdel - выводит записи об удалении пользователей
+
+    *ausearch -m DEL_GROUP -i && ausearch -m EXECVE -i | grep sudo.groupdel - выводит записи об удалении групп
+
+    auditctl -l - выводит список правил аудита
+
+    service auditd restart - перезапускает службу аудита
+
+    getfacl -p /etc/audit/auditd.conf - выводит ACL для файла /etc/audit/auditd.conf
+
+    chown useracc:useracc /etc/audit/auditd.conf - изменяет владельца файла /etc/audit/auditd.conf
+
+    chmod 777 /etc/audit/auditd.conf - изменяет права доступа к файлу /etc/audit/auditd.conf
+
+    setfacl --restore=/tmp/bkp_acl - восстанавливает ACL из файла /tmp/bkp_acl
+
+Изменение прав доступа:
+
+    chmod 777 /tmp/testfile - устанавливает полные права доступа к файлу /tmp/testfile
+
+    chown <имя УЗ АВСЗИОС>:auditctr /tmp/testfile - устанавливает владельца файла /tmp/testfile как <имя УЗ АВСЗИОС> и группу auditctr
+
+    chmod 755 /etc/login.defs - устанавливает права доступа к файлу /etc/login.defs
+
+    chown auditvw:auditvw /etc/login.defs - устанавливает владельца файла /etc/login.defs как auditvw
+
+Изменение пароля:
+
+    passwd - изменяет пароль текущего пользователя
+
+    passwd -l testpmi - блокирует пользователя "testpmi"
+
+    passwd -u testpmi - разблокирует пользователя "testpmi"
+
+Прочие команды:
+
+    su - testpmi - переходит в оболочку пользователя "testpmi"
+
+    for event in $(ausearch -ts today -c cat -sv yes | grep type=EXECVE | grep /etc/ssh/sshd_config | cut -f2 -d: | tr -d ));do ausearch -i -ts today -a $event; done - сложная команда для вывода записей об успешных попытках чтения файла /etc/ssh/sshd_config (использует конвейеры, фильтры и переменные)
+
+    ls -l /etc/audit/auditd.conf - выводит информацию о файле /etc/audit/auditd.conf
+
+    /usr/bin/getfacl /etc/pam.d/password-auth /etc/pam.d/system-auth /etc/login.defs /etc/pam.d/passwd - выводит ACL для нескольких файлов
+
+    ls /var/log/audit/ | wc -l - выводит количество файлов в каталоге /var/log/audit
+
+Команды с отсутствующими параметрами:
+
+    echo #test >> /etc/sudoers - добавляет строку "#test" в конец файла /etc/sudoers
+
+    echo -w /tmp -p r - добавляет правило в /etc/audit/rules.d/audit.rules (точное назначение правила неясно без контекста).
+
+    passwd -u auditctr - попытка разблокировки пользователя "auditctr", но эта команда, вероятно, не сработает, так как у "auditctr" не должно быть пароля.
+
+Заметки:
+
+    В некоторых командах (например, chown, su, ausearch, getfacl) вместо имен пользователей, групп или файлов нужно подставить фактическое имя.
+
+    Не все команды могут быть выполнены непосредственно в оболочке. Некоторые из них могут быть частью скриптов или конфигурационных файлов.
+
+    Некоторые команды могут требовать дополнительных параметров, которые не указаны в тексте.
+
+Я буду стараться улучшать свои навыки анализа текста и буду рад вашим замечаниям!
