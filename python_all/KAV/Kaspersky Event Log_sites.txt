@@ -1,0 +1,126 @@
+schemas.microsoft.com: 1300
+yandex.ru: 240
+google.com: 79
+itdocs.port.one: 46
+cloud.cplus.ru: 34
+ntp.msn.com: 25
+door-handle.ru: 25
+travel.yandex.ru: 22
+dzen.ru: 18
+support.cscentr.com: 18
+booking.com: 18
+github.com: 15
+vseinstrumenti.ru: 14
+learn.microsoft.com: 13
+skobmir.ru: 12
+ozon.ru: 11
+magrel.ru: 10
+airport.online: 10
+hh.ru: 9
+gravesoft.dev: 8
+addenbau.com: 8
+moscow.petrovich.ru: 8
+klerk.ru: 7
+tddomovoy.ru: 7
+web.whatsapp.com: 6
+hoff.ru: 6
+support.office.com: 6
+megamarket.ru: 6
+consultant.ru: 5
+microsoft.com: 5
+companyaccount.kaspersky.com: 4
+vk.com: 4
+1kadry.ru: 4
+spb.vamdodoma.ru: 4
+support.microsoft.com: 4
+palladium.ru: 4
+furnitek.ru: 4
+system-fix.ru: 4
+nvd.nist.gov: 3
+travel.mts.ru: 3
+habr.com: 3
+web.archive.org: 3
+officecdn.microsoft.com: 3
+volhovec.ru: 3
+petrovich.ru: 3
+msfree.su: 3
+havabus.com: 3
+cdc-kuma-cor01.port.one:7220: 2
+kontur.ru: 2
+tokyo-city.ru: 2
+kdelo.ru: 2
+rg.ru: 2
+outside.seaport.spb.ru: 2
+xtravel.kg: 2
+market.yandex.ru: 2
+ru.wikipedia.org: 2
+softwarekeep.com: 2
+forum.ru-board.com: 2
+202502.game4you.top: 2
+upload.ee: 2
+maxidom.ru: 2
+yabs.yandex.ru: 2
+config.office.com: 2
+komus.ru: 2
+sima-land.ru: 2
+nasp.ru: 2
+ozon.by: 2
+rsload.net: 2
+cve.mitre.org: 1
+permanentline.clients.site: 1
+tvoupc.ru: 1
+talk.kontur-f.ru: 1
+university.rt.ru: 1
+rtkhrguide.tilda.ws: 1
+89.255.103.3: 1
+ru.wikihow.com: 1
+zen.yandex.com&amp;integration=site_desktop&amp;place=layout&amp;secdata=CIG1i4aXMiCXAVC0CWoHcQGXAWtsLIgBtO21lJye9pkUkAEA&amp;clid=1400&amp;rid=3251213297.1430.1740049769122.20892&amp;referrer_clid=1400&amp;
+&#1056;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;: &#1056;&#1072;&#1079;&#1088;&#1077;&#1096;&#1077;&#1085;&#1086;
+&#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086;: &#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086; &#1087;&#1086; &#1091;&#1084;&#1086;&#1083;&#1095;&#1072;&#1085;&#1080;&#1102;&lt;: 1
+zen.yandex.com&amp;integration=site_desktop&amp;place=layout&amp;secdata=CJi1kOitMSCXAVC0CWoHcQGXAWtsLIgBw+L1vs2O989VkAEA&amp;clid=1400&amp;rid=3251213297.1430.1740049769122.20892&amp;referrer_clid=1400&amp;
+&#1056;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;: &#1056;&#1072;&#1079;&#1088;&#1077;&#1096;&#1077;&#1085;&#1086;
+&#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086;: &#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086; &#1087;&#1086; &#1091;&#1084;&#1086;&#1083;&#1095;&#1072;&#1085;&#1080;&#1102;&lt;: 1
+zen.yandex.com&amp;integration=site_desktop&amp;place=layout&amp;secdata=CPL6wJjPMiCYAVDZCGoGAZgBa2wskAEA&amp;clid=1400&amp;rid=3251213297.1430.1740049769122.20892&amp;referrer_clid=1400&amp;
+&#1056;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;: &#1056;&#1072;&#1079;&#1088;&#1077;&#1096;&#1077;&#1085;&#1086;
+&#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086;: &#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086; &#1087;&#1086; &#1091;&#1084;&#1086;&#1083;&#1095;&#1072;&#1085;&#1080;&#1102;&lt;: 1
+blog.ostrovok.ru: 1
+bptrip.ru: 1
+lenta.ru: 1
+journal.sovcombank.ru: 1
+zen.yandex.com&amp;integration=site_desktop&amp;place=layout&amp;secdata=CMLdjuLRMiCYAVDZCGoGAZgBa2wskAEA&amp;clid=1400&amp;rid=4115969453.1312.1740050004437.39744&amp;referrer_clid=1400&amp;
+&#1056;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;: &#1056;&#1072;&#1079;&#1088;&#1077;&#1096;&#1077;&#1085;&#1086;
+&#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086;: &#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086; &#1087;&#1086; &#1091;&#1084;&#1086;&#1083;&#1095;&#1072;&#1085;&#1080;&#1102;&lt;: 1
+zen.yandex.com&amp;integration=site_desktop&amp;place=layout&amp;secdata=CPmiv6+bMiCYAVC6CWoGAZgBa2wskAEA&amp;clid=1400&amp;rid=4115969453.1312.1740050004437.39744&amp;referrer_clid=1400&amp;
+&#1056;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;: &#1056;&#1072;&#1079;&#1088;&#1077;&#1096;&#1077;&#1085;&#1086;
+&#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086;: &#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086; &#1087;&#1086; &#1091;&#1084;&#1086;&#1083;&#1095;&#1072;&#1085;&#1080;&#1102;&lt;: 1
+zen.yandex.com&amp;integration=site_desktop&amp;place=layout&amp;secdata=CIH: 1
+zen.yandex.com&amp;integration=site_desktop&amp;place=layout&amp;secdata=COa2p7L1MCCUAVD0CWoGAZQBiAEskAEA&amp;clid=1400&amp;rid=4115969453.1312.1740050004437.39744&amp;referrer_clid=1400&amp;
+&#1056;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;: &#1056;&#1072;&#1079;&#1088;&#1077;&#1096;&#1077;&#1085;&#1086;
+&#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086;: &#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086; &#1087;&#1086; &#1091;&#1084;&#1086;&#1083;&#1095;&#1072;&#1085;&#1080;&#1102;&lt;: 1
+bolshoyvopros.ru: 1
+roerichsmuseum.ru: 1
+msk.vamdodoma.ru: 1
+pxd.cscentr.com: 1
+mssoft.ru: 1
+allmessengers.ru: 1
+silentinstallhq.com: 1
+auth.cscentr.com: 1
+coolhub.top: 1
+archive.org: 1
+login.microsoftonline.com: 1
+answers.microsoft.com&amp;response_type=code id_token&amp;scope=openid profile&amp;state=OpenIdConnect.AuthenticationProperties%3DDUR-5fS_tgAw6URSuR-URNCqfk95w5bgt9TEA2eBDD_AIaayokxzQVa15cB7ZhvkQIUkv4VndssKKzCDJQkApFwV-MIGdoXQ4WUMueb5fZ9SFFOQYRkIDU-Cx1p7NEzeoeiKKPqToRbABNunh6T7Me7ZnrRJi1_b1KuA_9fcuvNynCV7T--tFsDonEco6rxgE_pc57ipjevJbneQ6ilCn6jx8SRrWeqguookYucuB6ora1pYwVeIuMJy1zNEhEEVAJOoLx9BAZvns4lDigxolCTPcAsorTKPhTStKKSLdhfSAIpTF-vTvEK7p88E5yu0teEllsU9hk4jry_wZdeqCp3NTkFo4BfvczGVzERLndlU7ug9TyviWnFj9Wn9BFjs&amp;response_mode=form_post&amp;nonce=638756539141143842.YjMyMWRlOTAtZTZmYi00NmRmLTllOGYtYjU5ZmYwODE1ZmYyZTIzY2I4MjctNzQ5NC00YjBiLTg3ZGItNDhkNWFkZGZiNGIw&amp;nopa=2&amp;prompt=none&amp;x-client-SKU=ID_NET472&amp;x-client-ver=7.6.0.0
+&#1056;&#1077;&#1079;&#1091;&#1083;&#1100;&#1090;&#1072;&#1090;: &#1056;&#1072;&#1079;&#1088;&#1077;&#1096;&#1077;&#1085;&#1086;
+&#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086;: &#1055;&#1088;&#1072;&#1074;&#1080;&#1083;&#1086; &#1087;&#1086; &#1091;&#1084;&#1086;&#1083;&#1095;&#1072;&#1085;&#1080;&#1102;&lt;: 1
+answers.microsoft.com: 1
+rutube.ru: 1
+stavimdveri.spb.ru: 1
+spb.tbmmarket.ru: 1
+korobeinik.net: 1
+koralspb.ru: 1
+dvers-all.ru: 1
+valles.ru: 1
+stroylocks.com: 1
+gitfox.ru: 1
+sabihagokcen.aero: 1
+fontanka.ru: 1
+ds17.voadm.gov.spb.ru: 1
