@@ -1,0 +1,1 @@
+Ошибка при выполнении masscan: Command '['masscan', '--version']' returned non-zero exit status 1.

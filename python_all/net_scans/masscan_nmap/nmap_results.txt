@@ -1,0 +1,28 @@
+# Nmap 7.95 scan initiated Mon Feb 10 13:40:41 2025 as: /usr/lib/nmap/nmap -p 15,1,19,10,8,12,2,16,17,3,9,11,5,20,14,13,4,18,6,7 -sV --script=vulners -oN nmap_results.txt 185.97.166.148
+Nmap scan report for 185.97.166.148
+Host is up (0.12s latency).
+
+PORT   STATE SERVICE      VERSION
+1/tcp  open  tcpmux?
+2/tcp  open  compressnet?
+3/tcp  open  compressnet?
+4/tcp  open  unknown
+5/tcp  open  rje?
+6/tcp  open  unknown
+7/tcp  open  echo?
+8/tcp  open  unknown
+9/tcp  open  discard?
+10/tcp open  unknown
+11/tcp open  systat?
+12/tcp open  unknown
+13/tcp open  daytime?
+14/tcp open  unknown
+15/tcp open  netstat?
+16/tcp open  unknown
+17/tcp open  qotd?
+18/tcp open  msp?
+19/tcp open  chargen?
+20/tcp open  ftp-data?
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Feb 10 13:43:38 2025 -- 1 IP address (1 host up) scanned in 176.88 seconds

@@ -1,0 +1,2 @@
+IP,Port,Nmap,Netcat,HTTP,Socket
+89.255.98.41,646,Open,Netcat: Closed,HTTP: No Response,Socket: Closed
