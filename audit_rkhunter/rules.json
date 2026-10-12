@@ -1,0 +1,410 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "scope": "rkhunter evidence, not full CIS certification"
+  },
+  "rules": [
+    {
+      "id": "RKH-ROOTKIT",
+      "name": "Обнаружение сигнатуры rootkit",
+      "regex": "Warning:\\s*.*(?:Rootkit|Trojan|Worm|Backdoor).*\\[\\s*Warning\\s*\\]",
+      "recommendation": "Приоритетное расследование: проверить детальные артефакты соответствующего теста, повторить проверку независимыми средствами и сверить системные пакеты. Не считать подтверждённой компрометацией без верификации.",
+      "severity": "high",
+      "mode": "indicator",
+      "check_commands": [],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-COMMAND-SCRIPT",
+      "name": "Системная команда определена как скрипт",
+      "regex": "Warning:\\s*The command .+ has been replaced by a script",
+      "recommendation": "Проверить владельца пакета и контрольные суммы, сопоставить с доверенным дистрибутивом. Скрипт вместо бинарника может быть штатным для данной ОС; не заменять файл автоматически.",
+      "severity": "medium",
+      "mode": "indicator",
+      "check_commands": [
+        "dpkg -S /usr/bin/egrep /usr/bin/ldd /usr/sbin/adduser",
+        "dpkg -V grep libc-bin adduser 2>/dev/null || true"
+      ],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-HASH",
+      "name": "В базе rkhunter отсутствует эталонный хеш",
+      "regex": "Warning:\\s*No hash value found for file",
+      "recommendation": "Проверить источник и владельца файла; после подтверждения легитимности и исключения компрометации обновить доверенный baseline rkhunter (propupd).",
+      "severity": "medium",
+      "mode": "indicator",
+      "check_commands": [
+        "dpkg -S /usr/local/bin/sestatus 2>/dev/null || true",
+        "sha256sum /usr/local/bin/sestatus"
+      ],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-SSH-ROOT",
+      "name": "Нет явного PermitRootLogin по мнению rkhunter",
+      "regex": "Warning:\\s*The SSH configuration option 'PermitRootLogin' has not been set",
+      "recommendation": "Проверить итоговую effective-конфигурацию sshd и соответствие выбранному CIS-профилю. Отсутствие строки в файле не доказывает разрешение root-входа; учесть Include и Match.",
+      "severity": "medium",
+      "mode": "indicator",
+      "check_commands": [
+        "sudo sshd -T | grep -i ^permitrootlogin",
+        "sudo grep -RniE \"^[[:space:]]*(Include|PermitRootLogin|Match)\" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/ 2>/dev/null"
+      ],
+      "references": [
+        {
+          "name": "CIS Benchmarks — Ubuntu Linux / выбрать версию и профиль",
+          "url": "https://www.cisecurity.org/cis-benchmarks"
+        },
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-SSH-PROTOCOL",
+      "name": "Уведомление о параметре SSH Protocol",
+      "regex": "Warning:\\s*The SSH configuration option 'Protocol' has not been set",
+      "recommendation": "Проверить версию OpenSSH и активную конфигурацию. Для современных OpenSSH параметр Protocol может отсутствовать штатно (используется SSHv2); само предупреждение не является нарушением CIS.",
+      "severity": "low",
+      "mode": "indicator",
+      "check_commands": [
+        "sshd -V 2>&1",
+        "sudo sshd -T | head -30"
+      ],
+      "references": [
+        {
+          "name": "CIS Benchmarks — Ubuntu Linux / выбрать версию и профиль",
+          "url": "https://www.cisecurity.org/cis-benchmarks"
+        },
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-SSH-DIFFER",
+      "name": "Различие оценок конфигурации SSH",
+      "regex": "Warning:\\s*The SSH and rkhunter configuration options should be the same",
+      "recommendation": "Сопоставить /etc/rkhunter.conf и фактический effective sshd -T; уточнить источник расхождения.",
+      "severity": "medium",
+      "mode": "indicator",
+      "check_commands": [],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        },
+        {
+          "name": "CIS Benchmarks — Ubuntu Linux / выбрать версию и профиль",
+          "url": "https://www.cisecurity.org/cis-benchmarks"
+        }
+      ]
+    },
+    {
+      "id": "RKH-DEV",
+      "name": "Подозрительные типы файлов в /dev",
+      "regex": "Warning:\\s*Suspicious file types found in /dev",
+      "recommendation": "Изучить последующие строки журнала и идентифицировать файлы /dev, проверить тип, владельца и предназначение. Не удалять без подтверждения.",
+      "severity": "high",
+      "mode": "indicator",
+      "check_commands": [
+        "sudo find /dev -xdev -type f -ls 2>/dev/null"
+      ],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-HIDDEN",
+      "name": "Скрытый файл",
+      "regex": "Warning:\\s*Hidden file found:",
+      "recommendation": "Определить происхождение скрытого файла, права и владельца. Сопоставить с пакетами, резервными копиями и политикой хранения секретов; не считать вредоносным по одному имени.",
+      "severity": "medium",
+      "mode": "indicator",
+      "check_commands": [],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        },
+        {
+          "name": "OWASP CI/CD Security Cheat Sheet — secure configuration",
+          "url": "https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html"
+        }
+      ]
+    },
+    {
+      "id": "RKH-USER-ADDED",
+      "name": "Добавлен пользователь",
+      "regex": "Warning:\\s*User '.+' has been added to the passwd file",
+      "recommendation": "Проверить владельца изменения, историю установки пакетов и необходимость учётной записи, затем согласовать или расследовать.",
+      "severity": "medium",
+      "mode": "indicator",
+      "check_commands": [
+        "getent passwd",
+        "sudo grep -i \"install\\|upgrade\" /var/log/dpkg.log | tail -30"
+      ],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-GROUP-ADDED",
+      "name": "Добавлена группа",
+      "regex": "Warning:\\s*Group '.+' has been added to the group file",
+      "recommendation": "Проверить связь с пакетом, сервисом и авторизованным изменением.",
+      "severity": "low",
+      "mode": "indicator",
+      "check_commands": [
+        "getent group"
+      ],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-STRINGS",
+      "name": "Проверка strings пропущена",
+      "regex": "Checking 'strings' command\\s*\\[\\s*Skipped\\s*\\]",
+      "recommendation": "Проверить наличие утилиты strings и обоснованность пропуска теста. Это недостаток полноты сканирования, а не автоматически нарушение CIS.",
+      "severity": "low",
+      "mode": "indicator",
+      "check_commands": [
+        "command -v strings",
+        "dpkg -l binutils"
+      ],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-DISABLED-TESTS",
+      "name": "Отключены категории тестов rkhunter",
+      "regex": "Info:\\s*Disabled tests are:",
+      "recommendation": "Пересмотреть список отключённых тестов с учётом накладных расходов и совместимости. Зафиксировать исключения и компенсирующие проверки.",
+      "severity": "medium",
+      "mode": "indicator",
+      "check_commands": [],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-PACKAGE-MGR",
+      "name": "Проверка эталонных файлов не опирается на пакетный менеджер",
+      "regex": "Info:\\s*No package manager specified:",
+      "recommendation": "Проверить настройки PKGMGR и доверенную базу rkhunter. Выбрать способ валидации целостности, пригодный для этой ОС.",
+      "severity": "low",
+      "mode": "indicator",
+      "check_commands": [],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-MAIL",
+      "name": "Отсутствует адрес для уведомлений rkhunter",
+      "regex": "Info:\\s*No mail-on-warning address configured",
+      "recommendation": "Определить механизм доставки оповещений в KUMA/Zabbix/почту. Почтовый адрес в rkhunter необязателен, если уведомление организовано другим способом.",
+      "severity": "low",
+      "mode": "indicator",
+      "check_commands": [],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "RKH-LOCK",
+      "name": "Не используется блокировка параллельного запуска",
+      "regex": "Info:\\s*Locking is not being used",
+      "recommendation": "Проверить защиту от одновременных запусков на уровне планировщика.",
+      "severity": "low",
+      "mode": "indicator",
+      "check_commands": [],
+      "references": [
+        {
+          "name": "rkhunter — validation and false positives",
+          "url": "https://sourceforge.net/p/rkhunter/wiki/validate/"
+        }
+      ]
+    },
+    {
+      "id": "CIS-SSH-EFFECTIVE",
+      "name": "Проверка эффективных настроек SSH",
+      "regex": "(?!)",
+      "recommendation": "rkhunter не содержит достаточных данных. Выполнить отдельную проверку конфигурации и сопоставить с конкретной версией/профилем контрольного документа.",
+      "severity": "medium",
+      "mode": "not_checked",
+      "check_commands": [
+        "sudo sshd -T"
+      ],
+      "references": [
+        {
+          "name": "CIS Benchmarks — Ubuntu Linux / выбрать версию и профиль",
+          "url": "https://www.cisecurity.org/cis-benchmarks"
+        }
+      ]
+    },
+    {
+      "id": "CIS-PASSWORD",
+      "name": "PAM и политика паролей",
+      "regex": "(?!)",
+      "recommendation": "rkhunter не содержит достаточных данных. Выполнить отдельную проверку конфигурации и сопоставить с конкретной версией/профилем контрольного документа.",
+      "severity": "medium",
+      "mode": "not_checked",
+      "check_commands": [
+        "sudo cat /etc/security/pwquality.conf",
+        "sudo grep -Rni pam_pwquality /etc/pam.d/"
+      ],
+      "references": [
+        {
+          "name": "CIS Benchmarks — Ubuntu Linux / выбрать версию и профиль",
+          "url": "https://www.cisecurity.org/cis-benchmarks"
+        }
+      ]
+    },
+    {
+      "id": "CIS-FIREWALL",
+      "name": "Локальный межсетевой экран",
+      "regex": "(?!)",
+      "recommendation": "rkhunter не содержит достаточных данных. Выполнить отдельную проверку конфигурации и сопоставить с конкретной версией/профилем контрольного документа.",
+      "severity": "medium",
+      "mode": "not_checked",
+      "check_commands": [
+        "sudo nft list ruleset",
+        "sudo ufw status verbose"
+      ],
+      "references": [
+        {
+          "name": "CIS Benchmarks — Ubuntu Linux / выбрать версию и профиль",
+          "url": "https://www.cisecurity.org/cis-benchmarks"
+        }
+      ]
+    },
+    {
+      "id": "CIS-AUDIT",
+      "name": "Настройки auditd и журналирования",
+      "regex": "(?!)",
+      "recommendation": "rkhunter не содержит достаточных данных. Выполнить отдельную проверку конфигурации и сопоставить с конкретной версией/профилем контрольного документа.",
+      "severity": "medium",
+      "mode": "not_checked",
+      "check_commands": [
+        "systemctl is-enabled auditd",
+        "sudo auditctl -s"
+      ],
+      "references": [
+        {
+          "name": "CIS Benchmarks — Ubuntu Linux / выбрать версию и профиль",
+          "url": "https://www.cisecurity.org/cis-benchmarks"
+        }
+      ]
+    },
+    {
+      "id": "CIS-SYSCTL",
+      "name": "Параметры защиты ядра и сетевого стека",
+      "regex": "(?!)",
+      "recommendation": "rkhunter не содержит достаточных данных. Выполнить отдельную проверку конфигурации и сопоставить с конкретной версией/профилем контрольного документа.",
+      "severity": "medium",
+      "mode": "not_checked",
+      "check_commands": [
+        "sudo sysctl -a"
+      ],
+      "references": [
+        {
+          "name": "CIS Benchmarks — Ubuntu Linux / выбрать версию и профиль",
+          "url": "https://www.cisecurity.org/cis-benchmarks"
+        }
+      ]
+    },
+    {
+      "id": "CIS-FILESYSTEM",
+      "name": "Разделы и параметры монтирования",
+      "regex": "(?!)",
+      "recommendation": "rkhunter не содержит достаточных данных. Выполнить отдельную проверку конфигурации и сопоставить с конкретной версией/профилем контрольного документа.",
+      "severity": "medium",
+      "mode": "not_checked",
+      "check_commands": [
+        "findmnt -o TARGET,OPTIONS"
+      ],
+      "references": [
+        {
+          "name": "CIS Benchmarks — Ubuntu Linux / выбрать версию и профиль",
+          "url": "https://www.cisecurity.org/cis-benchmarks"
+        }
+      ]
+    },
+    {
+      "id": "CIS-UPDATES",
+      "name": "Обновления пакетов",
+      "regex": "(?!)",
+      "recommendation": "rkhunter не содержит достаточных данных. Выполнить отдельную проверку конфигурации и сопоставить с конкретной версией/профилем контрольного документа.",
+      "severity": "medium",
+      "mode": "not_checked",
+      "check_commands": [
+        "apt list --upgradable 2>/dev/null"
+      ],
+      "references": [
+        {
+          "name": "CIS Benchmarks — Ubuntu Linux / выбрать версию и профиль",
+          "url": "https://www.cisecurity.org/cis-benchmarks"
+        }
+      ]
+    },
+    {
+      "id": "OWASP-WEB",
+      "name": "Проверка веб-приложения по OWASP WSTG",
+      "regex": "(?!)",
+      "recommendation": "rkhunter не содержит достаточных данных. Выполнить отдельную проверку конфигурации и сопоставить с конкретной версией/профилем контрольного документа.",
+      "severity": "medium",
+      "mode": "not_checked",
+      "check_commands": [
+        "# Потребуются конфигурации веб-сервера и результаты тестирования приложения"
+      ],
+      "references": [
+        {
+          "name": "OWASP CI/CD Security Cheat Sheet — secure configuration",
+          "url": "https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html"
+        }
+      ]
+    }
+  ]
+}
