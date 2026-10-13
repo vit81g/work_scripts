@@ -1,0 +1,352 @@
+{
+  "metadata": {
+    "title": "ГК ППК: Рекомендации по безопасной настройке Linux",
+    "version": "1.1",
+    "date": "11.2025",
+    "source_file": "linux.md",
+    "note": "Ожидаемые значения перенесены из внутреннего документа без независимого подтверждения безопасности применения"
+  },
+  "rules": [
+    {
+      "id": "PPK-1-1",
+      "section": "1.1",
+      "title": "Запрет пустых паролей",
+      "key": "shadow_empty_passwords",
+      "expected": "none",
+      "command": "awk -F: '($2==\"\") {print $1}' /etc/shadow",
+      "risk": "Нет",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-1-2",
+      "section": "1.2",
+      "title": "Запрет root-входа по SSH",
+      "key": "ssh.permitrootlogin",
+      "expected": "no",
+      "command": "sshd -T | grep -i ^permitrootlogin",
+      "risk": "Риск блокировки аварийного доступа; нужен sudo-пользователь",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-1-3",
+      "section": "1.3",
+      "title": "Ограничение su через pam_wheel",
+      "key": "pam.su.wheel",
+      "expected": "auth required pam_wheel.so use_uid",
+      "command": "grep -n pam_wheel /etc/pam.d/su",
+      "risk": "Пользователи вне группы wheel потеряют su",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-1-4",
+      "section": "1.4",
+      "title": "Проверка конфигурации sudo",
+      "key": "sudo.visudo",
+      "expected": "valid",
+      "command": "visudo -c",
+      "risk": "Ошибка в sudoers может заблокировать администрирование",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-2-1",
+      "section": "2.1",
+      "title": "Права /etc/passwd и /etc/group",
+      "key": "file_permissions.passwd_group",
+      "expected": "644",
+      "command": "stat -c \"%a %n\" /etc/passwd /etc/group",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-2-1B",
+      "section": "2.1b",
+      "title": "Права /etc/shadow",
+      "key": "file_permissions.shadow",
+      "expected": "600",
+      "command": "stat -c \"%a %n\" /etc/shadow",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-2-2",
+      "section": "2.2",
+      "title": "Запрет записи group/other в cron",
+      "key": "file_permissions.cron",
+      "expected": "go-w",
+      "command": "stat -c \"%a %n\" /etc/crontab /etc/cron.d/*",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-2-3",
+      "section": "2.3",
+      "title": "Аудит SUID/SGID файлов",
+      "key": "suid_sgid.audit",
+      "expected": "reviewed",
+      "command": "find / -perm /6000 -type f 2>/dev/null",
+      "risk": "Удаление SUID может нарушить работу программ",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-2-4",
+      "section": "2.4",
+      "title": "Права домашних каталогов",
+      "key": "file_permissions.home",
+      "expected": "700",
+      "command": "stat -c \"%a %n\" /home/*",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-3-1",
+      "section": "3.1",
+      "title": "Защита журнала ядра",
+      "key": "sysctl.kernel.dmesg_restrict",
+      "expected": "1",
+      "command": "sysctl kernel.dmesg_restrict",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-3-2",
+      "section": "3.2",
+      "title": "Ограничение kallsyms",
+      "key": "sysctl.kernel.kptr_restrict",
+      "expected": "2",
+      "command": "sysctl kernel.kptr_restrict",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-3-3A",
+      "section": "3.3a",
+      "title": "Минимальный адрес mmap",
+      "key": "sysctl.vm.mmap_min_addr",
+      "expected": "4096",
+      "command": "sysctl vm.mmap_min_addr",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-3-3B",
+      "section": "3.3b",
+      "title": "ASLR",
+      "key": "sysctl.kernel.randomize_va_space",
+      "expected": "2",
+      "command": "sysctl kernel.randomize_va_space",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-3-4",
+      "section": "3.4",
+      "title": "ptrace",
+      "key": "sysctl.kernel.yama.ptrace_scope",
+      "expected": "3",
+      "command": "sysctl kernel.yama.ptrace_scope",
+      "risk": "Могут перестать работать инструменты мониторинга и профилирования; требуется тест",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-3-5A",
+      "section": "3.5a",
+      "title": "Защита symlinks",
+      "key": "sysctl.fs.protected_symlinks",
+      "expected": "1",
+      "command": "sysctl fs.protected_symlinks",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-3-5B",
+      "section": "3.5b",
+      "title": "Защита hardlinks",
+      "key": "sysctl.fs.protected_hardlinks",
+      "expected": "1",
+      "command": "sysctl fs.protected_hardlinks",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-3-6A",
+      "section": "3.6a",
+      "title": "Защита FIFO",
+      "key": "sysctl.fs.protected_fifos",
+      "expected": "2",
+      "command": "sysctl fs.protected_fifos",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-3-6B",
+      "section": "3.6b",
+      "title": "Защита регулярных файлов",
+      "key": "sysctl.fs.protected_regular",
+      "expected": "2",
+      "command": "sysctl fs.protected_regular",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-3-7",
+      "section": "3.7",
+      "title": "Запрет SUID core dump",
+      "key": "sysctl.fs.suid_dumpable",
+      "expected": "0",
+      "command": "sysctl fs.suid_dumpable",
+      "risk": "Нет по документу",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": false
+    },
+    {
+      "id": "PPK-3-8",
+      "section": "3.8",
+      "title": "Запрет user namespaces",
+      "key": "sysctl.user.max_user_namespaces",
+      "expected": "0",
+      "command": "sysctl user.max_user_namespaces",
+      "risk": "Может нарушить Docker, containerd, Podman, sandbox браузеров",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-3-9A",
+      "section": "3.9a",
+      "title": "Ограничение unprivileged eBPF",
+      "key": "sysctl.kernel.unprivileged_bpf_disabled",
+      "expected": "1",
+      "command": "sysctl kernel.unprivileged_bpf_disabled",
+      "risk": "Может нарушить сетевые агенты, интеграции MaxPatrol и KUMA",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-3-9B",
+      "section": "3.9b",
+      "title": "Защита BPF JIT",
+      "key": "sysctl.net.core.bpf_jit_harden",
+      "expected": "2",
+      "command": "sysctl net.core.bpf_jit_harden",
+      "risk": "Может нарушить сетевые агенты, интеграции MaxPatrol и KUMA",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-3-10",
+      "section": "3.10",
+      "title": "Ограничение perf",
+      "key": "sysctl.kernel.perf_event_paranoid",
+      "expected": "3",
+      "command": "sysctl kernel.perf_event_paranoid",
+      "risk": "Возможна несовместимость с профилированием и MaxPatrol",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-4-1",
+      "section": "4.1",
+      "title": "Инициализация памяти нулями",
+      "key": "cmdline.init_on_alloc",
+      "expected": "1",
+      "command": "cat /proc/cmdline",
+      "risk": "Возможна деградация производительности; цифры исходного документа отдельно не проверены",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-4-2",
+      "section": "4.2",
+      "title": "Запрет объединения slab",
+      "key": "cmdline.slab_nomerge",
+      "expected": "present",
+      "command": "cat /proc/cmdline",
+      "risk": "Возможны потери производительности",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-4-3",
+      "section": "4.3",
+      "title": "Выключение TSX",
+      "key": "cmdline.tsx",
+      "expected": "off",
+      "command": "cat /proc/cmdline",
+      "risk": "Возможны потери производительности",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-4-4A",
+      "section": "4.4a",
+      "title": "IOMMU force",
+      "key": "cmdline.iommu",
+      "expected": "force",
+      "command": "cat /proc/cmdline",
+      "risk": "Возможны проблемы виртуализации и производительности сети",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-4-4B",
+      "section": "4.4b",
+      "title": "IOMMU strict",
+      "key": "cmdline.iommu.strict",
+      "expected": "1",
+      "command": "cat /proc/cmdline",
+      "risk": "Возможны проблемы виртуализации и производительности сети",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-4-4C",
+      "section": "4.4c",
+      "title": "IOMMU passthrough",
+      "key": "cmdline.iommu.passthrough",
+      "expected": "0",
+      "command": "cat /proc/cmdline",
+      "risk": "Возможны проблемы виртуализации и производительности сети",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-4-5",
+      "section": "4.5",
+      "title": "Отключение vsyscall",
+      "key": "cmdline.vsyscall",
+      "expected": "none",
+      "command": "cat /proc/cmdline",
+      "risk": "Старые программы могут перестать работать",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    },
+    {
+      "id": "PPK-4-6",
+      "section": "4.6",
+      "title": "Отключение debugfs",
+      "key": "cmdline.debugfs",
+      "expected": "no-mount",
+      "command": "cat /proc/cmdline",
+      "risk": "Некоторые драйверы используют debugfs",
+      "source": "linux.md; версия 1.1; 11.2025",
+      "pilot_required": true
+    }
+  ]
+}
